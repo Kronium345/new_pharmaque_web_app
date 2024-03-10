@@ -66,7 +66,6 @@ const AIChat = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(apiRequestBody),
-          mode: "cors", // no-cors, *cors, same-origin
         }
       );
 

@@ -9,6 +9,9 @@ const AIChat = () => {
 
   const API_KEY = "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";
 
+  console.log(API_KEY);
+  //
+
   const [typing, setTyping] = useState(false);
   const [inputMessage, setInputMessage] = useState("");
   const [messages, setMessages] = useState([
@@ -66,7 +69,6 @@ const AIChat = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(apiRequestBody),
-          mode: "cors", // no-cors, *cors, same-origin
         }
       );
 

@@ -7,7 +7,10 @@ import "./chatRoom.scss";
 const AIChat = () => {
   const navigate = useNavigate("");
 
-  const API_KEY = "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";
+  const API_KEY =
+    process.env.OPENAI_API_KEY ||
+    "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";
+  //
 
   const [typing, setTyping] = useState(false);
   const [inputMessage, setInputMessage] = useState("");
@@ -19,8 +22,6 @@ const AIChat = () => {
   ]);
 
   const handleSend = async () => {
-    if (inputMessage === "") return;
-
     const newMessage = {
       message: inputMessage,
       sender: "user",
@@ -66,7 +67,6 @@ const AIChat = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(apiRequestBody),
-          mode: "cors", // no-cors, *cors, same-origin
         }
       );
 
