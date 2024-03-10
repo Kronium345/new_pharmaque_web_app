@@ -1,0 +1,21 @@
+.text-center {
+  text-align: center;
+  align-self: center;
+}
+
+.text-header {
+  margin-top: 10px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #1d3354;
+  margin-bottom: 1rem;
+}
+
+.otp-card {
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #1d3354;
+  flex: row;
+}

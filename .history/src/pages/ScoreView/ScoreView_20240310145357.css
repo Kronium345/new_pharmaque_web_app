@@ -1,0 +1,62 @@
+div {
+    display: flex;
+    flex-direction: column;
+    font-size: 28px;
+    font-weight: lighter;
+    align-items: center;
+  }
+  
+  .result-list {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .correct-answer {
+    color: #155724; /* Darker green text for correct answers */
+    background-color: #c3e6cb; /* Slightly darker green background for correct answers */
+  }
+  
+  .incorrect-answer {
+    color: #721c24 !important; /* Dark red text for incorrect answers with !important */
+    background-color: #f8d7da; /* Lighter red background for incorrect answers */
+  }
+  
+  .result-text {
+    font-weight: bold;
+  }
+  
+  .correct-text {
+    color: #155724; /* Darker green text for correct answers */
+  }
+  
+  .incorrect-text {
+    color: #721c24; /* Dark red text for incorrect answers */
+  }
+  
+  .explanation {
+    margin-top: 10px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .explanation span {
+    color: #333;
+  }
+  
+  button {
+    margin-top: 10px;
+    padding: 10px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    transition: background-color 0.3s, color 0.3s; /* Add color transition */
+  }
+  
+  button:hover {
+    background-color: #f0f0f0;
+  }
+  

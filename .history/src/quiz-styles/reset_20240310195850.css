@@ -1,0 +1,209 @@
+.mainbg {
+    background-image: url(images/Blob.png);
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: contain;
+    background-color: #E9FFF9;
+}
+
+.smallicon {
+    max-width: 25px;
+    max-height: auto;
+}
+
+.smallericon {
+    max-width: 20px;
+    max-height: auto;
+}
+
+.tinyicon {
+    max-width: 10px;
+    max-height: auto;
+}
+
+.leftside {
+    background-color: white;
+    border-top-left-radius: 2%;
+    border-bottom-left-radius: 2%;
+}
+
+.rightside {
+    background-color: #9ED8D8;
+    border-top-right-radius: 2%;
+    border-bottom-right-radius: 2%;
+}
+
+.leftalign {
+    text-align: left;
+}
+
+.form-label {
+    font-size: 1.1rem;
+}
+
+
+.floatright {
+    float: right;
+}
+
+.link {
+    text-decoration: none;
+    color: #212529;
+}
+
+.link:hover {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.btn-primary {
+    background-color: #1D3354;
+    padding-top: 1%;
+    padding-bottom: 2%;
+    padding-left: 8%;
+    padding-right: 8%;
+}
+
+.back {
+    padding-left: 0%;
+}
+
+.btn-primary:hover {
+    background-color: #212529;
+
+}
+
+@media only screen and (max-width: 576px) {
+
+    .leftside {
+        background-color: white;
+        border-top-left-radius: 2%;
+        border-top-right-radius: 2%;
+
+        border-bottom-left-radius: 0%;
+        border-bottom-right-radius: 0%;
+
+    }
+
+    .rightside {
+        background-color: #9ED8D8;
+        border-bottom-left-radius: 2%;
+        border-bottom-right-radius: 2%;
+
+        border-top-left-radius: 0%;
+        border-top-right-radius: 0%;
+    }
+
+    .back {
+        padding-left: 0%;
+        float: left !important;
+        margin-top: 0% !important;
+    }
+
+}
+
+.leftnavigation {
+    background-color: #FFFFFF;
+    min-height: 100vh;
+}
+
+.maincontent {
+    background-color: #A9E2E2;
+    min-height: 100vh;
+}
+
+.navigationicon {
+    max-width: 45px;
+    display: inline;
+}
+
+.navigationoption {
+    display: inline;
+
+}
+
+.removeunderline {
+    text-decoration: none;
+}
+
+.removeunderline:hover {
+    text-decoration: underline;
+}
+
+.activelink {
+    color: #1D3354;
+}
+
+.activelink:hover {
+    color: #1D3354;
+    font-weight: bold;
+}
+
+.inactivelink {
+    color: #BFC0C0;
+}
+
+.inactivelink:hover {
+    color: #BFC0C0;
+    font-weight: bold;
+}
+
+.navybluetext {
+    color: #1D3354;
+}
+
+.greytext {
+    color: #475467;
+}
+
+.card {
+    border: 0px;
+}
+
+.circular-progress {
+
+    --size: 240px;
+    --half-size: calc(var(--size) / 2);
+    --stroke-width: 30px;
+    --radius: calc((var(--size) - var(--stroke-width)) / 2);
+    --circumference: calc(var(--radius) * pi * 2);
+    --dash: calc((var(--progress) * var(--circumference)) / 100);
+    animation: progress-animation 1s linear 0s 1 forwards;
+}
+
+.circular-progress circle {
+    cx: var(--half-size);
+    cy: var(--half-size);
+    r: var(--radius);
+    stroke-width: var(--stroke-width);
+    fill: none;
+    stroke-linecap: round;
+}
+
+.circular-progress circle.bg {
+    stroke: #ddd;
+}
+
+.circular-progress circle.fg {
+    transform: rotate(-90deg);
+    transform-origin: var(--half-size) var(--half-size);
+    stroke-dasharray: var(--dash) calc(var(--circumference) - var(--dash));
+    transition: stroke-dasharray 0.3s linear 0s;
+    stroke: #1D3354;
+}
+
+@property --progress {
+    syntax: "<number>";
+    inherits: false;
+    initial-value: 0;
+}
+
+@keyframes progress-animation {
+    from {
+        --progress: 0;
+    }
+
+    to {
+        --progress: 25;
+    }
+}
