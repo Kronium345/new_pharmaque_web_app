@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import ScoreView from "./ScoreView/ScoreView";
-import QuizView from "./QuizView/QuizView";
-import { useNavigate, Link } from "react-router-dom";
-import classnames from "classnames"; // Import classnames library if not already imported
-import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai"; // Import icons if not already imported
+import React, { useEffect, useState } from "react"
+import ScoreView from "./ScoreView/ScoreView"
+import QuizView from "./QuizView/QuizView"
+import { useNavigate, Link } from "react-router-dom"
+import classnames from "classnames" // Import classnames library if not already imported
+import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai" // Import icons if not already imported
 
 const CardioQuestion = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const [questions, setQuestions] = useState([
     {
@@ -4012,52 +4012,52 @@ const CardioQuestion = () => {
       Explanation:
         "A CCB (calcium channel blocker) such as amlodipine is started first in patients who are 55 or above or of Afro-Caribbean origin.",
     },
-  ]);
+  ])
 
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [isQuizOver, setIsQuizOver] = useState(false);
-  const [score, setScore] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const [delayNextQuestion, setDelayNextQuestion] = useState(false);
-  const [showExplanation, setShowExplanation] = useState(true); // Assuming you have a state for showing/hiding explanations
+  const [currentQuestion, setCurrentQuestion] = useState(0)
+  const [isQuizOver, setIsQuizOver] = useState(false)
+  const [score, setScore] = useState(0)
+  const [selectedAnswer, setSelectedAnswer] = useState(null)
+  const [delayNextQuestion, setDelayNextQuestion] = useState(false)
+  const [showExplanation, setShowExplanation] = useState(true) // Assuming you have a state for showing/hiding explanations
 
   const shuffleQuestions = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[array[i], array[j]] = [array[j], array[i]]
     }
-  };
+  }
 
   const handleAnswerClick = (isCorrect) => {
     if (!delayNextQuestion) {
-      setSelectedAnswer(isCorrect);
-      setDelayNextQuestion(true);
+      setSelectedAnswer(isCorrect)
+      setDelayNextQuestion(true)
 
       // check score
-      if (isCorrect) setScore(score + 1);
+      if (isCorrect) setScore(score + 1)
 
       setTimeout(() => {
-        const next = currentQuestion + 1;
+        const next = currentQuestion + 1
         if (next < questions.length) {
-          setCurrentQuestion(next);
-          setSelectedAnswer(null); // Reset selected answer
-          setDelayNextQuestion(false); // Reset delay
-          shuffleQuestions(questions); // Shuffle questions for the next round
+          setCurrentQuestion(next)
+          setSelectedAnswer(null) // Reset selected answer
+          setDelayNextQuestion(false) // Reset delay
+          shuffleQuestions(questions) // Shuffle questions for the next round
         } else {
-          setIsQuizOver(true);
+          setIsQuizOver(true)
         }
-      }, 5000); // 5000 milliseconds = 5 seconds
+      }, 5000) // 5000 milliseconds = 5 seconds
     }
-  };
+  }
 
   const handleResetClick = () => {
-    setScore(0);
-    setCurrentQuestion(0);
-    setIsQuizOver(false);
-    setSelectedAnswer(null);
-    setDelayNextQuestion(false);
-    shuffleQuestions(questions);
-  };
+    setScore(0)
+    setCurrentQuestion(0)
+    setIsQuizOver(false)
+    setSelectedAnswer(null)
+    setDelayNextQuestion(false)
+    shuffleQuestions(questions)
+  }
 
   return (
     <main>
@@ -4202,7 +4202,7 @@ const CardioQuestion = () => {
         </div>
       </div>
     </main>
-  );
-};
+  )
+}
 
-export default CardioQuestion;
+export default CardioQuestion
