@@ -1,47 +1,47 @@
-import axios from "axios";
-import io from "socket.io-client";
+import axios from "axios"
+import io from "socket.io-client"
 
-import React, { useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import React, { useEffect } from "react"
+import { useNavigate, Link } from "react-router-dom"
 
-import "./chatRoom.scss";
+import "./chatRoom.scss"
 
 const ChatRoom = () => {
-  const navigate = useNavigate("");
-  const [joined, setJoined] = React.useState(false);
-  const [users, setUsers] = React.useState([]);
+  const navigate = useNavigate("")
+  const [joined, setJoined] = React.useState(false)
+  const [users, setUsers] = React.useState([])
 
-  const [socket, setSocket] = React.useState(null);
-  const [messages, setMessages] = React.useState([]);
-  const [message, setMessage] = React.useState("");
+  const [socket, setSocket] = React.useState(null)
+  const [messages, setMessages] = React.useState([])
+  const [message, setMessage] = React.useState("")
 
   const [data, setData] = React.useState({
     username: "",
     room: "",
-  });
+  })
 
-  axios.defaults.withCredentials = true;
+  axios.defaults.withCredentials = true
   useEffect(() => {
     axios.get("http://localhost:7171/auth/verify").then((res) => {
       if (res.data.status) {
       } else {
-        navigate("/myaccount");
+        navigate("/myaccount")
       }
-    });
-  }, []);
+    })
+  }, [])
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     // setJoined(true);
 
-    let socket = io("http://localhost:8080", { transports: ["websocket"] });
+    let socket = io("http://localhost:8080", { transports: ["websocket"] })
 
     socket.on("connect", () => {
-      console.log("Connected to the server via WebSocket.");
-      setSocket(socket);
-      setJoined(true);
-    });
+      console.log("Connected to the server via WebSocket.")
+      setSocket(socket)
+      setJoined(true)
+    })
 
     socket.emit(
       "join",
@@ -50,44 +50,44 @@ const ChatRoom = () => {
         room: data.room,
       },
       () => {}
-    );
+    )
 
     //   return () => {
     //     socket.emit("disconnect");
     //     socket.off();
     //   };
-  };
+  }
 
   const sendMessage = (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (message) {
       if (socket) {
-        socket.emit("sendMessage", message, () => setMessage(""));
-        setMessages([...messages, { user: data.username, text: message }]);
+        socket.emit("sendMessage", message, () => setMessage(""))
+        // setMessages([...messages, { user: data.username, text: message }]);
       }
     }
-  };
+  }
 
   useEffect(() => {
-    if (!socket) return;
+    if (!socket) return
 
     socket.on("message", (message) => {
-      console.log("message", message);
-      setMessages((messages) => [...messages, message]);
-    });
+      console.log("message", message)
+      setMessages((messages) => [...messages, message])
+    })
 
     socket.on("roomData", ({ users }) => {
-      setUsers(users);
-    });
+      setUsers(users)
+    })
 
     return () => {
       if (socket) {
         // socket?.emit("disconnect");
-        socket?.off();
+        socket?.off()
       }
-    };
-  }, [socket]);
+    }
+  }, [socket])
 
   return (
     <main>
@@ -260,7 +260,7 @@ const ChatRoom = () => {
         </div>
       </div>
     </main>
-  );
-};
+  )
+}
 
-export default ChatRoom;
+export default ChatRoom
