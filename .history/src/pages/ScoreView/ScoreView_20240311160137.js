@@ -2,7 +2,7 @@ import React from "react";
 import "./ScoreView.css";
 import classnames from "classnames";
 
-const ScoreView = ({ handleResetClick, score = 0, questions = 0 }) => {
+const ScoreView = ({ handleResetClick, score, questions }) => {
   return (
     <div class="row">
       <div class="col-sm-12">
@@ -16,22 +16,22 @@ const ScoreView = ({ handleResetClick, score = 0, questions = 0 }) => {
           <p>Congtratulations! You have completed the chapter.</p>
           <Option
             text="Socre Gained"
-            value={{ score } + "/" + { questions }}
+            value={"80/" + { questions }}
             image="/images/ScoreIcon.png"
           />
           <Option
             text="Questions Flagged"
-            value={"5"}
+            value={"40"}
             image="/images/FlaggedIcon.png"
           />
           <Option
             text="Corret Answers"
-            value={score}
+            value={"80"}
             image="/images/CorrectIcon.png"
           />
           <Option
             text="Wrong Answers"
-            value={questions - score}
+            value={"20"}
             image="/images/WrongIcon.png"
           />
 

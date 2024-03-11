@@ -31,7 +31,7 @@ const ScoreView = ({ handleResetClick, score = 0, questions = 0 }) => {
           />
           <Option
             text="Wrong Answers"
-            value={questions - score}
+            value={"20"}
             image="/images/WrongIcon.png"
           />
 

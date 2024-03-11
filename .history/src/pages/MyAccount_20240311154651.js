@@ -34,7 +34,6 @@ const MyAccount = () => {
       });
 
       alert("Avatar changed successfully");
-      getProfile();
       console.log("Avatar changed successfully");
     } catch (error) {
       console.error("Error changing avatar:", error);
@@ -134,7 +133,9 @@ const MyAccount = () => {
                       Change Avatar
                     </button>
                     <p className="fs-4 fw-bold mb-1">Username123</p>
-                    <p className="fs-5 mediumnavytext mb-3">{profile?.email}</p>
+                    <p className="fs-5 mediumnavytext mb-3">
+                      adityag774@gmail.com
+                    </p>
                     <div
                       style={{
                         display: "flex",

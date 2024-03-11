@@ -73,7 +73,7 @@ const QuizView = ({
               </div>
             </div>
 
-            <div class="row borderbottom justify-content-start align-items-start text-start">
+            <div class="row borderbottom justify-content-start align-items-start">
               <div class="col-sm-12">
                 <div class="card p-0 mb-4 mt-3">
                   <div className="text-left">{question}</div>

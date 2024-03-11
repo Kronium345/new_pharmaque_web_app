@@ -74,7 +74,7 @@ const ChatRoom = () => {
 
     socket.on("message", (message) => {
       console.log("message", message);
-      setMessages((messages) => [...messages, message]);
+      sendMessages((messages) => [...messages, message]);
     });
 
     socket.on("roomData", ({ users }) => {
