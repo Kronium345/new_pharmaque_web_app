@@ -1,6 +1,6 @@
-import React from "react";
-import "./ScoreView.css";
-import classnames from "classnames";
+import React from "react"
+import "./ScoreView.css"
+import classnames from "classnames"
 
 const ScoreView = ({ flagged = 0, score = 0, questions = [] }) => {
   return (
@@ -13,7 +13,7 @@ const ScoreView = ({ flagged = 0, score = 0, questions = [] }) => {
             alt="PharmaQue Logo"
           />
           <p class="text-header">Chapter Results</p>
-          <p>Congtratulations! You have completed the chapter.</p>
+          <p>Congratulations! You have completed the chapter.</p>
           <Option
             text="Socre Gained"
             value={score + "/" + questions.length}
@@ -25,7 +25,7 @@ const ScoreView = ({ flagged = 0, score = 0, questions = [] }) => {
             image="/images/FlaggedIcon.png"
           />
           <Option
-            text="Corret Answers"
+            text="Correct Answers"
             value={score}
             image="/images/CorrectIcon.png"
           />
@@ -42,10 +42,10 @@ const ScoreView = ({ flagged = 0, score = 0, questions = [] }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ScoreView;
+export default ScoreView
 
 const Option = ({ text, value, image = "" }) => {
   return (
@@ -58,5 +58,5 @@ const Option = ({ text, value, image = "" }) => {
       </div>
       <p class="card-value">{value}</p>
     </div>
-  );
-};
+  )
+}
