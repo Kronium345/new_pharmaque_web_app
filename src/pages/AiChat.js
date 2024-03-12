@@ -1,64 +1,64 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import axios from "axios"
+import React, { useEffect, useState } from "react"
+import { useNavigate, Link } from "react-router-dom"
 
-import "./chatRoom.scss";
+import "./chatRoom.scss"
 
 const AIChat = () => {
-  const navigate = useNavigate("");
+  const navigate = useNavigate("")
 
-  const API_KEY = "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";
+  const API_KEY = "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"
 
-  const divRef = React.useRef(null);
+  const divRef = React.useRef(null)
 
-  const [typing, setTyping] = useState(false);
-  const [inputMessage, setInputMessage] = useState("");
+  const [typing, setTyping] = useState(false)
+  const [inputMessage, setInputMessage] = useState("")
   const [messages, setMessages] = useState([
     {
       message: "Hello, I am Fitbot!",
       sender: "Fitbot",
     },
-  ]);
+  ])
 
   const handleSend = async () => {
-    if (inputMessage === "") return;
+    if (inputMessage === "") return
 
     const newMessage = {
       message: inputMessage,
       sender: "user",
       direction: "outgoing",
-    };
+    }
 
-    const newMessages = [...messages, newMessage];
+    const newMessages = [...messages, newMessage]
 
-    setMessages(newMessages);
+    setMessages(newMessages)
 
-    setInputMessage("");
-    setTyping(true);
+    setInputMessage("")
+    setTyping(true)
 
-    await processMessageToFitbot(newMessages);
-  };
+    await processMessageToFitbot(newMessages)
+  }
 
   const processMessageToFitbot = async (chatMessages) => {
     let apiMessages = chatMessages.map((messageObject) => {
-      let role = "";
+      let role = ""
       if (messageObject.sender === "Fitbot") {
-        role = "assistant";
+        role = "assistant"
       } else {
-        role = "user";
+        role = "user"
       }
-      return { role: role, content: messageObject.message };
-    });
+      return { role: role, content: messageObject.message }
+    })
 
     const systemMessage = {
       role: "system",
       content: "Explain all concepts as a personal trainer would.",
-    };
+    }
 
     const apiRequestBody = {
       model: "gpt-3.5-turbo",
       messages: [systemMessage, ...apiMessages],
-    };
+    }
 
     try {
       const response = await fetch(
@@ -72,9 +72,9 @@ const AIChat = () => {
           body: JSON.stringify(apiRequestBody),
           mode: "cors", // no-cors, *cors, same-origin
         }
-      );
+      )
 
-      const data = await response.json();
+      const data = await response.json()
 
       setMessages([
         ...chatMessages,
@@ -82,17 +82,17 @@ const AIChat = () => {
           message: data.choices[0].message.content,
           sender: "Fitbot",
         },
-      ]);
-      setTyping(false);
+      ])
+      setTyping(false)
     } catch (error) {
-      console.error("Error processing message:", error);
-      setTyping(false);
+      console.error("Error processing message:", error)
+      setTyping(false)
     }
-  };
+  }
 
   useEffect(() => {
-    divRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    divRef.current?.scrollIntoView({ behavior: "smooth" })
+  }, [messages])
 
   return (
     <main>
@@ -208,8 +208,8 @@ const AIChat = () => {
               <form
                 class="input"
                 onSubmit={(e) => {
-                  e.preventDefault();
-                  handleSend();
+                  e.preventDefault()
+                  handleSend()
                 }}
               >
                 <input
@@ -227,7 +227,7 @@ const AIChat = () => {
 
       <script src="script.js"></script>
     </main>
-  );
-};
+  )
+}
 
-export default AIChat;
+export default AIChat
