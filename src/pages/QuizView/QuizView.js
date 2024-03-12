@@ -8,6 +8,7 @@ const QuizView = ({
   questions,
   currentQuestion,
   handleAnswerClick,
+  handleFlagQuestion = () => {},
   // selectedAnswer,
 }) => {
   const { question, answers, Explanation } = questions[currentQuestion];
@@ -49,9 +50,9 @@ const QuizView = ({
               </div>
 
               <div class="col-sm-3">
-                <Link
-                  to=""
-                  class="inline removeunderline navybluetext floatright"
+                <button
+                  class="inline removeunderline navybluetext floatright btn"
+                  onClick={handleFlagQuestion}
                 >
                   <img
                     src="images/FlagIcon.png"
@@ -59,7 +60,7 @@ const QuizView = ({
                     alt="icon"
                   />{" "}
                   <span class="fs-5 mx-2">Flag Question</span>
-                </Link>
+                </button>
               </div>
 
               <div class="col-sm-1">

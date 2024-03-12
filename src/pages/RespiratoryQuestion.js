@@ -14,6 +14,7 @@ const RespiratoryQuestion = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [isQuizOver, setIsQuizOver] = useState(false);
   const [score, setScore] = useState(0);
+  const [flagged, setFlagged] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [delayNextQuestion, setDelayNextQuestion] = useState(false);
   const [showExplanation, setShowExplanation] = useState(true); // Assuming you have a state for showing/hiding explanations
@@ -55,6 +56,21 @@ const RespiratoryQuestion = () => {
     setSelectedAnswer(null);
     setDelayNextQuestion(false);
     shuffleQuestions(questions);
+  };
+
+  const handleFlagQuestion = () => {
+    // Your logic for flagging a question
+    setFlagged(flagged + 1);
+
+    const next = currentQuestion + 1;
+    if (next < questions.length) {
+      setCurrentQuestion(next);
+      setSelectedAnswer(null); // Reset selected answer
+      setDelayNextQuestion(false); // Reset delay
+      shuffleQuestions(questions); // Shuffle questions for the next round
+    } else {
+      setIsQuizOver(true);
+    }
   };
 
   return (
@@ -182,6 +198,7 @@ const RespiratoryQuestion = () => {
                   handleResetClick={handleResetClick}
                   score={score}
                   questions={questions}
+                  flagged={flagged}
                 />
               ) : (
                 <QuizView
@@ -189,6 +206,7 @@ const RespiratoryQuestion = () => {
                   currentQuestion={currentQuestion}
                   handleAnswerClick={handleAnswerClick}
                   selectedAnswer={selectedAnswer}
+                  handleFlagQuestion={handleFlagQuestion}
                 />
               )}
             </div>

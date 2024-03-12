@@ -2,7 +2,7 @@ import React from "react";
 import "./ScoreView.css";
 import classnames from "classnames";
 
-const ScoreView = ({ handleResetClick, score = 0, questions = [] }) => {
+const ScoreView = ({ flagged = 0, score = 0, questions = [] }) => {
   return (
     <div class="row">
       <div class="col-sm-12">
@@ -21,7 +21,7 @@ const ScoreView = ({ handleResetClick, score = 0, questions = [] }) => {
           />
           <Option
             text="Questions Flagged"
-            value={"5"}
+            value={flagged}
             image="/images/FlaggedIcon.png"
           />
           <Option
@@ -31,7 +31,7 @@ const ScoreView = ({ handleResetClick, score = 0, questions = [] }) => {
           />
           <Option
             text="Wrong Answers"
-            value={questions.length - score || 0}
+            value={questions.length - score - flagged}
             image="/images/WrongIcon.png"
           />
 
