@@ -1,41 +1,41 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import axios from "axios"
+import React, { useEffect, useState } from "react"
+import { useNavigate, Link } from "react-router-dom"
 const Dashboard = () => {
-  const navigate = useNavigate("");
+  const navigate = useNavigate("")
 
-  axios.defaults.withCredentials = true;
+  axios.defaults.withCredentials = true
   useEffect(() => {
     axios.get("http://localhost:7171/auth/verify").then((res) => {
       if (res.data.status) {
       } else {
-        navigate("/myaccount");
+        navigate("/myaccount")
       }
-      console.log(res);
-    });
-  }, []);
+      console.log(res)
+    })
+  }, [])
 
-  const [flash, setFlash] = useState({});
-  const [chapter, setChapter] = useState({});
+  const [flash, setFlash] = useState({})
+  const [chapter, setChapter] = useState({})
 
   useEffect(() => {
     // get data from the local storage
-    const flashData = localStorage.getItem("flash");
-    const chapterData = localStorage.getItem("chapter");
-    const chapterScore = localStorage.getItem("chapterScore");
+    const flashData = localStorage.getItem("flash")
+    const chapterData = localStorage.getItem("chapter")
+    const chapterScore = localStorage.getItem("chapterScore")
 
     if (flashData) {
-      const flash = JSON.parse(flashData);
-      console.log(flash);
-      setFlash(flash);
+      const flash = JSON.parse(flashData)
+      console.log(flash)
+      setFlash(flash)
     }
 
     if (chapterData) {
-      const chapter = JSON.parse(chapterData);
-      console.log(chapter);
-      setChapter({ ...chapter, chapterScore });
+      const chapter = JSON.parse(chapterData)
+      console.log(chapter)
+      setChapter({ ...chapter, chapterScore })
     }
-  }, []);
+  }, [])
 
   return (
     <main>
@@ -416,7 +416,9 @@ const Dashboard = () => {
                               class="smallicon"
                             />
                             {chapter.chapterScore ? (
-                              <span class="mx-3">{chapter.chapterScore}</span>
+                              <span class="mx-3">
+                                {chapter.chapterScore + " Questions Attempted"}
+                              </span>
                             ) : (
                               <span class="mx-3">Has not been attempted</span>
                             )}
@@ -503,7 +505,7 @@ const Dashboard = () => {
       ></script>
       <script src="script.js"></script>
     </main>
-  );
-};
+  )
+}
 
-export default Dashboard;
+export default Dashboard
