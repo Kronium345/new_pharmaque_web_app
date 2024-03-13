@@ -22,6 +22,7 @@ const Dashboard = () => {
     // get data from the local storage
     const flashData = localStorage.getItem("flash");
     const chapterData = localStorage.getItem("chapter");
+    const chapterScore = localStorage.getItem("chapterScore");
 
     if (flashData) {
       const flash = JSON.parse(flashData);
@@ -32,7 +33,7 @@ const Dashboard = () => {
     if (chapterData) {
       const chapter = JSON.parse(chapterData);
       console.log(chapter);
-      setChapter(chapter);
+      setChapter({ ...chapter, chapterScore });
     }
   }, []);
 
@@ -414,9 +415,11 @@ const Dashboard = () => {
                               src="images/ChaptersWhite.png"
                               class="smallicon"
                             />
-                            <span class="mx-3">
-                              {chapter.questionsAttempted}
-                            </span>
+                            {chapter.chapterScore ? (
+                              <span class="mx-3">{chapter.chapterScore}</span>
+                            ) : (
+                              <span class="mx-3">Has not been attempted</span>
+                            )}
                           </p>
                         </a>
                       </div>

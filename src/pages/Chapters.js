@@ -18,6 +18,7 @@ const Chapters = () => {
 
   const handleStart = (chapter) => {
     localStorage.setItem("chapter", JSON.stringify(chapter));
+    localStorage.setItem("chapterScore", "");
     navigate(chapter.link);
   };
 

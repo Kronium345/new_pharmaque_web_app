@@ -26,7 +26,7 @@ const RespiratoryQuestion = () => {
     }
   };
 
-  const handleAnswerClick = (isCorrect) => {
+  const handleAnswerClick = async (isCorrect) => {
     console.log(isCorrect);
     if (!delayNextQuestion) {
       setSelectedAnswer(isCorrect);
@@ -34,6 +34,12 @@ const RespiratoryQuestion = () => {
 
       // check score
       if (isCorrect?.isCorrect) setScore(score + 1);
+      // save into local storage chapter score
+
+      localStorage.setItem(
+        "chapterScore",
+        currentQuestion + 1 + "/" + questions.length
+      );
 
       // setTimeout(() => {
       const next = currentQuestion + 1;
