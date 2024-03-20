@@ -1,35 +1,42 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+
 const Flashcards = () => {
-  const navigate = useNavigate("");
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredFlashcards, setFilteredFlashcards] = useState(FLASHCARDS);
 
-  axios.defaults.withCredentials = true;
+  // axios.defaults.withCredentials = true;
+  // useEffect(() => {
+  //   axios.get("http://localhost:7171/auth/verify").then((res) => {
+  //     if (!res.data.status) {
+  //       navigate("/myaccount");
+  //     }
+  //     console.log(res);
+  //   });
+  // }, [navigate]);
+
   useEffect(() => {
-    axios.get("http://localhost:7171/auth/verify").then((res) => {
-      if (res.data.status) {
-      } else {
-        navigate("/myaccount");
-      }
-      console.log(res);
-    });
-  }, []);
+    const result = FLASHCARDS.map((group) =>
+      group.filter((flashcard) =>
+        flashcard.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    ).filter(group => group.length > 0); // This will remove any empty groups after filtering
+    setFilteredFlashcards(result);
+  }, [searchQuery]);
 
-  const handleStart = (chapter) => {
-    localStorage.setItem("flash", JSON.stringify(chapter));
-    navigate(chapter.link);
+  const handleStart = (flashcard) => {
+    localStorage.setItem("flash", JSON.stringify(flashcard));
+    navigate(flashcard.link);
   };
 
   return (
     <main>
-      <div class="container-fluid p-0">
-        <div class="row g-0">
-          <div class="col-sm-3 leftnavigation p-4">
-            <Link class="navbar-brand" to="/flashcards">
-              <img src="images/Logo.png" alt="PharmaQue Logo" class="logo1" />
-              <span class="fs-4 fw-bold mx-3">PharmaQue</span>
-            </Link>
-            <Link to="/dashboard" class="removeunderline inactivelink">
+      <div className="container-fluid p-0">
+        <div className="row g-0">
+          <div className="col-sm-3 leftnavigation p-4">
+          <Link to="/dashboard" class="removeunderline inactivelink">
               <p class="pt-5 pb-3 m-0">
                 <img
                   src="images/DashboardGrey.png"
@@ -39,20 +46,20 @@ const Flashcards = () => {
                 <span class="fs-5 navigationoption mx-4">Dashboard</span>
               </p>
             </Link>
-            <Link to="/chapters" class="removeunderline inactivelink">
+            <Link to="/chapters" class="removeunderline activelink">
               <p class="py-3 m-0">
                 <img
-                  src="images/ChaptersGrey.png"
+                  src="images/ChaptersColour.png"
                   class="navigationicon"
                   alt="navigation"
                 />
                 <span class="fs-5 navigationoption mx-4">Chapters</span>
               </p>
             </Link>
-            <Link to="/flashcards" class="removeunderline activelink">
+            <Link to="/flashcards" class="removeunderline inactivelink">
               <p class="py-3 m-0">
                 <img
-                  src="images/FlashcardsColour.png"
+                  src="images/FlashcardsGrey.png"
                   class="navigationicon"
                   alt="navigation"
                 />
@@ -112,54 +119,55 @@ const Flashcards = () => {
               </p>
             </Link>
           </div>
-          <div class="col-sm-9 p-4 maincontent">
-            <p class="fs-4 mt-4 fw-bold navybluetext">Flashcards</p>
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="card p-4">
-                  <form class="d-flex mb-3" role="search">
-                    <div class="input-group">
-                      <span class="input-group-text">
+          <div className="col-sm-9 p-4 maincontent">
+            <p className="fs-4 mt-4 fw-bold navybluetext">Flashcards</p>
+            <div className="row">
+              <div className="col-sm-12">
+                <div className="card p-4">
+                  <form className="d-flex mb-3" role="search">
+                    <div className="input-group">
+                      <span className="input-group-text">
                         <img
                           src="images/SearchIcon.png"
-                          class="smallericon mx-1"
+                          className="smallericon mx-1"
                           alt="search"
                         />
                       </span>
                       <input
-                        class="form-control px-2 py-2"
+                        className="form-control px-2 py-2"
                         type="search"
                         placeholder="Search Flashcard Name"
                         aria-label="Search"
+                        onChange={(e) => setSearchQuery(e.target.value)}
                       />
                     </div>
                   </form>
-                  {FLASHCARDS.map((row, index) => (
-                    <div class="row" key={index}>
-                      {row.map((chapter, index) => (
-                        <div class="col-sm-6 mb-3" key={index}>
-                          <div class="card p-4 mediumbluebg">
-                            <div class="row">
-                              <div class="col-sm-3">
+                  {filteredFlashcards.map((group, index) => (
+                    <div className="row" key={index}>
+                      {group.map((flashcard, idx) => (
+                        <div className="col-sm-6 mb-3" key={idx}>
+                          <div className="card p-4 mediumbluebg">
+                            <div className="row">
+                              <div className="col-sm-3">
                                 <img
-                                  src={chapter.image}
-                                  class="icon"
+                                  src={flashcard.image}
+                                  className="icon"
                                   alt="icon"
                                 />
                               </div>
-                              <div class="col-sm-9">
-                                <p class="fs-5 fw-bold whitetext mb-1">
-                                  {chapter.name}
+                              <div className="col-sm-9">
+                                <p className="fs-5 fw-bold whitetext mb-1">
+                                  {flashcard.name}
                                 </p>
-                                <p class="fs-6 whitetext mb-3">
-                                  {chapter.questionsAttempted}
+                                <p className="fs-6 whitetext mb-3">
+                                  {flashcard.questionsAttempted}
                                 </p>
 
                                 <button
-                                  onClick={() => handleStart(chapter)}
-                                  class="btn removeunderline boldtext navybluetext fw-bold"
+                                  onClick={() => handleStart(flashcard)}
+                                  className="btn removeunderline boldtext navybluetext fw-bold"
                                 >
-                                  <div class="px-3 py-2 whitebg pseudobutton">
+                                  <div className="px-3 py-2 whitebg pseudobutton">
                                     Start Chapter
                                   </div>
                                 </button>
@@ -176,19 +184,13 @@ const Flashcards = () => {
           </div>
         </div>
       </div>
-
-      <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"
-      ></script>
-      <script src="script.js"></script>
     </main>
   );
 };
 
 export default Flashcards;
 
+// Assume FLASHCARDS is defined elsewhere in your code, similar to the CHAPTERS array.
 const FLASHCARDS = [
   [
     {

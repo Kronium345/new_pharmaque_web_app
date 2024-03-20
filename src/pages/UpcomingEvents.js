@@ -1,23 +1,22 @@
-import axios from "axios";
-import React, { useEffect} from "react";
+// import axios from "axios";
+import React from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 const UpcomingEvents = () => {
     const navigate = useNavigate('');
 
-    axios.defaults.withCredentials = true;
-    useEffect(() => {
-        axios.get('http://localhost:7171/auth/verify')
-        .then(res => {
-            if(res.data.status) {
+    // axios.defaults.withCredentials = true;
+    // useEffect(() => {
+    //     axios.get('http://localhost:7171/auth/verify')
+    //     .then(res => {
+    //         if(res.data.status) {
 
-            } else {
-                navigate('/myaccount')
-            }
-            console.log(res)
-        })
-    }, []);
-
+    //         } else {
+    //             navigate('/myaccount')
+    //         }
+    //         console.log(res)
+    //     })
+    // }, []);
 
         return(
             <main>
@@ -114,7 +113,6 @@ const UpcomingEvents = () => {
                             </div>
 
 
-
                         </div>
                         </div>
                     </div>
@@ -125,9 +123,9 @@ const UpcomingEvents = () => {
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
                 <script src = "script.js"></script>
 
-
             </main>
         )
     }
 
 export default UpcomingEvents;
+
