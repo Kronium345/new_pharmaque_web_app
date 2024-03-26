@@ -1,29 +1,29 @@
-import axios from "axios";
+import axios from "axios"
 
-import React, { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import React, { useState } from "react"
+import { Link, useNavigate, useParams } from "react-router-dom"
 
-import "../quiz-styles/reset.css";
+import "../quiz-styles/reset.css"
 
 const ForgotPassword = () => {
-  const [password, setPassword] = useState("");
-  const { token } = useParams();
-  const navigate = useNavigate("");
+  const [password, setPassword] = useState("")
+  const { token } = useParams()
+  const navigate = useNavigate("")
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     axios
       .post("http://localhost:7171/auth/resetpassword/" + token, { password })
       .then((response) => {
         if (response.data.status) {
-          navigate("/");
+          navigate("/")
         }
-        console.log(response.data);
+        console.log(response.data)
       })
       .catch((err) => {
-        console.log(err);
-      });
-  };
+        console.log(err)
+      })
+  }
 
   return (
     <main>
@@ -80,7 +80,7 @@ const ForgotPassword = () => {
       ></script>
       <script src="script.js"></script>
     </main>
-  );
-};
+  )
+}
 
-export default ForgotPassword;
+export default ForgotPassword

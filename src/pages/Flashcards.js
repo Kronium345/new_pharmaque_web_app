@@ -1,24 +1,24 @@
-import axios from "axios";
-import React, { useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import axios from "axios"
+import React, { useEffect } from "react"
+import { useNavigate, Link } from "react-router-dom"
 const Flashcards = () => {
-  const navigate = useNavigate("");
+  const navigate = useNavigate("")
 
-  axios.defaults.withCredentials = true;
+  axios.defaults.withCredentials = true
   useEffect(() => {
     axios.get("http://localhost:7171/auth/verify").then((res) => {
       if (res.data.status) {
       } else {
-        navigate("/myaccount");
+        navigate("/myaccount")
       }
-      console.log(res);
-    });
-  }, []);
+      console.log(res)
+    })
+  }, [])
 
   const handleStart = (chapter) => {
-    localStorage.setItem("flash", JSON.stringify(chapter));
-    navigate(chapter.link);
-  };
+    localStorage.setItem("flash", JSON.stringify(chapter))
+    navigate(chapter.link)
+  }
 
   return (
     <main>
@@ -184,10 +184,10 @@ const Flashcards = () => {
       ></script>
       <script src="script.js"></script>
     </main>
-  );
-};
+  )
+}
 
-export default Flashcards;
+export default Flashcards
 
 const FLASHCARDS = [
   [
@@ -296,4 +296,4 @@ const FLASHCARDS = [
       link: "/flashcardquestion",
     },
   ],
-];
+]

@@ -1,26 +1,26 @@
-import axios from "axios";
-import React, { useEffect } from "react";
-import { useNavigate, Link, createBrowserRouter } from "react-router-dom";
+import axios from "axios"
+import React, { useEffect } from "react"
+import { useNavigate, Link, createBrowserRouter } from "react-router-dom"
 
 const Chapters = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  axios.defaults.withCredentials = true;
+  axios.defaults.withCredentials = true
   useEffect(() => {
     axios.get("http://localhost:7171/auth/verify").then((res) => {
       if (res.data.status) {
       } else {
-        navigate("/myaccount");
+        navigate("/myaccount")
       }
-      console.log(res);
-    });
-  }, []);
+      console.log(res)
+    })
+  }, [])
 
   const handleStart = (chapter) => {
-    localStorage.setItem("chapter", JSON.stringify(chapter));
-    localStorage.setItem("chapterScore", "");
-    navigate(chapter.link);
-  };
+    localStorage.setItem("chapter", JSON.stringify(chapter))
+    localStorage.setItem("chapterScore", "")
+    navigate(chapter.link)
+  }
 
   return (
     <main>
@@ -187,10 +187,10 @@ const Chapters = () => {
       ></script>
       <script src="script.js"></script>
     </main>
-  );
-};
+  )
+}
 
-export default Chapters;
+export default Chapters
 
 const CHAPTERS = [
   [
@@ -300,4 +300,4 @@ const CHAPTERS = [
       link: "",
     },
   ],
-];
+]

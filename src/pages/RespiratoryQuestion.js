@@ -1,83 +1,83 @@
-import React, { useEffect, useState } from "react";
-import ScoreView from "./ScoreView/ScoreView";
-import QuizView from "./QuizView/QuizView";
-import { useNavigate, Link } from "react-router-dom";
-import classnames from "classnames"; // Import classnames library if not already imported
-import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai"; // Import icons if not already imported
-import { respiratory } from "../data/respiratory";
+import React, { useEffect, useState } from "react"
+import ScoreView from "./ScoreView/ScoreView"
+import QuizView from "./QuizView/QuizView"
+import { useNavigate, Link } from "react-router-dom"
+import classnames from "classnames" // Import classnames library if not already imported
+import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai" // Import icons if not already imported
+import { respiratory } from "../data/respiratory"
 
 const RespiratoryQuestion = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const questions = respiratory;
+  const questions = respiratory
 
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [isQuizOver, setIsQuizOver] = useState(false);
-  const [score, setScore] = useState(0);
-  const [flagged, setFlagged] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const [delayNextQuestion, setDelayNextQuestion] = useState(false);
-  const [showExplanation, setShowExplanation] = useState(true); // Assuming you have a state for showing/hiding explanations
+  const [currentQuestion, setCurrentQuestion] = useState(0)
+  const [isQuizOver, setIsQuizOver] = useState(false)
+  const [score, setScore] = useState(0)
+  const [flagged, setFlagged] = useState(0)
+  const [selectedAnswer, setSelectedAnswer] = useState(null)
+  const [delayNextQuestion, setDelayNextQuestion] = useState(false)
+  const [showExplanation, setShowExplanation] = useState(true) // Assuming you have a state for showing/hiding explanations
 
   const shuffleQuestions = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[array[i], array[j]] = [array[j], array[i]]
     }
-  };
+  }
 
   const handleAnswerClick = async (isCorrect) => {
-    console.log(isCorrect);
+    console.log(isCorrect)
     if (!delayNextQuestion) {
-      setSelectedAnswer(isCorrect);
-      setDelayNextQuestion(true);
+      setSelectedAnswer(isCorrect)
+      setDelayNextQuestion(true)
 
       // check score
-      if (isCorrect?.isCorrect) setScore(score + 1);
+      if (isCorrect?.isCorrect) setScore(score + 1)
       // save into local storage chapter score
 
       localStorage.setItem(
         "chapterScore",
         currentQuestion + 1 + "/" + questions.length
-      );
+      )
 
       // setTimeout(() => {
-      const next = currentQuestion + 1;
+      const next = currentQuestion + 1
       if (next < questions.length) {
-        setCurrentQuestion(next);
-        setSelectedAnswer(null); // Reset selected answer
-        setDelayNextQuestion(false); // Reset delay
-        shuffleQuestions(questions); // Shuffle questions for the next round
+        setCurrentQuestion(next)
+        setSelectedAnswer(null) // Reset selected answer
+        setDelayNextQuestion(false) // Reset delay
+        shuffleQuestions(questions) // Shuffle questions for the next round
       } else {
-        setIsQuizOver(true);
+        setIsQuizOver(true)
       }
       // }, 5000); // 5000 milliseconds = 5 seconds
     }
-  };
+  }
 
   const handleResetClick = () => {
-    setScore(0);
-    setCurrentQuestion(0);
-    setIsQuizOver(false);
-    setSelectedAnswer(null);
-    setDelayNextQuestion(false);
-    shuffleQuestions(questions);
-  };
+    setScore(0)
+    setCurrentQuestion(0)
+    setIsQuizOver(false)
+    setSelectedAnswer(null)
+    setDelayNextQuestion(false)
+    shuffleQuestions(questions)
+  }
 
   const handleFlagQuestion = () => {
     // Your logic for flagging a question
-    setFlagged(flagged + 1);
+    setFlagged(flagged + 1)
 
-    const next = currentQuestion + 1;
+    const next = currentQuestion + 1
     if (next < questions.length) {
-      setCurrentQuestion(next);
-      setSelectedAnswer(null); // Reset selected answer
-      setDelayNextQuestion(false); // Reset delay
-      shuffleQuestions(questions); // Shuffle questions for the next round
+      setCurrentQuestion(next)
+      setSelectedAnswer(null) // Reset selected answer
+      setDelayNextQuestion(false) // Reset delay
+      shuffleQuestions(questions) // Shuffle questions for the next round
     } else {
-      setIsQuizOver(true);
+      setIsQuizOver(true)
     }
-  };
+  }
 
   return (
     <main>
@@ -313,7 +313,7 @@ const RespiratoryQuestion = () => {
         </div>
       </div>
     </main>
-  );
-};
+  )
+}
 
-export default RespiratoryQuestion;
+export default RespiratoryQuestion

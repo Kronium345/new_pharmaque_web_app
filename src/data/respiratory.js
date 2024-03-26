@@ -1424,4 +1424,4 @@ export const respiratory = [
   //   Explanation:
   //     "Budesonide, particularly with prolonged use or systemic absorption, can cause skin bruising or thinning.",
   // },
-];
+]

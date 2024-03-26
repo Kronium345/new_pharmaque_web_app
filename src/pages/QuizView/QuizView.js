@@ -1,8 +1,8 @@
-import React from "react";
-import "./QuizView.css";
-import classnames from "classnames";
-import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import React from "react"
+import "./QuizView.css"
+import classnames from "classnames"
+import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai"
+import { Link } from "react-router-dom"
 
 const QuizView = ({
   questions,
@@ -11,8 +11,8 @@ const QuizView = ({
   handleFlagQuestion = () => {},
   // selectedAnswer,
 }) => {
-  const { question, answers, Explanation } = questions[currentQuestion];
-  const [selectedAnswer, setSelectedAnswer] = React.useState({});
+  const { question, answers, Explanation } = questions[currentQuestion]
+  const [selectedAnswer, setSelectedAnswer] = React.useState({})
 
   return (
     <>
@@ -90,12 +90,12 @@ const QuizView = ({
                       }
                       key={text}
                       onClick={() => {
-                        setSelectedAnswer({ index, isCorrect });
+                        setSelectedAnswer({ index, isCorrect })
                       }}
                     >
                       <p class="fs-5 py-2 px-4 m-0">{text}</p>
                     </button>
-                  );
+                  )
                 })}
 
                 <div>
@@ -105,8 +105,8 @@ const QuizView = ({
                     onClick={
                       selectedAnswer?.index !== undefined
                         ? () => {
-                            handleAnswerClick(selectedAnswer);
-                            setSelectedAnswer({});
+                            handleAnswerClick(selectedAnswer)
+                            setSelectedAnswer({})
                           }
                         : () => {}
                     }
@@ -173,7 +173,7 @@ const QuizView = ({
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default QuizView;
+export default QuizView

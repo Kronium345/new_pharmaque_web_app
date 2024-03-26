@@ -1,77 +1,77 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import React, { useState, useEffect, useLayoutEffect } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import axios from "axios"
 
 const MyAccount = () => {
-  const navigate = useNavigate();
-  const [avatar, setAvatar] = useState(null);
-  const [profile, setProfile] = useState({});
+  const navigate = useNavigate()
+  const [avatar, setAvatar] = useState(null)
+  const [profile, setProfile] = useState({})
 
-  axios.defaults.withCredentials = true;
+  axios.defaults.withCredentials = true
 
   const handleLogout = () => {
     axios
       .get("http://localhost:7171/auth/logout")
       .then((res) => {
         if (res.data.status) {
-          navigate("/");
+          navigate("/")
         }
       })
       .catch((err) => {
-        console.log(err);
-      });
-  };
+        console.log(err)
+      })
+  }
 
   const handleAvatarChange = async () => {
     try {
-      const formData = new FormData();
-      formData.append("avatar", avatar);
+      const formData = new FormData()
+      formData.append("avatar", avatar)
 
       await axios.post("http://localhost:7171/auth/change-avatar", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      });
+      })
 
-      alert("Avatar changed successfully");
-      getProfile();
-      console.log("Avatar changed successfully");
+      alert("Avatar changed successfully")
+      getProfile()
+      console.log("Avatar changed successfully")
     } catch (error) {
-      console.error("Error changing avatar:", error);
+      console.error("Error changing avatar:", error)
     }
-  };
+  }
 
   const handleFileChange = (e) => {
-    setAvatar(e.target.files[0]);
-  };
+    setAvatar(e.target.files[0])
+  }
 
   const getProfile = async () => {
     try {
-      const res = await axios.get("http://localhost:7171/auth/get-profile");
+      const res = await axios.get("http://localhost:7171/auth/get-profile")
 
-      setProfile(res?.data?.user);
+      setProfile(res?.data?.user)
     } catch (error) {
-      console.error("Error getting profile:", error);
+      console.error("Error getting profile:", error)
     }
-  };
+  }
 
   useLayoutEffect(() => {
-    getProfile();
-  }, [navigate]);
+    getProfile()
+  }, [navigate])
 
   useEffect(() => {
     axios
       .get("http://localhost:7171/auth/verify")
       .then((res) => {
         if (!res.data.status) {
-          navigate("/");
+          navigate("/")
         }
       })
       .catch((err) => {
-        console.log(err);
-        navigate("/"); // Handle error by redirecting to home page
-      });
-  }, [navigate]);
+        console.log(err)
+        navigate("/") // Handle error by redirecting to home page
+      })
+  }, [navigate])
 
   return (
     <main>
@@ -166,7 +166,7 @@ const MyAccount = () => {
       ></script>
       <script src="script.js"></script>
     </main>
-  );
-};
+  )
+}
 
-export default MyAccount;
+export default MyAccount
