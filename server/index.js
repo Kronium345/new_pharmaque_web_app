@@ -23,12 +23,14 @@ app.use(
 app.use(morgan("tiny"));
 app.use(cookieParser());
 
-app.use(
-  "/uploads",
-  express.static(
-    path.join(dirname(new URL(import.meta.url).pathname), "uploads")
-  )
-);
+app.use("/uploads", express.static("uploads"));
+
+// app.use(
+//   "/uploads",
+//   express.static(
+//     path.join(dirname(new URL(import.meta.url).pathname), "uploads")
+//   )
+// );
 
 // Serve static files from the 'public' directory
 // app.use(express.static('public'));
