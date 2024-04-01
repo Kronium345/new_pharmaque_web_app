@@ -3,6 +3,8 @@ import { Route, Routes } from "react-router-dom";
 
 import Spinner from "@components/spinner";
 import useAuth from "@hooks/useAuth";
+import SignUpPage from "../pages/auth/signup";
+import ForgotPasswordPage from "../pages/auth/forgetPassword";
 
 const Layout = lazy(() => import("@routes/layout"));
 const LoginPage = lazy(() => import("../pages/auth/login"));
@@ -18,6 +20,8 @@ export default function AppRoutes() {
         {!isLoggedIn ? (
           <>
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
             <Route path="/*" element={<LoginPage />} />
           </>
         ) : (
