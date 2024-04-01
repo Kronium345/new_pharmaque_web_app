@@ -1,36 +1,42 @@
-import axios from "axios";
-import React, { useEffect } from "react";
-import { useNavigate, Link, createBrowserRouter } from "react-router-dom";
+import axios from "axios"
+import React, { useState, useEffect } from "react"
+import { useNavigate, Link } from "react-router-dom"
 
 const Chapters = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const [searchQuery, setSearchQuery] = useState("")
+  const [filteredChapters, setFilteredChapters] = useState(CHAPTERS)
 
-  axios.defaults.withCredentials = true;
+  // axios.defaults.withCredentials = true;
+  // useEffect(() => {
+  //   axios.get("http://localhost:7171/auth/verify").then((res) => {
+  //     if (!res.data.status) {
+  //       navigate("/myaccount");
+  //     }
+  //     console.log(res);
+  //   });
+  // }, [navigate]);
+
   useEffect(() => {
-    axios.get("http://localhost:7171/auth/verify").then((res) => {
-      if (res.data.status) {
-      } else {
-        navigate("/myaccount");
-      }
-      console.log(res);
-    });
-  }, []);
+    const result = CHAPTERS.map((group) =>
+      group.filter((chapter) =>
+        chapter.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    ).filter((group) => group.length > 0) // This will remove any empty groups after filtering
+    setFilteredChapters(result)
+  }, [searchQuery])
 
   const handleStart = (chapter) => {
-    localStorage.setItem("chapter", JSON.stringify(chapter));
-    localStorage.setItem("chapterScore", "");
-    navigate(chapter.link);
-  };
+    localStorage.setItem("chapter", JSON.stringify(chapter))
+    localStorage.setItem("chapterScore", "")
+    navigate(chapter.link)
+  }
 
   return (
     <main>
-      <div class="container-fluid p-0">
-        <div class="row g-0">
-          <div class="col-sm-3 leftnavigation p-4">
-            <Link class="navbar-brand" href="index.html">
-              <img src="images/Logo.png" alt="PharmaQue Logo" class="logo1" />
-              <span class="fs-4 fw-bold mx-3">PharmaQue</span>
-            </Link>
+      <div className="container-fluid p-0">
+        <div className="row g-0">
+          <div className="col-sm-3 leftnavigation p-4">
             <Link to="/dashboard" class="removeunderline inactivelink">
               <p class="pt-5 pb-3 m-0">
                 <img
@@ -114,55 +120,56 @@ const Chapters = () => {
               </p>
             </Link>
           </div>
-          <div class="col-sm-9 p-4 maincontent">
-            <p class="fs-4 mt-4 fw-bold navybluetext">Chapters</p>
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="card p-4">
-                  <form class="d-flex mb-3" role="search">
-                    <div class="input-group">
-                      <span class="input-group-text">
+          <div className="col-sm-9 p-4 maincontent">
+            <p className="fs-4 mt-4 fw-bold navybluetext">Chapters</p>
+            <div className="row">
+              <div className="col-sm-12">
+                <div className="card p-4">
+                  <form className="d-flex mb-3" role="search">
+                    <div className="input-group">
+                      <span className="input-group-text">
                         <img
                           src="images/SearchIcon.png"
-                          class="smallericon mx-1"
+                          className="smallericon mx-1"
                           alt="navigation"
                         />
                       </span>
                       <input
-                        class="form-control px-2 py-2"
+                        className="form-control px-2 py-2"
                         type="search"
                         placeholder="Search Chapter Name"
                         aria-label="Search"
+                        onChange={(e) => setSearchQuery(e.target.value)}
                       />
                     </div>
                   </form>
 
-                  {CHAPTERS.map((chapter, index) => (
-                    <div class="row" key={index}>
-                      {chapter.map((chapter, index) => (
-                        <div class="col-sm-6 mb-3" key={index}>
-                          <div class="card p-4 mediumbluebg">
-                            <div class="row">
-                              <div class="col-sm-3">
+                  {filteredChapters.map((group, index) => (
+                    <div className="row" key={index}>
+                      {group.map((chapter, idx) => (
+                        <div className="col-sm-6 mb-3" key={idx}>
+                          <div className="card p-4 mediumbluebg">
+                            <div className="row">
+                              <div className="col-sm-3">
                                 <img
                                   src={chapter.image}
-                                  class="icon"
+                                  className="icon"
                                   alt="icon"
                                 />
                               </div>
-                              <div class="col-sm-9">
-                                <p class="fs-5 fw-bold whitetext mb-1">
+                              <div className="col-sm-9">
+                                <p className="fs-5 fw-bold whitetext mb-1">
                                   {chapter.name}
                                 </p>
-                                <p class="fs-6 whitetext mb-3">
+                                <p className="fs-6 whitetext mb-3">
                                   {chapter.questionsAttempted}
                                 </p>
 
                                 <button
                                   onClick={() => handleStart(chapter)}
-                                  class="btn removeunderline boldtext navybluetext fw-bold"
+                                  className="btn removeunderline boldtext navybluetext fw-bold"
                                 >
-                                  <div class="px-3 py-2 whitebg pseudobutton">
+                                  <div className="px-3 py-2 whitebg pseudobutton">
                                     Start Chapter
                                   </div>
                                 </button>
@@ -179,19 +186,13 @@ const Chapters = () => {
           </div>
         </div>
       </div>
-
-      <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"
-      ></script>
-      <script src="script.js"></script>
     </main>
-  );
-};
+  )
+}
 
-export default Chapters;
+export default Chapters
 
+// Assume CHAPTERS is defined elsewhere in your code.
 const CHAPTERS = [
   [
     {
@@ -300,4 +301,4 @@ const CHAPTERS = [
       link: "",
     },
   ],
-];
+]

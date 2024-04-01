@@ -1,12 +1,12 @@
-import React from "react";
-import { useNavigate, Link } from "react-router-dom";
+import React from "react"
+import { useNavigate, Link } from "react-router-dom"
 
 const FlashcardQuestion = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const flipRef = React.useRef(null);
-  const flipFrontRef = React.useRef(null);
-  const flipBackRef = React.useRef(null);
+  const flipRef = React.useRef(null)
+  const flipFrontRef = React.useRef(null)
+  const flipBackRef = React.useRef(null)
 
   return (
     <main>
@@ -192,10 +192,10 @@ const FlashcardQuestion = () => {
                                 class="floatright flipbutton"
                                 onClick={() => {
                                   flipRef.current.style.transform =
-                                    "rotateY(180deg)";
+                                    "rotateY(180deg)"
 
                                   flipRef.current.style.height =
-                                    flipBackRef.current.offsetHeight + "px";
+                                    flipBackRef.current.offsetHeight + "px"
                                 }}
                               >
                                 <span class="fs-4 fw-bold navybluetext mx-3 mt-2">
@@ -221,10 +221,10 @@ const FlashcardQuestion = () => {
                                 onClick={() => {
                                   // transform: rotateY(180deg);
                                   flipRef.current.style.transform =
-                                    "rotateY(0deg)";
+                                    "rotateY(0deg)"
 
                                   flipRef.current.style.height =
-                                    flipFrontRef.current.offsetHeight + "px";
+                                    flipFrontRef.current.offsetHeight + "px"
                                 }}
                               >
                                 <span class="fs-4 fw-bold whitetext mx-3 mt-2">
@@ -344,7 +344,7 @@ const FlashcardQuestion = () => {
       ></script>
       <script src="script.js"></script>
     </main>
-  );
-};
+  )
+}
 
-export default FlashcardQuestion;
+export default FlashcardQuestion

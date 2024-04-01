@@ -1,3 +1,3 @@
-import { respiratory } from "./respiratory";
+import { respiratory } from "./respiratory"
 
-export { respiratory };
+export { respiratory }

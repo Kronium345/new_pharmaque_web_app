@@ -1,7 +1,7 @@
-import React from "react";
-import "./ScoreView.css";
-import classnames from "classnames";
-import { Link } from "react-router-dom";
+import React from "react"
+import "./ScoreView.css"
+import classnames from "classnames"
+import { Link } from "react-router-dom"
 
 const ScoreView = ({ flagged = 0, score = 0, questions = [] }) => {
   return (
@@ -43,10 +43,10 @@ const ScoreView = ({ flagged = 0, score = 0, questions = [] }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ScoreView;
+export default ScoreView
 
 const Option = ({ text, value, image = "" }) => {
   return (
@@ -59,5 +59,5 @@ const Option = ({ text, value, image = "" }) => {
       </div>
       <p class="card-value">{value}</p>
     </div>
-  );
-};
+  )
+}

@@ -1,10 +1,15 @@
-import React from 'react';
+import React from "react"
 // import './QuizView.css';
-import classnames from 'classnames';
-import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai';
+import classnames from "classnames"
+import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai"
 
-const QuestionView = ({ questions, currentQuestion, handleAnswerClick, selectedAnswer }) => {
-  const { question, answers, Explanation } = questions[currentQuestion];
+const QuestionView = ({
+  questions,
+  currentQuestion,
+  handleAnswerClick,
+  selectedAnswer,
+}) => {
+  const { question, answers, Explanation } = questions[currentQuestion]
 
   return (
     <>
@@ -23,8 +28,8 @@ const QuestionView = ({ questions, currentQuestion, handleAnswerClick, selectedA
             key={text}
             onClick={() => handleAnswerClick(isCorrect)}
             className={classnames({
-              'correct-answer': selectedAnswer !== null && isCorrect,
-              'incorrect-answer': selectedAnswer !== null && !isCorrect,
+              "correct-answer": selectedAnswer !== null && isCorrect,
+              "incorrect-answer": selectedAnswer !== null && !isCorrect,
             })}
             disabled={selectedAnswer !== null} // Disable button after clicking an answer
           >
@@ -51,7 +56,7 @@ const QuestionView = ({ questions, currentQuestion, handleAnswerClick, selectedA
         )}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default QuestionView;
+export default QuestionView
