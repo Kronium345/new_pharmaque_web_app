@@ -5,28 +5,20 @@ import React, { createContext, useCallback, useEffect, useState } from "react";
 
 export const AuthContext = createContext();
 
-let logoutTimer;
-
 const AuthProvider = ({ children }) => {
   const [token, setToken] = useState("");
   const [user, setUser] = useState({});
-  const [timer, setTimer] = useState();
   const [profile, setProfile] = useState({});
 
-  const login = useCallback(async (user, token, expireTime) => {
-    const expires =
-      expireTime || new Date(new Date().getTime() + 1000 * 60 * 60 * 6);
-
+  const login = useCallback(async (user, token) => {
     const newUser = {
+      ...user,
       email: user.email,
-      id: user.id || user.uid,
-      expires: expires.toISOString(),
-      role: user.role,
+      id: user.userId || user.uid,
     };
 
     setToken(token);
     setUser(newUser);
-    setTimer(expires);
 
     localStorage.setItem("user", JSON.stringify(newUser));
     localStorage.setItem("token", token);
@@ -39,7 +31,6 @@ const AuthProvider = ({ children }) => {
   const logout = useCallback(() => {
     setToken(null);
     setUser(null);
-    setTimer(null);
     setProfile(null);
     localStorage.removeItem("user");
     localStorage.removeItem("token");
@@ -48,31 +39,23 @@ const AuthProvider = ({ children }) => {
 
   const getProfile = useCallback(async () => {
     await axios
-      .get("auth/get-basic-profile")
+      .get("auth/get-profile")
       .then((res) => {
         setProfile(res.data.user);
       })
       .catch((err) => {
         console.log(err);
+        logout();
       });
   }, []);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     const token = localStorage.getItem("token");
-    if (user && token && new Date(user.expires) > new Date()) {
-      login(user, token, new Date(user.expires));
+    if (user && token) {
+      login(user, token);
     }
   }, []);
-
-  useEffect(() => {
-    if (token && timer) {
-      const rt = timer.getTime() - new Date();
-      logoutTimer = setTimeout(logout, rt);
-    } else {
-      clearTimeout(logoutTimer);
-    }
-  }, [token, logout, timer]);
 
   return (
     <AuthContext.Provider

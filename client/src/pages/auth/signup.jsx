@@ -11,7 +11,7 @@ const SignUpPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:7171/auth/signup", {
+      .post("auth/signup", {
         username,
         email,
         password,

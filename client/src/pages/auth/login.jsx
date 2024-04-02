@@ -14,14 +14,17 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:7171/auth/login", {
+      .post("auth/login", {
         email,
         password,
       })
       .then((response) => {
         if (response.data.status) {
+          console.log(response.data);
+          const { user, token } = response.data;
+
           navigate("/myaccount");
-          login({}, "token");
+          login(user, token);
         } else {
           setError(response.data.message);
         }
@@ -107,12 +110,6 @@ const Login = () => {
           </div>
         </div>
       </div>
-      <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossOrigin="anonymous"
-      ></script>
-      <script src="script.js"></script>
     </main>
   );
 };

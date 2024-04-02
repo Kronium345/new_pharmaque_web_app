@@ -13,7 +13,7 @@ const ForgotPassword = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:7171/auth/resetpassword/" + token, { password })
+      .post("auth/resetpassword/" + token, { password })
       .then((response) => {
         if (response.data.status) {
           navigate("/");

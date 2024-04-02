@@ -9,7 +9,7 @@ const LoadingProvider = ({ children }) => {
 
   return (
     <LoadingContext.Provider value={{ loading, setLoading }}>
-      {loading && <Spinner />}
+      {loading && <Spinner asOverlay />}
       {children}
     </LoadingContext.Provider>
   );

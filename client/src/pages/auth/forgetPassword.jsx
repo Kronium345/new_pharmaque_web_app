@@ -9,7 +9,7 @@ const ForgotPasswordPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:7171/auth/forgotpassword", {
+      .post("auth/forgotpassword", {
         email,
       })
       .then((response) => {

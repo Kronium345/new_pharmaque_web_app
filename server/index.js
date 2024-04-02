@@ -7,6 +7,8 @@ import cookieParser from "cookie-parser";
 import { UserRouter } from "./routes/user.js";
 import ENV from "./config.js"; // Add import for your config.js
 import path, { dirname } from "path";
+import { EventRouter } from "./routes/event.js";
+import { Router } from "./routes/index.js";
 
 dotenv.config();
 
@@ -36,6 +38,8 @@ app.use("/uploads", express.static("uploads"));
 // app.use(express.static('public'));
 
 app.use("/auth", UserRouter);
+app.use("/event", EventRouter);
+app.use("/", Router);
 
 // Utilizing MongoDB Atlas Connection
 mongoose
