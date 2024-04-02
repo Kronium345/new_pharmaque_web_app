@@ -3,15 +3,15 @@ import { Route, Routes } from "react-router-dom";
 
 import Spinner from "@components/spinner";
 import useAuth from "@hooks/useAuth";
-import SignUpPage from "../pages/auth/signup";
-import ForgotPasswordPage from "../pages/auth/forgetPassword";
-import UpcomingEventsPage from "../pages/events";
-import AIChat from "../pages/chat/aiChat";
-import ChatRoom from "../pages/chat/chatRoom";
-import QueryResponses from "../pages/queryResponse";
-import PastChapters from "../pages/chapters/past";
-import FlaggedQuestions from "../pages/question/flagged";
 
+const SignUpPage = lazy(() => import("../pages/auth/signup"));
+const ForgotPasswordPage = lazy(() => import("../pages/auth/forgetPassword"));
+const UpcomingEventsPage = lazy(() => import("../pages/events"));
+const AIChat = lazy(() => import("../pages/chat/aiChat"));
+const ChatRoom = lazy(() => import("../pages/chat/chatRoom"));
+const QueryResponses = lazy(() => import("../pages/queryResponse"));
+const PastChapters = lazy(() => import("../pages/chapters/past"));
+const FlaggedQuestions = lazy(() => import("../pages/question/flagged"));
 const Layout = lazy(() => import("@routes/layout"));
 const LoginPage = lazy(() => import("../pages/auth/login"));
 const HomePage = lazy(() => import("../pages/home"));
