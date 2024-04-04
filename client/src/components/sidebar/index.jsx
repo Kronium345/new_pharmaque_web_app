@@ -35,26 +35,6 @@ export default function SideBar() {
           </Link>
         );
       })}
-      {/* <Link to="/chat-room" class="removeunderline inactivelink">
-        <p class="py-3 m-0">
-          <img
-            src="https://cdn-icons-png.freepik.com/512/8735/8735217.png"
-            class="navigationicon"
-            alt="navigation"
-          />
-          <span class="fs-5 navigationoption mx-4">Chat Room</span>
-        </p>
-      </Link>
-      <Link to="/ai-chat" class="removeunderline inactivelink">
-        <p class="py-3 m-0">
-          <img
-            src="https://cdn-icons-png.freepik.com/512/8735/8735217.png"
-            class="navigationicon"
-            alt="navigation"
-          />
-          <span class="fs-5 navigationoption mx-4">AI Chat</span>
-        </p>
-      </Link> */}
     </>
   );
 }
@@ -109,13 +89,7 @@ const data = [
     inActiveIcon: "images/QueryResponsesGrey.png",
     name: "Query Responses",
   },
-  {
-    id: 8,
-    path: "/myaccount",
-    activeIcon: "images/AccountColour.png",
-    inActiveIcon: "images/AccountGrey.png",
-    name: "My Account",
-  },
+
   {
     id: 9,
     path: "/chat-room",
@@ -127,11 +101,18 @@ const data = [
     icon: true,
   },
   {
-    id: 9,
+    id: 10,
     path: "/ai-chat",
     activeIcon: <RiWechatLine fontSize={45} color={"#1d3354"} />,
     inActiveIcon: <RiWechatLine fontSize={45} color={"#bfc0c0"} />,
     name: "AI Chat",
     icon: true,
+  },
+  {
+    id: 8,
+    path: "/myaccount",
+    activeIcon: "images/AccountColour.png",
+    inActiveIcon: "images/AccountGrey.png",
+    name: "My Account",
   },
 ];
