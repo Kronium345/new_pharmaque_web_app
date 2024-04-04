@@ -23,7 +23,7 @@ const Login = () => {
           console.log(response.data);
           const { user, token } = response.data;
 
-          navigate("/myaccount");
+          navigate("/dashboard");
           login(user, token);
         } else {
           setError(response.data.message);

@@ -123,6 +123,9 @@ const UpcomingEventsPage = () => {
   };
 
   const deleteEvent = async (id) => {
+    if (confirm("Are you sure you want to delete this event?") === false)
+      return;
+
     setLoading(true);
     await axios
       .delete("event/delete-event/" + id)

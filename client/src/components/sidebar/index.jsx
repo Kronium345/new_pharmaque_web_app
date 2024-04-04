@@ -1,11 +1,13 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
+import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
+import { RiWechatLine } from "react-icons/ri";
+
 export default function SideBar() {
   const location = useLocation();
 
   const path = location.pathname;
-  console.log(path);
 
   return (
     <>
@@ -17,17 +19,23 @@ export default function SideBar() {
         return (
           <Link to={item.path} class="removeunderline activelink">
             <p class="py-3 m-0">
-              <img
-                src={path === item.path ? item.activeIcon : item.inActiveIcon}
-                class="navigationicon"
-                alt="navigation"
-              />
+              {!item.icon ? (
+                <img
+                  src={path === item.path ? item.activeIcon : item.inActiveIcon}
+                  class="navigationicon"
+                  alt="navigation"
+                />
+              ) : path === item.path ? (
+                item.activeIcon
+              ) : (
+                item.inActiveIcon
+              )}
               <span class="fs-5 navigationoption mx-4">{item.name}</span>
             </p>
           </Link>
         );
       })}
-      <Link to="/chat-room" class="removeunderline inactivelink">
+      {/* <Link to="/chat-room" class="removeunderline inactivelink">
         <p class="py-3 m-0">
           <img
             src="https://cdn-icons-png.freepik.com/512/8735/8735217.png"
@@ -46,7 +54,7 @@ export default function SideBar() {
           />
           <span class="fs-5 navigationoption mx-4">AI Chat</span>
         </p>
-      </Link>
+      </Link> */}
     </>
   );
 }
@@ -107,5 +115,23 @@ const data = [
     activeIcon: "images/AccountColour.png",
     inActiveIcon: "images/AccountGrey.png",
     name: "My Account",
+  },
+  {
+    id: 9,
+    path: "/chat-room",
+    activeIcon: <IoChatbubbleEllipsesOutline fontSize={45} color={"#1d3354"} />,
+    inActiveIcon: (
+      <IoChatbubbleEllipsesOutline fontSize={45} color={"#bfc0c0"} />
+    ),
+    name: "Chat",
+    icon: true,
+  },
+  {
+    id: 9,
+    path: "/ai-chat",
+    activeIcon: <RiWechatLine fontSize={45} color={"#1d3354"} />,
+    inActiveIcon: <RiWechatLine fontSize={45} color={"#bfc0c0"} />,
+    name: "AI Chat",
+    icon: true,
   },
 ];
