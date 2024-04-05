@@ -4,15 +4,19 @@ import React, { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import "../quiz-styles/reset.css";
+import useLoading from "../../hooks/useLoading";
 
 const ForgotPassword = () => {
+  const { setLoading } = useLoading();
   const [password, setPassword] = useState("");
   const { token } = useParams();
   const navigate = useNavigate("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios
+
+    setLoading(true);
+    await axios
       .post("auth/resetpassword/" + token, { password })
       .then((response) => {
         if (response.data.status) {
@@ -22,6 +26,9 @@ const ForgotPassword = () => {
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
