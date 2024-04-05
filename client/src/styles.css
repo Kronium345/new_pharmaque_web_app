@@ -41,7 +41,7 @@ body {
 }
 
 .mainbg {
-    background-image: url(images/Blob.png);
+    background-image: url(/images/Blob.png);
     background-repeat: no-repeat;
     background-position: right;
     background-size: contain;
@@ -299,7 +299,7 @@ body {
 
 .pseudobutton {
     border-radius: 6px;
-    max-width: 158px;
+    max-width: 180px;
 }
 
 .redtext {

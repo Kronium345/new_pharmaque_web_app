@@ -149,7 +149,7 @@ const UpcomingEventsPage = () => {
             setAdd(true);
           }}
         >
-          <img src="images/AddIcon.png" class="mediumicon" alt="icon" />
+          <img src="/images/AddIcon.png" class="mediumicon" alt="icon" />
         </button>
       </div>
 
@@ -329,5 +329,16 @@ export const remaningTime = (date) => {
   const eventDate = new Date(date);
   const diff = eventDate - now;
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+  const today = new Date();
+  const req = new Date(date);
+
+  const tyDay = today.getDay();
+  const reqDay = req.getDay();
+
+  if (days <= 0) {
+    return reqDay - tyDay;
+  }
+
   return days;
 };

@@ -12,7 +12,7 @@ const PastChapters = () => {
               <div class="input-group">
                 <span class="input-group-text">
                   <img
-                    src="images/SearchIcon.png"
+                    src="/images/SearchIcon.png"
                     class="smallericon mx-1"
                     alt="search"
                   />
@@ -31,7 +31,7 @@ const PastChapters = () => {
                   <div class="row">
                     <div class="col-sm-3">
                       <img
-                        src="images/GastroIcon.png"
+                        src="/images/GastroIcon.png"
                         class="icon"
                         alt="gastro"
                       />
@@ -46,7 +46,7 @@ const PastChapters = () => {
 
                       <p>
                         <img
-                          src="images/ScoreIcon.png"
+                          src="/images/ScoreIcon.png"
                           class="moderateicon"
                           alt="score"
                         />

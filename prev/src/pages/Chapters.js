@@ -1,11 +1,11 @@
-import axios from "axios"
-import React, { useState, useEffect } from "react"
-import { useNavigate, Link } from "react-router-dom"
+import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 
 const Chapters = () => {
-  const navigate = useNavigate()
-  const [searchQuery, setSearchQuery] = useState("")
-  const [filteredChapters, setFilteredChapters] = useState(CHAPTERS)
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredChapters, setFilteredChapters] = useState(CHAPTERS);
 
   // axios.defaults.withCredentials = true;
   // useEffect(() => {
@@ -22,15 +22,15 @@ const Chapters = () => {
       group.filter((chapter) =>
         chapter.name.toLowerCase().includes(searchQuery.toLowerCase())
       )
-    ).filter((group) => group.length > 0) // This will remove any empty groups after filtering
-    setFilteredChapters(result)
-  }, [searchQuery])
+    ).filter((group) => group.length > 0); // This will remove any empty groups after filtering
+    setFilteredChapters(result);
+  }, [searchQuery]);
 
   const handleStart = (chapter) => {
-    localStorage.setItem("chapter", JSON.stringify(chapter))
-    localStorage.setItem("chapterScore", "")
-    navigate(chapter.link)
-  }
+    localStorage.setItem("chapter", JSON.stringify(chapter));
+    localStorage.setItem("chapterScore", "");
+    navigate(chapter.link);
+  };
 
   return (
     <main>
@@ -187,10 +187,10 @@ const Chapters = () => {
         </div>
       </div>
     </main>
-  )
-}
+  );
+};
 
-export default Chapters
+export default Chapters;
 
 // Assume CHAPTERS is defined elsewhere in your code.
 const CHAPTERS = [
@@ -301,4 +301,4 @@ const CHAPTERS = [
       link: "",
     },
   ],
-]
+];

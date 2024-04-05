@@ -22,6 +22,9 @@ const HomePagee = () => {
       .get("/get-homepage")
       .then((res) => {
         setEvent(res.data.event);
+        setChapter(res.data.cQuiz);
+        console.log(res.data);
+        setFlash(res.data.fQuiz);
       })
       .catch((err) => {
         console.log(err);
@@ -63,7 +66,7 @@ const HomePagee = () => {
               <div class="row borderbottom">
                 <div class="col-sm-1">
                   <img
-                    src="images/IncompleteTaskIcon.png"
+                    src="/images/IncompleteTaskIcon.png"
                     class="smallicon"
                     alt="icon"
                   />
@@ -72,7 +75,7 @@ const HomePagee = () => {
                   <p class="fs-5 navybluetext mb-2">Gastrointestinal System</p>
                   <a href="#" class="removeunderline navybluetext">
                     <p>
-                      <img src="images/ChaptersColour.png" class="smallicon" />
+                      <img src="/images/ChaptersColour.png" class="smallicon" />
                       <span class="fs-6 fw-bold mx-2">
                         4/40 Questions Attempted
                       </span>
@@ -83,7 +86,7 @@ const HomePagee = () => {
               <div class="row borderbottom mt-2">
                 <div class="col-sm-1">
                   <img
-                    src="images/CompleteTaskIcon.png"
+                    src="/images/CompleteTaskIcon.png"
                     class="smallicon"
                     alt="icon"
                   />
@@ -94,7 +97,7 @@ const HomePagee = () => {
                   </p>
                   <p>
                     <img
-                      src="images/FlashcardsColour.png"
+                      src="/images/FlashcardsColour.png"
                       class="smallicon halveopacity"
                       alt="flashcard"
                     />
@@ -106,14 +109,14 @@ const HomePagee = () => {
               </div>
               <div class="row borderbottom mt-2">
                 <div class="col-sm-1">
-                  <img src="images/IncompleteTaskIcon.png" class="smallicon" />
+                  <img src="/images/IncompleteTaskIcon.png" class="smallicon" />
                 </div>
                 <div class="col-sm-11">
                   <p class="fs-5 navybluetext mb-2">Central Nervous System</p>
                   <a href="#" class="removeunderline navybluetext">
                     <p>
                       <img
-                        src="images/FlashcardsColour.png"
+                        src="/images/FlashcardsColour.png"
                         class="smallicon"
                         alt="icon"
                       />
@@ -126,7 +129,7 @@ const HomePagee = () => {
               </div>
               <div class="row borderbottom mt-2">
                 <div class="col-sm-1">
-                  <img src="images/CompleteTaskIcon.png" class="smallicon" />
+                  <img src="/images/CompleteTaskIcon.png" class="smallicon" />
                 </div>
                 <div class="col-sm-11">
                   <p class="fs-5 navybluetext mb-2 halveopacity">
@@ -134,7 +137,7 @@ const HomePagee = () => {
                   </p>
                   <p>
                     <img
-                      src="images/ChaptersColour.png"
+                      src="/images/ChaptersColour.png"
                       class="smallicon halveopacity"
                     />
                     <span class="fs-6 fw-bold mx-2 halveopacity">
@@ -145,14 +148,14 @@ const HomePagee = () => {
               </div>
               <div class="row borderbottom mt-2">
                 <div class="col-sm-1">
-                  <img src="images/IncompleteTaskIcon.png" class="smallicon" />
+                  <img src="/images/IncompleteTaskIcon.png" class="smallicon" />
                 </div>
                 <div class="col-sm-11">
                   <p class="fs-5 navybluetext mb-2">Infections</p>
                   <a href="#" class="navybluetext removeunderline">
                     <p>
                       <img
-                        src="images/FlashcardsColour.png"
+                        src="/images/FlashcardsColour.png"
                         class="smallicon"
                       />
                       <span class="fs-6 fw-bold mx-2">
@@ -185,7 +188,7 @@ const HomePagee = () => {
                   <a href="#" class="removeunderline navybluetext">
                     <p>
                       <img
-                        src="images/FlaggedQuestionsColour.png"
+                        src="/images/FlaggedQuestionsColour.png"
                         class="smallicon"
                       />
                       <span class="fs-6 mx-2">
@@ -202,7 +205,7 @@ const HomePagee = () => {
                   <a href="#" class="removeunderline navybluetext">
                     <p>
                       <img
-                        src="images/FlaggedQuestionsColour.png"
+                        src="/images/FlaggedQuestionsColour.png"
                         class="smallicon"
                       />
                       <span class="fs-6 mx-2">
@@ -222,7 +225,7 @@ const HomePagee = () => {
             <div class="card p-4">
               <div class="row">
                 <div class="col-sm-3">
-                  <img src="images/InsightIcon.png" class="icon" />
+                  <img src="/images/InsightIcon.png" class="icon" />
                 </div>
                 <div class="col-sm-9">
                   <p class="h5 navybluetext fw-bold">User Insights</p>
@@ -285,7 +288,7 @@ const HomePagee = () => {
                   <br />
                   <a href="#" class="removeunderline">
                     <p class="fs-6 navybluetext fw-bold mb-1 whitetext">
-                      <img src="images/ChaptersWhite.png" class="smallicon" />
+                      <img src="/images/ChaptersWhite.png" class="smallicon" />
                       {chapter.chapterScore ? (
                         <span class="mx-3">
                           {chapter.chapterScore + " Questions Attempted"}
@@ -305,17 +308,22 @@ const HomePagee = () => {
             </div>
           )}
 
-          {flash && flash.name && (
+          {flash && flash._id && (
             <div class="card p-4 navybluebg mb-3">
               <div class="row">
                 <div class="col-sm-9">
                   <p class="h5 navybluetext fw-bold whitetext">Flashcards</p>
-                  <p class="greytext fs-5 mb-1 whitetext">{flash.name}</p>
+                  <p class="greytext fs-5 mb-1 whitetext">{flash.flash.name}</p>
                   <br />
                   <a href="#" class="removeunderline">
                     <p class="fs-6 navybluetext fw-bold mb-1 whitetext">
-                      <img src="images/FlashcardsWhite.png" class="smallicon" />
-                      <span class="mx-3">{flash.questionsAttempted}</span>
+                      <img
+                        src="/images/FlashcardsWhite.png"
+                        class="smallicon"
+                      />
+                      <span class="mx-3">
+                        {flash.attemptedQuestions} Questions Attempted
+                      </span>
                     </p>
                   </a>
                 </div>
@@ -332,7 +340,9 @@ const HomePagee = () => {
             <div class="row mb-3">
               <div class="col-sm-9">
                 <p class="h5 navybluetext fw-bold whitetext">Past Chapters</p>
-                <p class="greytext fs-5 mb-1 whitetext">Respiratory</p>
+                <p class="greytext fs-5 mb-1 whitetext">
+                  {chapter?.chapter?.name}
+                </p>
               </div>
               <div class="col-sm-3 center">
                 <a href="#" class="removeunderline">
@@ -342,11 +352,17 @@ const HomePagee = () => {
             </div>
             <div class="col-sm-12">
               <p class="fs-6 navybluetext fw-bold mb-1 whitetext">
-                <img src="images/Correct.png" class="smallicon" />
-                <span class="mx-3">30/40 Correct</span>
+                <img src="/images/Correct.png" class="smallicon" />
+                <span class="mx-3">
+                  {chapter?.correctAnswers}/{" "}
+                  {chapter?.chapter?.questions?.length} Correct
+                </span>
 
-                <img src="images/Wrong.png" class="smallicon" />
-                <span class="mx-3">10/40 Correct</span>
+                <img src="/images/Wrong.png" class="smallicon" />
+                <span class="mx-3">
+                  {chapter?.wrongAnswers}/ {chapter?.chapter?.questions?.length}{" "}
+                  Wrong
+                </span>
               </p>
             </div>
           </div>

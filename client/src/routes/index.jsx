@@ -3,6 +3,10 @@ import { Route, Routes } from "react-router-dom";
 
 import Spinner from "@components/spinner";
 import useAuth from "@hooks/useAuth";
+import Chapters from "../pages/chapters";
+import ChapterDetail from "../pages/chapters/detail";
+import FlashCards from "../pages/flashCard";
+import FlashCardDetail from "../pages/flashCard/detail";
 
 const SignUpPage = lazy(() => import("../pages/auth/signup"));
 const ForgotPasswordPage = lazy(() => import("../pages/auth/forgetPassword"));
@@ -33,6 +37,10 @@ export default function AppRoutes() {
         ) : (
           <Route path="/" element={<Layout />}>
             <Route path="/dashboard" element={<HomePage />} />
+            <Route path="/chapters" element={<Chapters />} />
+            <Route path="/chapter/:id" element={<ChapterDetail />} />
+            <Route path="/flashcards" element={<FlashCards />} />
+            <Route path="/flashcard/:id" element={<FlashCardDetail />} />
             <Route path="/myaccount" element={<AccountPage />} />
             <Route path="/upcomingevents" element={<UpcomingEventsPage />} />
             <Route path="/chat-room" element={<ChatRoom />} />

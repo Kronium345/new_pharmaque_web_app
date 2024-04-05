@@ -9,6 +9,10 @@ import ENV from "./config.js"; // Add import for your config.js
 import path, { dirname } from "path";
 import { EventRouter } from "./routes/event.js";
 import { Router } from "./routes/index.js";
+import { ChapterRouter } from "./routes/chapter.js";
+import { CQuizRouter } from "./routes/chaptersQuiz.js";
+import { FlashRouter } from "./routes/flashcard.js";
+import { FQuizRouter } from "./routes/flashQuiz.js";
 
 dotenv.config();
 
@@ -39,6 +43,10 @@ app.use("/uploads", express.static("uploads"));
 
 app.use("/auth", UserRouter);
 app.use("/event", EventRouter);
+app.use("/chapter", ChapterRouter);
+app.use("/cquiz", CQuizRouter);
+app.use("/flash", FlashRouter);
+app.use("/fquiz", FQuizRouter);
 app.use("/", Router);
 
 // Utilizing MongoDB Atlas Connection

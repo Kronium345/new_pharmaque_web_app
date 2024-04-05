@@ -43,7 +43,7 @@ const QueryResponses = () => {
               <div class="col-sm-1">
                 <button class="addeventbutton">
                   <img
-                    src="images/Previous.png"
+                    src="/images/Previous.png"
                     class="tinyicon halfopacity"
                     alt="button"
                   />
@@ -52,7 +52,7 @@ const QueryResponses = () => {
               <div class="col-sm-1">
                 <button class="addeventbutton">
                   <img
-                    src="images/Next.png"
+                    src="/images/Next.png"
                     class="tinyicon halfopacity"
                     alt="button"
                   />

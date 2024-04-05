@@ -1,16 +1,20 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useLoading } from "../../hooks";
 
 const SignUpPage = () => {
+  const { setLoading } = useLoading();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios
+
+    setLoading(true);
+    await axios
       .post("auth/signup", {
         username,
         email,
@@ -23,6 +27,9 @@ const SignUpPage = () => {
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -31,7 +38,7 @@ const SignUpPage = () => {
       <div className="mainbg p-4">
         <div className="container-fluid p-4">
           <Link to="/signup" className="navbar-brand">
-            <img src="images/Logo.png" alt="PharmaQue Logo" className="logo" />
+            <img src="/images/Logo.png" alt="PharmaQue Logo" className="logo" />
             <span className="fs-3 fw-bold mx-3">PharmaQue</span>
           </Link>
         </div>
@@ -39,7 +46,7 @@ const SignUpPage = () => {
           <div className="row p-5">
             <div className="col-sm-6 p-5 leftside">
               <img
-                src="images/ExampleImage1.png"
+                src="/images/ExampleImage1.png"
                 className="img-fluid exampleimage"
                 alt="Example"
               />

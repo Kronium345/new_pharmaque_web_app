@@ -10,7 +10,7 @@ const FlaggedQuestions = () => {
               <div class="col-sm-4">
                 <p>
                   <img
-                    src="images/FlagIcon.png"
+                    src="/images/FlagIcon.png"
                     class="mediumicon"
                     alt="icon"
                   />
@@ -33,7 +33,7 @@ const FlaggedQuestions = () => {
                     Show Question
                   </span>
                   <img
-                    src="images/Dropdown.png"
+                    src="/images/Dropdown.png"
                     class="mediumicon showquestionicon"
                   />
                 </button>

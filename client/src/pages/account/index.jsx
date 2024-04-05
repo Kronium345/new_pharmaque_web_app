@@ -1,24 +1,17 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../hooks";
+import { getImageUrl } from "../../utils";
 
 const MyAccount = () => {
   const navigate = useNavigate();
   const [avatar, setAvatar] = useState(null);
-  const { profile, getProfile } = useAuth();
+  const { profile, getProfile, logout } = useAuth();
 
   const handleLogout = () => {
-    axios
-      .get("http://localhost:7171/auth/logout")
-      .then((res) => {
-        if (res.data.status) {
-          navigate("/");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    logout();
+    navigate("/login");
   };
 
   const handleAvatarChange = async () => {
@@ -54,8 +47,8 @@ const MyAccount = () => {
               <img
                 src={
                   profile?.avatar
-                    ? `http://localhost:7171/${profile.avatar}`
-                    : "images/10.png"
+                    ? getImageUrl(profile.avatar)
+                    : "/images/10.png"
                 }
                 className="logo mb-2"
                 alt="10"

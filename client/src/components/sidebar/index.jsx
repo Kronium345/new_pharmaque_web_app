@@ -12,7 +12,7 @@ export default function SideBar() {
   return (
     <>
       <Link class="navbar-brand" to="/dashboard">
-        <img src="images/Logo.png" alt="PharmaQue Logo" class="logo1" />
+        <img src="/images/Logo.png" alt="PharmaQue Logo" class="logo1" />
         <span class="fs-4 fw-bold mx-3">PharmaQue</span>
       </Link>
       {data.map((item) => {
@@ -43,50 +43,50 @@ const data = [
   {
     id: 1,
     path: "/dashboard",
-    activeIcon: "images/DashboardColor.png",
-    inActiveIcon: "images/DashboardGrey.png",
+    activeIcon: "/images/DashboardColor.png",
+    inActiveIcon: "/images/DashboardGrey.png",
     name: "Dashboard",
   },
   {
     id: 2,
     path: "/chapters",
-    activeIcon: "images/ChaptersColour.png",
-    inActiveIcon: "images/ChaptersGrey.png",
+    activeIcon: "/images/ChaptersColour.png",
+    inActiveIcon: "/images/ChaptersGrey.png",
     name: "Chapters",
   },
   {
     id: 3,
     path: "/flashcards",
-    activeIcon: "images/FlashcardsColour.png",
-    inActiveIcon: "images/FlashcardsGrey.png",
+    activeIcon: "/images/FlashcardsColour.png",
+    inActiveIcon: "/images/FlashcardsGrey.png",
     name: "Flashcards",
   },
   {
     id: 4,
     path: "/flaggedquestions",
-    activeIcon: "images/FlaggedQuestionsColour.png",
-    inActiveIcon: "images/FlaggedQuestionsGrey.png",
+    activeIcon: "/images/FlaggedQuestionsColour.png",
+    inActiveIcon: "/images/FlaggedQuestionsGrey.png",
     name: "Flagged Questions",
   },
   {
     id: 5,
     path: "/pastchapters",
-    activeIcon: "images/PastChaptersColour.png",
-    inActiveIcon: "images/PastChaptersGrey.png",
+    activeIcon: "/images/PastChaptersColour.png",
+    inActiveIcon: "/images/PastChaptersGrey.png",
     name: "Past Chapters",
   },
   {
     id: 6,
     path: "/upcomingevents",
-    activeIcon: "images/UpcomingEventsColour.png",
-    inActiveIcon: "images/UpcomingEventsGrey.png",
+    activeIcon: "/images/UpcomingEventsColour.png",
+    inActiveIcon: "/images/UpcomingEventsGrey.png",
     name: "Upcoming Events",
   },
   {
     id: 7,
     path: "/queryresponses",
-    activeIcon: "images/QueryResponsesColour.png",
-    inActiveIcon: "images/QueryResponsesGrey.png",
+    activeIcon: "/images/QueryResponsesColour.png",
+    inActiveIcon: "/images/QueryResponsesGrey.png",
     name: "Query Responses",
   },
 
@@ -111,8 +111,8 @@ const data = [
   {
     id: 8,
     path: "/myaccount",
-    activeIcon: "images/AccountColour.png",
-    inActiveIcon: "images/AccountGrey.png",
+    activeIcon: "/images/AccountColour.png",
+    inActiveIcon: "/images/AccountGrey.png",
     name: "My Account",
   },
 ];

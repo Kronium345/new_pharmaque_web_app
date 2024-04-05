@@ -1,19 +1,21 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useAuth } from "../../hooks";
+import { useAuth, useLoading } from "../../hooks";
 
 const Login = () => {
+  const { setLoading } = useLoading();
   const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate("");
 
-  // axios.defaults.withCredentials = true;
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios
+
+    setLoading(true);
+    await axios
       .post("auth/login", {
         email,
         password,
@@ -32,6 +34,9 @@ const Login = () => {
       .catch((err) => {
         console.log(err);
         setError("An error occurred. Please try again later.");
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -40,7 +45,7 @@ const Login = () => {
       <div className="mainbg p-4">
         <div className="container-fluid p-4">
           <Link className="navbar-brand" to="/">
-            <img src="images/Logo.png" alt="PharmaQue Logo" className="logo" />
+            <img src="/images/Logo.png" alt="PharmaQue Logo" className="logo" />
             <span className="fs-3 fw-bold mx-3">PharmaQue</span>
           </Link>
         </div>
@@ -48,7 +53,7 @@ const Login = () => {
           <div className="row p-5">
             <div className="col-sm-6 p-5 leftside">
               <img
-                src="images/ExampleImage1.png"
+                src="/images/ExampleImage1.png"
                 className="img-fluid exampleimage"
                 alt="Example"
               />
