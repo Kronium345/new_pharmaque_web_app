@@ -1,5 +1,5 @@
 export const QUESTIONS_DATA = {
-  name: "Cardiovascular System 2",
+  name: "Test",
   image: "uploads/images/CardioIcon.png",
   questions: [
     {

@@ -23,7 +23,7 @@ router.get("/get-homepage", checkAuth, async (req, res) => {
     })
       .populate("chapter")
       .sort({
-        updatedAt: 1,
+        updatedAt: -1,
       });
 
     const fQuiz = await FQuiz.findOne({
@@ -31,7 +31,7 @@ router.get("/get-homepage", checkAuth, async (req, res) => {
     })
       .populate("flash")
       .sort({
-        updatedAt: 1,
+        updatedAt: -1,
       });
 
     return res.json({ status: true, event, cQuiz: cQuiz, fQuiz: fQuiz });
