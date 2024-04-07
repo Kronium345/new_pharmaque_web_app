@@ -68,4 +68,4 @@ export const QUESTIONS_DATA = {
         "Etomidate, an intravenous agent, is used for induction of anesthesia and sedation due to its minimal cardiovascular and respiratory depression.",
     },
   ],
-};
+}
