@@ -36,6 +36,7 @@ export default function AppRoutes() {
           </>
         ) : (
           <Route path="/" element={<Layout />}>
+            <Route path="/" element={<HomePage />} />
             <Route path="/dashboard" element={<HomePage />} />
             <Route path="/chapters" element={<Chapters />} />
             <Route path="/chapter/:id" element={<ChapterDetail />} />

@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import React from "react";
 
 import "./ScoreView.css";
 
 const ScoreView = ({ score = {}, questions = [] }) => {
+  const navigate = useNavigate();
   return (
     <div class="row">
       <div class="col-sm-12">
@@ -37,10 +38,14 @@ const ScoreView = ({ score = {}, questions = [] }) => {
             image="/images/WrongIcon.png"
           />
 
-          <Link to="/chapters" class="scoreview-btn">
+          <button
+            onClick={() => navigate(-1)}
+            to="/chapters"
+            class="scoreview-btn"
+          >
             <img src="/images/backarrowicon.png" alt="icon" />
             Back to Chapter Selection
-          </Link>
+          </button>
         </div>
       </div>
     </div>
