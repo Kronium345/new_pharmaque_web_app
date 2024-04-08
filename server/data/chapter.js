@@ -770,4 +770,4 @@ export const QUESTIONS_DATA = {
         "Cromolyn acts as a mast cell stabilizer in allergic rhinitis, preventing the release of inflammatory mediators.",
     },
   ],
-};
+}
