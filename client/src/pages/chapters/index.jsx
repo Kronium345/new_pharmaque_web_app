@@ -11,6 +11,7 @@ const Chapters = () => {
   const [data, setData] = useState([]);
   const [attempted, setAttempted] = useState([]);
 
+
   const filteredChapters = useMemo(() => {
     if (!searchQuery) {
       return data;
@@ -116,7 +117,7 @@ const Chapters = () => {
 
                 return (
                   <div className="col-sm-6 mb-3" key={idx}>
-                    <div className="card p-4 mediumbluebg">
+                    <div className="card p-4 mediumbluebg" style={{ flex: 1 }}>
                       <div className="row">
                         <div className="col-sm-3">
                           <img

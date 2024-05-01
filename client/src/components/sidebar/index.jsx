@@ -3,11 +3,19 @@ import { Link, useLocation } from "react-router-dom";
 
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { RiWechatLine } from "react-icons/ri";
+import { useAuth } from "../../hooks";
 
 export default function SideBar() {
   const location = useLocation();
+  const { logout } = useAuth();
+
 
   const path = location.pathname;
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <>
@@ -35,6 +43,19 @@ export default function SideBar() {
           </Link>
         );
       })}
+      <button
+        className="btn btn-tertiary fs-5 fw-bold mb-5"
+        onClick={handleLogout}
+        style={{
+          marginTop: 'auto', // This will push the button to the bottom if the parent is a flex container
+          marginBottom: '2rem', // Adds space below the button
+          marginLeft: '3rem', // This, combined with marginRight, will center the button
+          width: '100%', // This will make the button as wide as its container
+          maxWidth: '200px',
+        }}
+        >
+          Logout
+      </button>
     </>
   );
 }

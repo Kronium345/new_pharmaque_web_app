@@ -7,12 +7,12 @@ import { getImageUrl } from "../../utils";
 const MyAccount = () => {
   const navigate = useNavigate();
   const [avatar, setAvatar] = useState(null);
-  const { profile, getProfile, logout } = useAuth();
+  const { profile, getProfile } = useAuth();
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
+  // const handleLogout = () => {
+  //   logout();
+  //   navigate("/login");
+  // };
 
   const handleAvatarChange = async () => {
     try {
@@ -70,12 +70,12 @@ const MyAccount = () => {
                   alignItems: "center",
                 }}
               >
-                <button
+                {/* <button
                   className="btn btn-tertiary fs-5 fw-bold mb-2"
                   onClick={handleLogout}
                 >
                   Logout
-                </button>
+                </button> */}
               </div>
             </div>
             {/* More account details */}

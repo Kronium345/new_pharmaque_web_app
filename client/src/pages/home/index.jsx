@@ -36,7 +36,7 @@ const HomePagee = () => {
 
   return (
     <>
-      <p class="fs-4 mt-4 fw-bold navybluetext">HomePagee</p>
+      <p class="fs-4 mt-4 fw-bold navybluetext">HomePage</p>
       <div class="row">
         <div class="col-sm-6">
           <div class="col-sm-12 mb-3">
@@ -49,7 +49,7 @@ const HomePagee = () => {
                   </svg>
                 </div>
                 <div class="col-sm-9">
-                  <p class="h5 navybluetext fw-bold">Welcome back Aditya!</p>
+                  <p class="h5 navybluetext fw-bold">Welcome back Adity!</p>
                   <p class="greytext fs-5 mb-1">
                     There are <span class="fw-bold">3 tasks</span> for you to
                     complete today!
@@ -58,10 +58,10 @@ const HomePagee = () => {
               </div>
             </div>
           </div>
-          <div class="col-sm-12 mb-3">
+          <div class="col-sm-12 mb-3 halveopacity">
             <div class="card p-4">
               <div class="row">
-                <p class="h5 navybluetext fw-bold mb-3">Today's Tasks</p>
+                <p class="h5 navybluetext fw-bold mb-3 halveopacity">Today's Tasks</p>
               </div>
               <div class="row borderbottom">
                 <div class="col-sm-1">
@@ -72,15 +72,15 @@ const HomePagee = () => {
                   />
                 </div>
                 <div class="col-sm-11">
-                  <p class="fs-5 navybluetext mb-2">Gastrointestinal System</p>
-                  <a href="#" class="removeunderline navybluetext">
+                  <p class="fs-5 navybluetext mb-2 halveopacity">Gastrointestinal System</p>
+                  {/* <a href="#" class="removeunderline navybluetext"> */}
                     <p>
                       <img src="/images/ChaptersColour.png" class="smallicon" />
-                      <span class="fs-6 fw-bold mx-2">
-                        4/40 Questions Attempted
+                      <span class="fs-6 fw-bold mx-2 halveopacity">
+                        0/40 Questions Attempted
                       </span>
                     </p>
-                  </a>
+                  {/* </a> */}
                 </div>
               </div>
               <div class="row borderbottom mt-2">
@@ -102,7 +102,7 @@ const HomePagee = () => {
                       alt="flashcard"
                     />
                     <span class="fs-6 fw-bold mx-2 halveopacity">
-                      40/40 Flashcards Attempted
+                      0/40 Flashcards Attempted
                     </span>
                   </p>
                 </div>
@@ -112,19 +112,19 @@ const HomePagee = () => {
                   <img src="/images/IncompleteTaskIcon.png" class="smallicon" />
                 </div>
                 <div class="col-sm-11">
-                  <p class="fs-5 navybluetext mb-2">Central Nervous System</p>
-                  <a href="#" class="removeunderline navybluetext">
+                  <p class="fs-5 navybluetext mb-2 halveopacity">Central Nervous System</p>
+                  {/* <a href="#" class="removeunderline navybluetext"> */}
                     <p>
                       <img
                         src="/images/FlashcardsColour.png"
                         class="smallicon"
                         alt="icon"
                       />
-                      <span class="fs-6 fw-bold mx-2">
-                        10/40 Flashcards Attempted
+                      <span class="fs-6 fw-bold mx-2 halveopacity">
+                        0/40 Flashcards Attempted
                       </span>
                     </p>
-                  </a>
+                  {/* </a> */}
                 </div>
               </div>
               <div class="row borderbottom mt-2">
@@ -141,7 +141,7 @@ const HomePagee = () => {
                       class="smallicon halveopacity"
                     />
                     <span class="fs-6 fw-bold mx-2 halveopacity">
-                      40/40 Questions Attempted
+                      0/40 Questions Attempted
                     </span>
                   </p>
                 </div>
@@ -151,18 +151,18 @@ const HomePagee = () => {
                   <img src="/images/IncompleteTaskIcon.png" class="smallicon" />
                 </div>
                 <div class="col-sm-11">
-                  <p class="fs-5 navybluetext mb-2">Infections</p>
-                  <a href="#" class="navybluetext removeunderline">
+                  <p class="fs-5 navybluetext mb-2 halveopacity">Infections</p>
+                  {/* <a href="#" class="navybluetext removeunderline"> */}
                     <p>
                       <img
                         src="/images/FlashcardsColour.png"
                         class="smallicon"
                       />
-                      <span class="fs-6 fw-bold mx-2">
-                        15/40 Flashcards Attempted
+                      <span class="fs-6 fw-bold mx-2 halveopacity">
+                        0/40 Flashcards Attempted
                       </span>
                     </p>
-                  </a>
+                  {/* </a> */}
                 </div>
               </div>
             </div>
@@ -175,14 +175,14 @@ const HomePagee = () => {
                   <p class="h5 navybluetext fw-bold mb-3">Flagged Questions</p>
                 </div>
                 <div class="col-sm-3">
-                  <a href="#" class="removeunderline">
+                  <a href="/flaggedquestions" class="removeunderline">
                     <p class="h5 navybluetext fw-bold">View All</p>
                   </a>
                 </div>
               </div>
               <div class="row borderbottom mb-3">
                 <div class="col-sm-12">
-                  <p class="fs-5 navybluetext mb-2">
+                  {/* <p class="fs-5 navybluetext mb-2">
                     Musculoskeletal and Joint Disease
                   </p>
                   <a href="#" class="removeunderline navybluetext">
@@ -196,12 +196,12 @@ const HomePagee = () => {
                         gout...
                       </span>
                     </p>
-                  </a>
+                  </a> */}
                 </div>
               </div>
               <div class="row borderbottom">
                 <div class="col-sm-12">
-                  <p class="fs-5 navybluetext mb-2">Central Nervous System</p>
+                  {/* <p class="fs-5 navybluetext mb-2">Central Nervous System</p>
                   <a href="#" class="removeunderline navybluetext">
                     <p>
                       <img
@@ -213,7 +213,7 @@ const HomePagee = () => {
                         prescribed...
                       </span>
                     </p>
-                  </a>
+                  </a> */}
                 </div>
               </div>
             </div>

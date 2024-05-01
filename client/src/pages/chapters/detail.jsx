@@ -98,6 +98,10 @@ const ChapterDetail = () => {
       });
   };
 
+  const handleBack = () => {
+    setCurrentQuestion((prev) => (prev > 0 ? prev - 1 : 0));
+  };  
+
   useEffect(() => {
     getQuizInfo();
   }, []);
@@ -165,6 +169,7 @@ const ChapterDetail = () => {
               handleFlagged={handleFlagged}
               handleReport={handleReport}
               handleSkip={handleSkip}
+              handleBack={handleBack}
             />
           )
         )}

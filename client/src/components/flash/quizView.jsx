@@ -11,6 +11,7 @@ const QuizView = ({
   handleFlagged,
   handleReport,
   handleSkip,
+  handleBack
 }) => {
   const flipRef = React.useRef(null);
   const flipFrontRef = React.useRef(null);
@@ -35,13 +36,13 @@ const QuizView = ({
           <div class="card p-4">
             <div class="row borderbottom mb-3">
               <div class="col-sm-1">
-                <Link to="" class="inline mb-3">
+                <button onClick={handleBack} class="inline mb-3">
                   <img
                     src="/images/PreviousGrey.png"
                     class="mediumicon"
                     alt="icon"
                   />
-                </Link>
+                </button>
               </div>
               <div class="col-sm-3">
                 <button
@@ -82,13 +83,13 @@ const QuizView = ({
               </div>
 
               <div class="col-sm-1">
-                <Link to="" class="inline floatright mb-3">
+                <button onClick={handleSkip} class="inline floatright mb-3">
                   <img
                     src="/images/NextBlue.png"
                     class="mediumicon"
                     alt="icon"
                   />
-                </Link>
+                </button>
               </div>
             </div>
 
@@ -180,17 +181,17 @@ const QuizView = ({
                   >
                     Submit Answer
                   </button>{" "}
-                  <button
+                  {/* <button
                     onClick={handleSkip}
                     class="mediumbluetext fs-5 fw-bold mx-4 removeunderline btn"
                   >
                     Skip Flashcard
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>
 
-            <div class="row mt-3">
+            {/* <div class="row mt-3">
               <span class="fw-bold fs-5 navybluetext inline fitcontent">
                 Discussion (0 Posts)
               </span>
@@ -208,7 +209,7 @@ const QuizView = ({
                   Sort By None
                 </span>
               </Link>
-            </div>
+            </div> */}
 
             <div class="row mt-3">
               <div class="col-sm-1 ">
