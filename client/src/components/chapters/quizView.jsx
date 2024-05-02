@@ -3,22 +3,12 @@ import { Link } from "react-router-dom";
 import React from "react";
 
 import "./QuizView.css";
-
-
-const dummyComments = [
-  {
-    id: 1,
-    body: 'Comment 1',
-  },
-  {
-    id: 2,
-    body: 'Comment 2',
-  },
-  {
-    id: 3,
-    body: 'Comment 3',
-  },
-]
+import CommentBox from "../comments/CommentBox";
+import useNode from "../../hooks/useNode";
+const comments = {
+  id: 1,
+  items: []
+}
 
 const QuizView = ({
   questions = [],
@@ -31,11 +21,30 @@ const QuizView = ({
 }) => {
   const { question, answers, explanation } = questions[currentQuestion];
   const [selectedAnswer, setSelectedAnswer] = React.useState({});
-  const [comments, setcomments] = React.useState(dummyComments);
+  const [commentsData, setCommentsData] = React.useState(comments);
+  const {insertNode, editNode, deleteNode} = useNode();
+
+  const handleInsertNode = (folderId, item) => {
+    const finalStructure = insertNode(commentsData, folderId, item);
+    setCommentsData(finalStructure);
+  };
+
+  const handleEditNode = (folderId, value) => {
+    const finalStructure = editNode(commentsData, folderId, value);
+    setCommentsData(finalStructure);
+  }
+
+  const handleDeleteNode = (folderId) => {
+    const finalStructure = deleteNode(commentsData, folderId);
+    const temp = { ...finalStructure };
+    setCommentsData(temp);
+  }
+
 
   if (questions.length === 0) {
     return <div>No questions found.</div>;
   }
+
 
   return (
     <>
@@ -171,36 +180,12 @@ const QuizView = ({
               </Link>
             </div> */}
 
-            <div class="row mt-3">
-              <div class="col-sm-1 ">
-                <img
-                  src="/images/DummyAvatar.png"
-                  class="midsizeicon mb-3"
-                  alt="icon"
-                />
-              </div>
-
-              <div class="col-sm-11">
-                <div class="form">
-                  <textarea
-                    class="form-control fs-5"
-                    rows="2"
-                    id="comment"
-                    placeholder="Write a comment"
-                  ></textarea>
-                </div>
-                <button
-                  type="submit"
-                  class="btn btn-deactivated fw-bold fs-5 mt-3 mb-4 px-3 py-2"
-                >
-                  Post Comment
-                </button>
-              </div>
-            </div>
-
-            <div>
-              {comments.map(comment => (<div style={{ border: "2px solid #e5e7eb" }}>{comment.body}</div>))}
-            </div>
+            <CommentBox 
+            handleInsertNode={handleInsertNode}
+            handleEditNode={handleEditNode}
+            handleDeleteNode={handleDeleteNode}
+            comment={commentsData}
+            />
           </div>
         </div>
       </div>
@@ -209,3 +194,4 @@ const QuizView = ({
 };
 
 export default QuizView;
+
