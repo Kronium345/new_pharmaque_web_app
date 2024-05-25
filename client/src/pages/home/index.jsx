@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useLoading } from "../../hooks";
 import { formattedDate, formattedTime, remaningTime } from "../events";
+import { useScreenTime } from "../../components/ScreenTime/ScreenTimeContext";
 const HomePagee = () => {
   const navigate = useNavigate("");
 
@@ -10,6 +11,13 @@ const HomePagee = () => {
   const [chapter, setChapter] = useState({});
   const [event, setEvent] = useState({});
   const { setLoading } = useLoading();
+  const { screenTime } = useScreenTime();
+
+  // Screen time code
+  // Convert milliseconds to hours, minutes, and seconds for display
+  const hours = Math.floor(screenTime / 3600000); // Get total hours
+  const minutes = Math.floor((screenTime % 3600000) / 60000); // Get remainder minutes
+  const seconds = ((screenTime % 60000) / 1000).toFixed(0); // Get remainder seconds
 
   useEffect(() => {
     // get data from the local storage
@@ -230,9 +238,8 @@ const HomePagee = () => {
                 <div class="col-sm-9">
                   <p class="h5 navybluetext fw-bold">User Insights</p>
                   <p class="greytext fs-5 mb-1">
-                    Your screen time has increased by a whopping{" "}
-                    <span class="fw-bold">12%</span> much like a pharmacy's
-                    stock of candy during flu season!
+                      Your screen time is: 
+                    <span class="fw-bold"> {hours}h {minutes}m {seconds}s</span>
                   </p>
                 </div>
               </div>

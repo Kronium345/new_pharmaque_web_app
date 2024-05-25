@@ -4,10 +4,12 @@ import { Link, useLocation } from "react-router-dom";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { RiWechatLine } from "react-icons/ri";
 import { useAuth } from "../../hooks";
+import { useScreenTime } from "../ScreenTime/ScreenTimeContext";
 
 export default function SideBar() {
   const location = useLocation();
   const { logout } = useAuth();
+  const { resetScreenTime } = useScreenTime();
 
 
   const path = location.pathname;
