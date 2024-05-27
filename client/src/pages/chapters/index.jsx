@@ -11,7 +11,6 @@ const Chapters = () => {
   const [data, setData] = useState([]);
   const [attempted, setAttempted] = useState([]);
 
-
   const filteredChapters = useMemo(() => {
     if (!searchQuery) {
       return data;
@@ -51,7 +50,6 @@ const Chapters = () => {
       .then((response) => {
         if (response.data.status) {
           setAttempted(response?.data?.cQuiz);
-          // setData(response.data);
         }
       })
       .catch((err) => {
@@ -80,8 +78,6 @@ const Chapters = () => {
       .finally(() => {
         setLoading(false);
       });
-
-    // navigate("/chapter/" + chapter._id);
   };
 
   return (
@@ -116,9 +112,9 @@ const Chapters = () => {
                 );
 
                 return (
-                  <div className="col-sm-6 mb-3" key={idx}>
-                    <div className="card p-4 mediumbluebg" style={{ flex: 1 }}>
-                      <div className="row">
+                  <div className="col-sm-6 mb-3 d-flex" key={idx}>
+                    <div className="card p-4 mediumbluebg h-100 w-100 d-flex flex-column">
+                      <div className="row flex-grow-1">
                         <div className="col-sm-3">
                           <img
                             src={getImageUrl(chapter.image)}
@@ -134,15 +130,16 @@ const Chapters = () => {
                             {isAttempted?.attemptedQuestions || 0} Questions
                             Attempted
                           </p>
-
-                          <button
-                            onClick={() => handleStart(chapter)}
-                            className="btn removeunderline boldtext navybluetext fw-bold"
-                          >
-                            <div className="px-3 py-2 whitebg pseudobutton">
-                              {isAttempted ? "Resume" : "Start"} Chapter
-                            </div>
-                          </button>
+                          <div className="mt-auto">
+                            <button
+                              onClick={() => handleStart(chapter)}
+                              className="btn removeunderline boldtext navybluetext fw-bold"
+                            >
+                              <div className="px-3 py-2 whitebg pseudobutton">
+                                {isAttempted ? "Resume" : "Start"} Chapter
+                              </div>
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
