@@ -170,6 +170,7 @@ const ChapterDetail = () => {
               handleReport={handleReport}
               handleSkip={handleSkip}
               handleBack={handleBack}
+              quiz={quiz}
             />
           )
         )}

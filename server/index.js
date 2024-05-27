@@ -13,6 +13,8 @@ import { ChapterRouter } from "./routes/chapter.js";
 import { CQuizRouter } from "./routes/chaptersQuiz.js";
 import { FlashRouter } from "./routes/flashcard.js";
 import { FQuizRouter } from "./routes/flashQuiz.js";
+import { CommentRouter } from './routes/comment.js'; // Updated to reflect actual file name
+
 
 dotenv.config();
 
@@ -47,6 +49,7 @@ app.use("/chapter", ChapterRouter);
 app.use("/cquiz", CQuizRouter);
 app.use("/flash", FlashRouter);
 app.use("/fquiz", FQuizRouter);
+app.use('/api', CommentRouter);
 app.use("/", Router);
 
 // Utilizing MongoDB Atlas Connection

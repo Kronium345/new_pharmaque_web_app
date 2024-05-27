@@ -95,38 +95,45 @@ router.patch("/solve", checkAuth, async (req, res) => {
 });
 
 router.patch("/flag", checkAuth, async (req, res) => {
-  const { _id } = req.body;
+  const { quizId, questionId } = req.body;
 
   try {
-    const quiz = await CQuiz.findById(_id);
+    const quiz = await CQuiz.findById(quizId);
 
     if (!quiz) {
-      return res.json({ status: false, message: "CQuiz not found" });
+      return res.status(404).json({ status: false, message: "Quiz not found" });
     }
 
-    //wrongAnswers: { type: Number, default: 0 },
-    //flaggedQuestions: { type: Number, default: 0 },
-    //reportedQuestions: { type: Number, default: 0 },st
+    // Find the question and update the status
+    const question = quiz.questions.find(q => q._id.equals(questionId));
+    if (question) {
+      question.status = 'flagged';  // Set the status to 'flagged'
+      question.flaggedOn = new Date();  // Set the flagging date
+    }
 
-    const flaggedQuestions = quiz.flaggedQuestions + 1;
-    const attemptedQuestions = quiz.attemptedQuestions + 1;
-
-    const updatedCQuiz = await CQuiz.findByIdAndUpdate(
-      _id,
-      {
-        $set: {
-          flaggedQuestions,
-          attemptedQuestions,
-        },
-      },
-      { new: true }
-    );
-
-    return res.json({ status: true, cQuiz: updatedCQuiz });
-  } catch (err) {
-    return res.json({ status: false, message: err });
+    await quiz.save();
+    res.json({ status: true, message: "Question flagged successfully", quiz });
+  } catch (error) {
+    console.error("Error flagging the question:", error);
+    res.status(500).json({ status: false, message: "Error flagging question", error });
   }
 });
+
+router.get("/flagged", checkAuth, async (req, res) => {
+  try {
+    const quizzes = await CQuiz.find({ "questions.status": "flagged" });
+    const flaggedQuestions = quizzes.map(quiz => ({
+      quizId: quiz._id,
+      questions: quiz.questions.filter(q => q.status === 'flagged')
+    }));
+
+    res.json({ status: true, flaggedQuestions });
+  } catch (err) {
+    res.status(500).json({ status: false, message: "Error retrieving flagged questions", err });
+  }
+});
+
+
 
 router.patch("/report", checkAuth, async (req, res) => {
   const { _id } = req.body;

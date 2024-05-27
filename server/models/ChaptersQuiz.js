@@ -7,7 +7,11 @@ const CQuizSchema = new mongoose.Schema(
     attemptedQuestions: { type: Number, default: 0 },
     correctAnswers: { type: Number, default: 0 },
     wrongAnswers: { type: Number, default: 0 },
-    flaggedQuestions: { type: Number, default: 0 },
+    questions: [{
+      question: { type: mongoose.Schema.Types.ObjectId, ref: 'Question' },
+      status: { type: String, default: '' },  // Added status field
+      flaggedOn: { type: Date }
+    }],
     reportedQuestions: { type: Number, default: 0 },
     totalQuestions: { type: Number, default: 0 },
     skippedQuestions: { type: Number, default: 0 },

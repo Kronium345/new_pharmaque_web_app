@@ -17,7 +17,8 @@ const QuizView = ({
   handleFlagged,
   handleReport,
   handleSkip,
-  handleBack
+  handleBack,
+  quiz
 }) => {
   const { question, answers, explanation } = questions[currentQuestion];
   const [selectedAnswer, setSelectedAnswer] = React.useState({});
@@ -185,6 +186,7 @@ const QuizView = ({
             handleEditNode={handleEditNode}
             handleDeleteNode={handleDeleteNode}
             comment={commentsData}
+            chapterId={quiz._id}
             />
           </div>
         </div>
