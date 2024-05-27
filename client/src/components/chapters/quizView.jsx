@@ -114,7 +114,7 @@ const QuizView = ({
               <div class="col-sm-12">
                 <div class="card p-0 mb-4 mt-3">
                   <div className="text-left">{question}</div>
-                  <div className="mt-3">{explanation}</div>
+                  {/* <div className="mt-3">{explanation}</div> */}
                 </div>
 
                 {answers.map(({ text, isCorrect, _id }, index) => {
@@ -196,4 +196,3 @@ const QuizView = ({
 };
 
 export default QuizView;
-

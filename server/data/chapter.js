@@ -1,6 +1,6 @@
 export const QUESTIONS_DATA = {
   name: "Calculations",
-  image: "uploads/images/ENTIcon.png",
+  image: "uploads/images/calculations.jpg",
   questions: [
     {
       question:

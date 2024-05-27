@@ -61,6 +61,10 @@ const Chapters = () => {
   };
 
   const handleStart = async (chapter) => {
+    if (chapter.name === "Law & Ethics") {
+      // Do nothing for Law & Ethics chapter
+      return;
+    }
     setLoading(true);
     await axios
       .post("cquiz/create", {
@@ -110,16 +114,26 @@ const Chapters = () => {
                 const isAttempted = attempted.find(
                   (cQuiz) => cQuiz.chapter === chapter._id
                 );
+                const isLawAndEthics = chapter.name === "Law & Ethics";
 
                 return (
                   <div className="col-sm-6 mb-3 d-flex" key={idx}>
-                    <div className="card p-4 mediumbluebg h-100 w-100 d-flex flex-column">
+                    <div
+                      className={`card p-4 mediumbluebg h-100 w-100 d-flex flex-column ${
+                        isLawAndEthics ? "grayed-out" : ""
+                      }`}
+                    >
                       <div className="row flex-grow-1">
                         <div className="col-sm-3">
                           <img
                             src={getImageUrl(chapter.image)}
                             className="icon"
                             alt="icon"
+                            style={{
+                              borderRadius: "8px",
+                              width: "100%",
+                              height: "auto",
+                            }}
                           />
                         </div>
                         <div className="col-sm-9">
@@ -134,6 +148,7 @@ const Chapters = () => {
                             <button
                               onClick={() => handleStart(chapter)}
                               className="btn removeunderline boldtext navybluetext fw-bold"
+                              disabled={isLawAndEthics}
                             >
                               <div className="px-3 py-2 whitebg pseudobutton">
                                 {isAttempted ? "Resume" : "Start"} Chapter
