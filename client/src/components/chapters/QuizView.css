@@ -24,31 +24,35 @@
   margin: auto;
 }
 
-.answer li {
-  list-style: none;
-}
-
-.answer li button {
+.answer button:nth-child(n) {
   padding: 10px;
   cursor: pointer;
-  border: 1px solid #ccc;
+  border: 2px solid #1d3354; /* Border added */
   border-radius: 5px;
-  background-color: #fff;
-  transition: background-color 0.3s, color 0.3s;
+  background-color: #e0eafc;
+  transition: background-color 0.3s, color 0.3s, border 0.3s;
 }
 
-.answer li button:hover {
-  background-color: #f0f0f0;
+.answer button:nth-child(n):hover {
+  background-color: #1d3354;
+  color: white;
 }
 
-.correct-answer button {
-  color: #155724;
-  background-color: #c3e6cb;
+.correct-answer {
+  color: #ffffff !important;
+  background-color: #28a745 !important;
+  border: 2px solid #28a745 !important;
 }
 
-.incorrect-answer button {
-  color: #721c24;
-  background-color: #f8d7da;
+.incorrect-answer {
+  color: #ffffff !important;
+  background-color: #dc3545 !important;
+  border: 2px solid #dc3545 !important;
+}
+
+.selected-answer {
+  background-color: #1d3354 !important;
+  color: white !important;
 }
 
 .result {
@@ -73,16 +77,27 @@
 }
 
 .explanation {
-  font-size: 14px;
-  font-weight: lighter;
+  font-size: 16px; /* Increased font size */
+  font-weight: bold; /* Made text bold */
   color: #495057;
+  margin-top: 20px; /* Added margin to separate explanation from options */
 }
 
 .bg-blue {
   background-color: #1d3354 !important;
   color: white !important;
-  width: 50% !important;
-  border: 1px solid #BFC0C0 !important;
+  border: 1px solid #bfc0c0 !important;
   border-radius: 10px !important;
   text-align: left !important;
+}
+
+.btn-submit-active {
+  background-color: #e0eafc !important;
+  border: 2px solid #1d3354 !important;
+  color: #1d3354 !important;
+}
+
+.btn-deactivated {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
