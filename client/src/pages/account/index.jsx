@@ -14,14 +14,14 @@ const MyAccount = () => {
       const formData = new FormData();
       formData.append("avatar", avatar);
 
-      await axios.post("auth/change-avatar", formData, {
+      await axios.post("/auth/change-avatar", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
 
       alert("Avatar changed successfully");
-      getProfile();
+      await getProfile(); // Re-fetch the profile to update the avatar
       console.log("Avatar changed successfully");
     } catch (error) {
       console.error("Error changing avatar:", error);
@@ -40,13 +40,10 @@ const MyAccount = () => {
           <div className="card p-4">
             <div className="col-sm-12 center">
               <img
-                src={
-                  profile?.avatar
-                    ? getImageUrl(profile.avatar)
-                    : "/images/10.png"
-                }
+                src={profile?.avatar ? getImageUrl(profile.avatar) : "/images/10.png"}
                 className="logo mb-2"
                 alt="10"
+                style={{ borderRadius: "50%", width: "100px", height: "100px", objectFit: "cover" }}
               />
               <input type="file" accept="image/*" onChange={handleFileChange} />
               <button
@@ -55,7 +52,7 @@ const MyAccount = () => {
               >
                 Change Avatar
               </button>
-              <p className="fs-4 fw-bold mb-1">Username123</p>
+              <p className="fs-4 fw-bold mb-1">{profile?.username}</p> {/* Use the username from the profile */}
               <p className="fs-5 mediumnavytext mb-3">{profile?.email}</p>
               <Link to="/changepassword" className="btn btn-tertiary fs-5 fw-bold">
                 Change Password

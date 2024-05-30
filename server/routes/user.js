@@ -124,12 +124,12 @@ router.post("/changepassword", checkAuth, async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    const isMatch = await bycrypt.compare(currentPassword, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Current password is incorrect" });
     }
 
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    const hashedPassword = await bycrypt.hash(newPassword, 10);
     user.password = hashedPassword;
     await user.save();
 
@@ -169,19 +169,15 @@ router.get("/logout", (req, res) => {
 router.post(
   "/change-avatar",
   upload.single("avatar"),
-  verifyUser,
+  checkAuth, // Use checkAuth to ensure the user is authenticated
   async (req, res) => {
-    // Logic for handling avatar chang
-
     try {
       const { userId } = req?.user;
       const avatar = req.file;
 
       // Check if userId and avatar exist
       if (!userId || !avatar) {
-        return res
-          .status(400)
-          .json({ error: "User ID or avatar not provided" });
+        return res.status(400).json({ error: "User ID or avatar not provided" });
       }
 
       const user = await User.findById(userId);
@@ -191,13 +187,9 @@ router.post(
         return res.status(404).json({ error: "User not found" });
       }
 
-      await User.findByIdAndUpdate(userId, { avatar: avatar.path });
-
-      // Logic to save/update avatar in the database
-      // For example:
-      // const user = await User.findById(userId);
-      // user.avatar = avatar.filename;
-      // await user.save();
+      // Update the avatar path in the database
+      user.avatar = avatar.path;
+      await user.save();
 
       return res.json({ status: true, message: "Avatar changed successfully" });
     } catch (error) {
@@ -206,6 +198,7 @@ router.post(
     }
   }
 );
+
 
 router.get("/get-profile", checkAuth, async (req, res) => {
   try {
@@ -221,11 +214,12 @@ router.get("/get-profile", checkAuth, async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    return res.json({ status: true, user });
+    return res.json({ status: true, user: { username: user.username, email: user.email, avatar: user.avatar } }); // Include username here
   } catch (error) {
     console.error("Error getting profile:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 export { router as UserRouter };
