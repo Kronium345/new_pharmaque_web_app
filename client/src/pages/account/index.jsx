@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../hooks";
 import { getImageUrl } from "../../utils";
@@ -8,11 +8,6 @@ const MyAccount = () => {
   const navigate = useNavigate();
   const [avatar, setAvatar] = useState(null);
   const { profile, getProfile } = useAuth();
-
-  // const handleLogout = () => {
-  //   logout();
-  //   navigate("/login");
-  // };
 
   const handleAvatarChange = async () => {
     try {
@@ -62,23 +57,10 @@ const MyAccount = () => {
               </button>
               <p className="fs-4 fw-bold mb-1">Username123</p>
               <p className="fs-5 mediumnavytext mb-3">{profile?.email}</p>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                {/* <button
-                  className="btn btn-tertiary fs-5 fw-bold mb-2"
-                  onClick={handleLogout}
-                >
-                  Logout
-                </button> */}
-              </div>
+              <Link to="/changepassword" className="btn btn-tertiary fs-5 fw-bold">
+                Change Password
+              </Link>
             </div>
-            {/* More account details */}
           </div>
         </div>
       </div>

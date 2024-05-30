@@ -7,6 +7,7 @@ import Chapters from "../pages/chapters";
 import ChapterDetail from "../pages/chapters/detail";
 import FlashCards from "../pages/flashCard";
 import FlashCardDetail from "../pages/flashCard/detail";
+import ChangePassword from "../pages/auth/ChangePassword/changePassword";
 
 const SignUpPage = lazy(() => import("../pages/auth/signup"));
 const ForgotPasswordPage = lazy(() => import("../pages/auth/forgetPassword"));
@@ -49,6 +50,7 @@ export default function AppRoutes() {
             <Route path="/queryresponses" element={<QueryResponses />} />
             <Route path="/pastchapters" element={<PastChapters />} />
             <Route path="/flaggedquestions" element={<FlaggedQuestions />} />
+            <Route path="/changepassword" element={<ChangePassword />} />
             <Route path="/*" element={<HomePage />} />
           </Route>
         )}
