@@ -1,87 +1,85 @@
-import axios from "axios"
-import React, { useState, useEffect, useMemo, useLayoutEffect } from "react"
-import { useNavigate, Link } from "react-router-dom"
-import { getImageUrl } from "../../utils"
-import { useLoading } from "../../hooks"
+import axios from "axios";
+import React, { useState, useEffect, useMemo, useLayoutEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { getImageUrl } from "../../utils";
+import { useLoading } from "../../hooks";
 
 const FlashCards = () => {
-  const navigate = useNavigate()
-  const { setLoading } = useLoading()
-  const [searchQuery, setSearchQuery] = useState("")
-  const [data, setData] = useState([])
-  const [attempted, setAttempted] = useState([])
+  const navigate = useNavigate();
+  const { setLoading } = useLoading();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [data, setData] = useState([]);
+  const [attempted, setAttempted] = useState([]);
 
   const filteredChapters = useMemo(() => {
     if (!searchQuery) {
-      return data
+      return data;
     }
 
     return data.filter((flash) =>
       flash.name.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-  }, [searchQuery, data])
+    );
+  }, [searchQuery, data]);
 
   useLayoutEffect(() => {
-    getData()
-    getAttemptedChapters()
-  }, [])
+    getData();
+    getAttemptedChapters();
+  }, []);
 
   const getData = async () => {
-    setLoading(true)
+    setLoading(true);
     await axios
       .get("flash")
       .then((response) => {
         if (response.data.status) {
-          setData(response.data.flashCards)
+          setData(response.data.flashCards);
         }
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
       })
       .finally(() => {
-        setLoading(false)
-      })
-  }
+        setLoading(false);
+      });
+  };
 
   const getAttemptedChapters = async () => {
-    setLoading(true)
+    setLoading(true);
     await axios
       .get("fquiz/get")
       .then((response) => {
         if (response.data.status) {
-          setAttempted(response?.data?.fQuiz)
+          setAttempted(response?.data?.fQuiz);
         }
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
       })
       .finally(() => {
-        setLoading(false)
-      })
-  }
+        setLoading(false);
+      });
+  };
 
   const handleStart = async (flash) => {
-    setLoading(true)
+    setLoading(true);
     await axios
       .post("fquiz/create", {
         flash: flash._id,
       })
       .then((response) => {
         if (response.data.status) {
-          const { fQuiz } = response.data
-          console.log(fQuiz)
-          navigate("/flashcard/" + fQuiz._id)
+          const { fQuiz } = response.data;
+          console.log(fQuiz);
+          navigate("/flashcard/" + fQuiz._id);
         }
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
       })
       .finally(() => {
-        setLoading(false)
-      })
-
-    // navigate("/chapter/" + chapter._id);
-  }
+        setLoading(false);
+      });
+  };
 
   return (
     <>
@@ -112,17 +110,24 @@ const FlashCards = () => {
               {filteredChapters.map((flash, idx) => {
                 const isAttempted = attempted.find(
                   (cQuiz) => cQuiz.flash === flash._id
-                )
+                );
 
                 return (
-                  <div className="col-sm-6 mb-3" key={idx}>
-                    <div className="card p-4 mediumbluebg">
-                      <div className="row">
+                  <div className="col-sm-6 mb-3 d-flex" key={idx}>
+                    <div
+                      className={`card p-4 mediumbluebg h-100 w-100 d-flex flex-column`}
+                    >
+                      <div className="row flex-grow-1">
                         <div className="col-sm-3">
                           <img
                             src={getImageUrl(flash.image)}
                             className="icon"
                             alt="icon"
+                            style={{
+                              borderRadius: "8px",
+                              width: "100%",
+                              height: "auto",
+                            }}
                           />
                         </div>
                         <div className="col-sm-9">
@@ -133,27 +138,28 @@ const FlashCards = () => {
                             {isAttempted?.attemptedQuestions || 0} Questions
                             Attempted
                           </p>
-
-                          <button
-                            onClick={() => handleStart(flash)}
-                            className="btn removeunderline boldtext navybluetext fw-bold"
-                          >
-                            <div className="px-3 py-2 whitebg pseudobutton">
-                              {isAttempted ? "Resume" : "Start"} Chapter
-                            </div>
-                          </button>
+                          <div className="mt-auto">
+                            <button
+                              onClick={() => handleStart(flash)}
+                              className="btn removeunderline boldtext navybluetext fw-bold"
+                            >
+                              <div className="px-3 py-2 whitebg pseudobutton">
+                                {isAttempted ? "Resume" : "Start"} Chapter
+                              </div>
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                )
+                );
               })}
             </div>
           </div>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default FlashCards
+export default FlashCards;

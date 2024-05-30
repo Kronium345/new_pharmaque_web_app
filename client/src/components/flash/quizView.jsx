@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom";
-
 import React, { useEffect } from "react";
-
 import "./QuizView.css";
 
 const QuizView = ({
@@ -31,80 +29,80 @@ const QuizView = ({
 
   return (
     <>
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="card p-4">
-            <div class="row borderbottom mb-3">
-              <div class="col-sm-1">
-                <button onClick={handleBack} class="inline mb-3">
+      <div className="row">
+        <div className="col-sm-12">
+          <div className="card p-4">
+            <div className="row borderbottom mb-3">
+              <div className="col-sm-1">
+                <button onClick={handleBack} className="inline mb-3">
                   <img
                     src="/images/PreviousGrey.png"
-                    class="mediumicon"
+                    className="mediumicon"
                     alt="icon"
                   />
                 </button>
               </div>
-              <div class="col-sm-3">
+              <div className="col-sm-3">
                 <button
                   to=""
-                  class="inline removeunderline navybluetext btn"
+                  className="inline removeunderline navybluetext btn"
                   onClick={handleReport}
                 >
                   <img
                     src="/images/FlagQuestionIcon.png"
-                    class="moderateicon"
+                    className="moderateicon"
                     alt="icon"
                   />{" "}
-                  <span class="fs-5 mx-2">Report Flashcard</span>
+                  <span className="fs-5 mx-2">Report Flashcard</span>
                 </button>
               </div>
 
-              <div class="col-sm-4 center">
-                <p class="fs-4 fw-bold navybluetext mb-2">
+              <div className="col-sm-4 center">
+                <p className="fs-4 fw-bold navybluetext mb-2">
                   Flashcard {currentQuestion} of {questions.length}
                 </p>
-                <p class="fs-5 fw-bold mediumbluetext mb-4">
-                  Chapter Weighting: <span class="redtext">High</span>
+                <p className="fs-5 fw-bold mediumbluetext mb-4">
+                  Chapter Weighting: <span className="redtext">High</span>
                 </p>
               </div>
 
-              <div class="col-sm-3">
+              <div className="col-sm-3">
                 <button
                   onClick={handleFlagged}
-                  class="inline removeunderline navybluetext floatright btn"
+                  className="inline removeunderline navybluetext floatright btn"
                 >
                   <img
                     src="/images/FlagIcon.png"
-                    class="moderateicon"
+                    className="moderateicon"
                     alt="icon"
                   />{" "}
-                  <span class="fs-5 mx-2">Flag Flashcard</span>
+                  <span className="fs-5 mx-2">Flag Flashcard</span>
                 </button>
               </div>
 
-              <div class="col-sm-1">
-                <button onClick={handleSkip} class="inline floatright mb-3">
+              <div className="col-sm-1">
+                <button onClick={handleSkip} className="inline floatright mb-3">
                   <img
                     src="/images/NextBlue.png"
-                    class="mediumicon"
+                    className="mediumicon"
                     alt="icon"
                   />
                 </button>
               </div>
             </div>
 
-            <div class="row borderbottom">
-              <div class="col-sm-12">
-                <div class="card p-0 mb-4 mt-3">
-                  <div class="flip-card maincard">
-                    <div ref={flipRef} class="flip-card-inner">
+            <div className="row borderbottom">
+              <div className="col-sm-12">
+                <div className="card p-0 mb-4 mt-3">
+                  <div className="flip-card maincard">
+                    <div ref={flipRef} className="flip-card-inner">
                       <div
-                        class="px-5 pt-5 pb-4 bothcards flip-card-front"
+                        className="px-5 pt-5 pb-4 bothcards flip-card-front"
                         ref={flipFrontRef}
                       >
-                        <p class="fs-3 center navybluetext mb-5">{question}</p>
+                        <p className="fs-3 center navybluetext mb-5">{question}</p>
                         <button
-                          class="floatright flipbutton"
+                          className="floatright flipbutton"
                           onClick={() => {
                             flipRef.current.style.transform = "rotateY(180deg)";
 
@@ -112,12 +110,12 @@ const QuizView = ({
                               flipBackRef.current.offsetHeight + "px";
                           }}
                         >
-                          <span class="fs-4 fw-bold navybluetext mx-3 mt-2">
-                            Flip card for hint
+                          <span className="fs-4 fw-bold navybluetext mx-3 mt-2">
+                            Show answer
                           </span>
                           <img
                             src="/images/FlipIcon.png"
-                            class="moderateicon mb-2"
+                            className="moderateicon mb-2"
                             alt="icon"
                           />
                         </button>
@@ -125,25 +123,23 @@ const QuizView = ({
 
                       <div
                         ref={flipBackRef}
-                        class="backcardbg px-5 pt-5 pb-4 bothcards flip-card-back"
+                        className="backcardbg px-5 pt-5 pb-4 bothcards flip-card-back"
                       >
-                        <p class="fs-3 center whitetext mb-5">{explanation}</p>
+                        <p className="fs-3 center whitetext mb-5">{explanation}</p>
                         <button
-                          class="floatright flipbutton"
+                          className="floatright flipbutton"
                           onClick={() => {
-                            // transform: rotateY(180deg);
                             flipRef.current.style.transform = "rotateY(0deg)";
-
                             flipRef.current.style.height =
                               flipFrontRef.current.offsetHeight + "px";
                           }}
                         >
-                          <span class="fs-4 fw-bold whitetext mx-3 mt-2">
-                            Flip card for question
+                          <span className="fs-4 fw-bold whitetext mx-3 mt-2">
+                            Show question
                           </span>
                           <img
                             src="/images/FlipWhite.png"
-                            class="moderateicon mb-2"
+                            className="moderateicon mb-2"
                             alt="icon"
                           />
                         </button>
@@ -152,9 +148,10 @@ const QuizView = ({
                   </div>
                 </div>
 
+                {/* Answer buttons are commented out
                 {answers?.map((answer, index) => (
                   <button
-                    class={
+                    className={
                       "btn fs-5 p-0 mb-3 " +
                       (selectedAnswer?._id === answer?._id
                         ? "bg-blue"
@@ -163,67 +160,45 @@ const QuizView = ({
                     key={index}
                     onClick={() => setSelectedAnswer(answer)}
                   >
-                    <p class="fs-5 py-2 px-4 m-0">{answer?.text}</p>
+                    <p className="fs-5 py-2 px-4 m-0">{answer?.text}</p>
                   </button>
                 ))}
 
-                {/* <div class="btn btn-secondary fs-5 p-0 mb-3">
-                  // <p class="fs-5 py-2 px-4 m-0">Prolonging QT Interval</p>
-                  //{" "}
-                </div> */}
                 <div
-                  class="d-flex align-items-center "
+                  className="d-flex align-items-center "
                   onClick={() => handleAnswerClick(selectedAnswer)}
                 >
                   <button
                     type="submit"
-                    class="btn btn-deactivated fw-bold fs-5 mt-4 mb-4 px-3 py-2"
+                    className="btn btn-deactivated fw-bold fs-5 mt-4 mb-4 px-3 py-2"
                   >
-                    Submit Answer
+                    Next Question
                   </button>{" "}
-                  {/* <button
+                  <button
                     onClick={handleSkip}
-                    class="mediumbluetext fs-5 fw-bold mx-4 removeunderline btn"
+                    className="mediumbluetext fs-5 fw-bold mx-4 removeunderline btn"
                   >
                     Skip Flashcard
-                  </button> */}
+                  </button>
                 </div>
+                */}
+
               </div>
             </div>
 
-            {/* <div class="row mt-3">
-              <span class="fw-bold fs-5 navybluetext inline fitcontent">
-                Discussion (0 Posts)
-              </span>
-
-              <Link
-                to=""
-                class="removeunderline navybluetext inline fitcontent"
-              >
-                <span class="fs-5">
-                  <img
-                    src="/images/SortIcon.png"
-                    class="moderateicon mx-3"
-                    alt="icon"
-                  />{" "}
-                  Sort By None
-                </span>
-              </Link>
-            </div> */}
-
-            <div class="row mt-3">
-              <div class="col-sm-1 ">
+            <div className="row mt-3">
+              <div className="col-sm-1 ">
                 <img
                   src="/images/DummyAvatar.png"
-                  class="midsizeicon mb-3"
+                  className="midsizeicon mb-3"
                   alt="icon"
                 />
               </div>
 
-              <div class="col-sm-11">
-                <div class="form">
+              <div className="col-sm-11">
+                <div className="form">
                   <textarea
-                    class="form-control fs-5"
+                    className="form-control fs-5"
                     rows="2"
                     id="comment"
                     placeholder="Write a comment"
@@ -231,7 +206,7 @@ const QuizView = ({
                 </div>
                 <button
                   type="submit"
-                  class="btn btn-deactivated fw-bold fs-5 mt-3 mb-4 px-3 py-2"
+                  className="btn btn-deactivated fw-bold fs-5 mt-3 mb-4 px-3 py-2"
                 >
                   Post Comment
                 </button>
