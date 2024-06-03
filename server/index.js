@@ -14,6 +14,8 @@ import { CQuizRouter } from "./routes/chaptersQuiz.js";
 import { FlashRouter } from "./routes/flashcard.js";
 import { FQuizRouter } from "./routes/flashQuiz.js";
 import { CommentRouter } from './routes/comment.js'; // Updated to reflect actual file name
+import { FlaggedRouter } from './routes/flagged.js';
+import { ReportedRouter } from './routes/reported.js';
 
 
 dotenv.config();
@@ -50,6 +52,8 @@ app.use("/cquiz", CQuizRouter);
 app.use("/flash", FlashRouter);
 app.use("/fquiz", FQuizRouter);
 app.use('/api', CommentRouter);
+app.use('/flagged', FlaggedRouter);
+app.use('/reported', ReportedRouter);
 app.use("/", Router);
 
 // Utilizing MongoDB Atlas Connection

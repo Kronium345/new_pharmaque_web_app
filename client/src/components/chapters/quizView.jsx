@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import "./QuizView.css";
 import CommentBox from "../comments/CommentBox";
 import useNode from "../../hooks/useNode";
+import axios from 'axios';
 
 const comments = {
   id: 1,
@@ -26,6 +27,8 @@ const QuizView = ({
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [commentsData, setCommentsData] = useState(comments);
   const { insertNode, editNode, deleteNode } = useNode();
+  const [flagReason, setFlagReason] = useState('');
+  const [reportReason, setReportReason] = useState('');
 
   const handleInsertNode = (folderId, item) => {
     const finalStructure = insertNode(commentsData, folderId, item);
@@ -57,6 +60,30 @@ const QuizView = ({
     }
   };
 
+  const handleFlagQuestion = async () => {
+    try {
+      const response = await axios.post('/flagged/flag', {
+        questionId: questions[currentQuestion]._id,
+        reason: flagReason,
+      });
+      alert(response.data.message);
+    } catch (error) {
+      console.error('Error flagging question:', error);
+    }
+  };
+
+  const handleReportQuestion = async () => {
+    try {
+      const response = await axios.post('/reported/report', {
+        questionId: questions[currentQuestion]._id,
+        reason: reportReason,
+      });
+      alert(response.data.message);
+    } catch (error) {
+      console.error('Error reporting question:', error);
+    }
+  };
+
   if (questions.length === 0) {
     return <div>No questions found.</div>;
   }
@@ -66,7 +93,7 @@ const QuizView = ({
       <div className="row">
         <div className="col-sm-12">
           <div className="card p-4">
-            <div className="row borderbottom mb-3 ">
+            <div className="row borderbottom mb-3">
               <div className="col-sm-1">
                 <button onClick={handleBack} className="inline mb-3">
                   <img
@@ -87,6 +114,15 @@ const QuizView = ({
                     alt="icon"
                   />{" "}
                   <span className="fs-5 mx-2">Report Question</span>
+                </button>
+                <select onChange={(e) => setReportReason(e.target.value)}>
+                  <option value="">Select reason</option>
+                  <option value="incorrect">Incorrect</option>
+                  <option value="misleading">Misleading</option>
+                  <option value="other">Other</option>
+                </select>
+                <button onClick={handleReportQuestion} className="btn btn-primary mt-2">
+                  Submit Report
                 </button>
               </div>
 
@@ -110,6 +146,15 @@ const QuizView = ({
                     alt="icon"
                   />{" "}
                   <span className="fs-5 mx-2">Flag Question</span>
+                </button>
+                <select onChange={(e) => setFlagReason(e.target.value)}>
+                  <option value="">Select reason</option>
+                  <option value="inappropriate">Inappropriate</option>
+                  <option value="too_cumbersome">Too Cumbersome</option>
+                  <option value="other">Other</option>
+                </select>
+                <button onClick={handleFlagQuestion} className="btn btn-primary mt-2">
+                  Submit Flag
                 </button>
               </div>
 
