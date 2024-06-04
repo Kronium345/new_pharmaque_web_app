@@ -45,4 +45,19 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Route to fetch question details
+router.post("/questions/details", async (req, res) => {
+  const { ids } = req.body;
+  try {
+    const chapters = await Chapter.find({ 'questions._id': { $in: ids } });
+    const questionDetails = chapters.flatMap(chapter =>
+      chapter.questions.filter(q => ids.includes(q._id.toString()))
+    );
+    return res.json({ status: true, questions: questionDetails });
+  } catch (err) {
+    console.error('Error fetching question details:', err);
+    return res.status(500).json({ status: false, message: "Something went wrong" });
+  }
+});
+
 export { router as ChapterRouter };

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const FlaggedQuestionSchema = new mongoose.Schema({
-  questionId: { type: mongoose.Schema.Types.ObjectId, ref: 'Question', required: true },
+  questionId: { type: mongoose.Schema.Types.ObjectId, ref: 'Chapter.questions', required: true },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   reason: { type: String, required: true },
   timestamp: { type: Date, default: Date.now },

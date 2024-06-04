@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './FlaggedQuestions.css'; // Import the custom CSS file
 
 const FlaggedQuestions = () => {
   const [flagged, setFlagged] = useState([]);
 
   useEffect(() => {
     const fetchFlaggedQuestions = async () => {
-      const { data } = await axios.get("/flagged");
-      if (data.status) {
-        setFlagged(data.questions);
+      try {
+        const { data } = await axios.get("/flagged/flagged");
+        if (data.status) {
+          setFlagged(data.questions);
+        }
+      } catch (error) {
+        console.error('Error fetching flagged questions:', error);
       }
     };
 
@@ -16,30 +21,26 @@ const FlaggedQuestions = () => {
   }, []);
 
   return (
-    <div>
-      <h2>Flagged Questions</h2>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Question ID</th>
-            <th>User ID</th>
-            <th>Reason</th>
-            <th>Timestamp</th>
-            <th>Count</th>
-          </tr>
-        </thead>
-        <tbody>
-          {flagged.map(q => (
-            <tr key={q._id}>
-              <td>{q.questionId}</td>
-              <td>{q.userId}</td>
-              <td>{q.reason}</td>
-              <td>{new Date(q.timestamp).toLocaleString()}</td>
-              <td>{q.count}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="flagged-questions-container">
+      <div className="header">
+        <h2>Flagged Questions</h2>
+      </div>
+      {flagged.map((q, index) => (
+        <div className="card" key={index}>
+          <div className="card-header">
+            <h4>Question ID: {q.questionId}</h4>
+            <p className="chapter-weighting">Chapter Weighting: High</p>
+          </div>
+          <div className="card-body">
+            <div className="row">
+              <div className="col-sm-3">User ID: {q.userId}</div>
+              <div className="col-sm-3">Reason: {q.reason}</div>
+              <div className="col-sm-3">Timestamp: {new Date(q.createdAt).toLocaleString()}</div>
+              <div className="col-sm-3">Count: {q.count || 1}</div>
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
   );
 };

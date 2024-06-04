@@ -1,0 +1,55 @@
+.flagged-questions-container {
+  padding: 20px;
+}
+
+.flagged-questions-header {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.flagged-question-card {
+  background-color: #1f2937; /* Dark background similar to the chapter cards */
+  border-radius: 10px;
+  margin-bottom: 20px;
+  padding: 20px;
+  color: white; /* White text */
+}
+
+.flagged-question-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.question-id {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.chapter-weighting {
+  color: red;
+  font-weight: bold;
+}
+
+.flagged-question-card-body .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.flagged-question-card-body .row .col-sm-3 {
+  font-size: 1rem;
+}
+
+.flagged-question-card-body .row .col-sm-3:nth-child(odd) {
+  background-color: #374151;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.flagged-question-card-body .row .col-sm-3:nth-child(even) {
+  padding: 10px;
+}
