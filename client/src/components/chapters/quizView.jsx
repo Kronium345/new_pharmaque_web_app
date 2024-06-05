@@ -174,7 +174,7 @@ const QuizView = ({
             </div>
 
             <div className="row borderbottom justify-content-start align-items-start text-start">
-              <div className="col-sm-12">
+              <div className="col-sm-9">
                 <div className="card p-0 mb-4 mt-3">
                   <div className="text-left question-text">{question}</div>
                 </div>
@@ -220,6 +220,14 @@ const QuizView = ({
                     {hasSubmitted ? "Next Question" : "Submit Answer"}
                   </button>
                 </div>
+              </div>
+              <div className="col-sm-3 d-flex align-items-start justify-content-end" style={{ marginTop: '40px' }}>
+                <img
+                  src="/images/ExampleImage1.png"
+                  alt="Example"
+                  className="img-fluid"
+                  style={{ height: '400px', width: '400px' }}
+                />
               </div>
             </div>
 

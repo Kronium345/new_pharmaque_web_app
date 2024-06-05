@@ -1,17 +1,15 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { RiWechatLine } from "react-icons/ri";
+import { FiMenu, FiX } from "react-icons/fi";
 import { useAuth } from "../../hooks";
 import { useScreenTime } from "../ScreenTime/ScreenTimeContext";
 
-export default function SideBar() {
+export default function SideBar({ sidebarOpen, toggleSidebar }) {
   const location = useLocation();
   const { logout } = useAuth();
   const { resetScreenTime } = useScreenTime();
-
-
   const path = location.pathname;
 
   const handleLogout = () => {
@@ -21,121 +19,111 @@ export default function SideBar() {
 
   return (
     <>
-      <Link class="navbar-brand" to="/dashboard">
-        <img src="/images/Logo.png" alt="PharmaQue Logo" class="logo1" />
-        <span class="fs-4 fw-bold mx-3">PharmaQue</span>
-      </Link>
-      {data.map((item) => {
-        return (
-          <Link to={item.path} class="removeunderline activelink">
-            <p class="py-3 m-0">
-              {!item.icon ? (
-                <img
-                  src={path === item.path ? item.activeIcon : item.inActiveIcon}
-                  class="navigationicon"
-                  alt="navigation"
-                />
-              ) : path === item.path ? (
-                item.activeIcon
-              ) : (
-                item.inActiveIcon
-              )}
-              <span class="fs-5 navigationoption mx-4">{item.name}</span>
-            </p>
+      <div style={{ display: 'flex', alignItems: 'center', padding: '10px' }}>
+        <button onClick={toggleSidebar} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '24px' }}>
+          {sidebarOpen ? <FiX /> : <FiMenu />}
+        </button>
+        {sidebarOpen && (
+          <Link className="navbar-brand" to="/dashboard" style={{ marginLeft: '10px' }}>
+            <img src="/images/Logo.png" alt="PharmaQue Logo" className="logo1" />
+            <span className="fs-4 fw-bold mx-3">PharmaQue</span>
           </Link>
-        );
-      })}
-      <button
-        className="btn btn-tertiary fs-5 fw-bold mb-5"
-        onClick={handleLogout}
+        )}
+      </div>
+      <div
         style={{
-          marginTop: 'auto', // This will push the button to the bottom if the parent is a flex container
-          marginBottom: '2rem', // Adds space below the button
-          marginLeft: '3rem', // This, combined with marginRight, will center the button
-          width: '100%', // This will make the button as wide as its container
-          maxWidth: '200px',
+          width: sidebarOpen ? '200px' : '0', // Adjusted width to be narrower
+          transition: 'width 0.3s',
+          overflow: 'hidden',
+          backgroundColor: '#fff',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          paddingTop: '10px',
         }}
-        >
-          Logout
-      </button>
+      >
+        {sidebarOpen && (
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <div>
+              <Link to="/dashboard" className="removeunderline activelink">
+                <p className="py-3 m-0" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', paddingLeft: '20px' }}>
+                  <img src={path === "/dashboard" ? "/images/DashboardColor.png" : "/images/DashboardGrey.png"} className="navigationicon" alt="navigation" />
+                  <span className="fs-5 navigationoption mx-4">Dashboard</span>
+                </p>
+              </Link>
+              <Link to="/chapters" className="removeunderline activelink">
+                <p className="py-3 m-0" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', paddingLeft: '20px' }}>
+                  <img src={path === "/chapters" ? "/images/ChaptersColour.png" : "/images/ChaptersGrey.png"} className="navigationicon" alt="navigation" />
+                  <span className="fs-5 navigationoption mx-4">Chapters</span>
+                </p>
+              </Link>
+              <Link to="/flashcards" className="removeunderline activelink">
+                <p className="py-3 m-0" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', paddingLeft: '20px' }}>
+                  <img src={path === "/flashcards" ? "/images/FlashcardsColour.png" : "/images/FlashcardsGrey.png"} className="navigationicon" alt="navigation" />
+                  <span className="fs-5 navigationoption mx-4">Flashcards</span>
+                </p>
+              </Link>
+              <Link to="/flaggedquestions" className="removeunderline activelink">
+                <p className="py-3 m-0" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', paddingLeft: '20px' }}>
+                  <img src={path === "/flaggedquestions" ? "/images/FlaggedQuestionsColour.png" : "/images/FlaggedQuestionsGrey.png"} className="navigationicon" alt="navigation" />
+                  <span className="fs-5 navigationoption mx-4">Flagged Questions</span>
+                </p>
+              </Link>
+              <Link to="/pastchapters" className="removeunderline activelink">
+                <p className="py-3 m-0" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', paddingLeft: '20px' }}>
+                  <img src={path === "/pastchapters" ? "/images/PastChaptersColour.png" : "/images/PastChaptersGrey.png"} className="navigationicon" alt="navigation" />
+                  <span className="fs-5 navigationoption mx-4">Past Chapters</span>
+                </p>
+              </Link>
+              <Link to="/upcomingevents" className="removeunderline activelink">
+                <p className="py-3 m-0" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', paddingLeft: '20px' }}>
+                  <img src={path === "/upcomingevents" ? "/images/UpcomingEventsColour.png" : "/images/UpcomingEventsGrey.png"} className="navigationicon" alt="navigation" />
+                  <span className="fs-5 navigationoption mx-4">Upcoming Events</span>
+                </p>
+              </Link>
+              <Link to="/queryresponses" className="removeunderline activelink">
+                <p className="py-3 m-0" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', paddingLeft: '20px' }}>
+                  <img src={path === "/queryresponses" ? "/images/QueryResponsesColour.png" : "/images/QueryResponsesGrey.png"} className="navigationicon" alt="navigation" />
+                  <span className="fs-5 navigationoption mx-4">Query Responses</span>
+                </p>
+              </Link>
+
+              <Link to="/chat-room" className="removeunderline activelink">
+                <p className="py-3 m-0" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', paddingLeft: '20px' }}>
+                  <IoChatbubbleEllipsesOutline fontSize={45} color={"#1d3354"} />
+                  <span className="fs-5 navigationoption mx-4">Chat</span>
+                </p>
+              </Link>
+              <Link to="/ai-chat" className="removeunderline activelink">
+                <p className="py-3 m-0" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', paddingLeft: '20px' }}>
+                  <RiWechatLine fontSize={45} color={"#1d3354"} />
+                  <span className="fs-5 navigationoption mx-4">AI Chat</span>
+                </p>
+              </Link>
+              <Link to="/myaccount" className="removeunderline activelink">
+                <p className="py-3 m-0" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', paddingLeft: '20px' }}>
+                  <img src={path === "/myaccount" ? "/images/AccountColour.png" : "/images/AccountGrey.png"} className="navigationicon" alt="navigation" />
+                  <span className="fs-5 navigationoption mx-4">My Account</span>
+                </p>
+              </Link>
+            </div>
+            {sidebarOpen && (
+              <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                <button
+                  className="btn btn-tertiary fs-5 fw-bold mb-5"
+                  onClick={handleLogout}
+                  style={{
+                    width: '100%',
+                    maxWidth: '120px',
+                  }}
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </>
   );
 }
-
-const data = [
-  {
-    id: 1,
-    path: "/dashboard",
-    activeIcon: "/images/DashboardColor.png",
-    inActiveIcon: "/images/DashboardGrey.png",
-    name: "Dashboard",
-  },
-  {
-    id: 2,
-    path: "/chapters",
-    activeIcon: "/images/ChaptersColour.png",
-    inActiveIcon: "/images/ChaptersGrey.png",
-    name: "Chapters",
-  },
-  {
-    id: 3,
-    path: "/flashcards",
-    activeIcon: "/images/FlashcardsColour.png",
-    inActiveIcon: "/images/FlashcardsGrey.png",
-    name: "Flashcards",
-  },
-  {
-    id: 4,
-    path: "/flaggedquestions",
-    activeIcon: "/images/FlaggedQuestionsColour.png",
-    inActiveIcon: "/images/FlaggedQuestionsGrey.png",
-    name: "Flagged Questions",
-  },
-  {
-    id: 5,
-    path: "/pastchapters",
-    activeIcon: "/images/PastChaptersColour.png",
-    inActiveIcon: "/images/PastChaptersGrey.png",
-    name: "Past Chapters",
-  },
-  {
-    id: 6,
-    path: "/upcomingevents",
-    activeIcon: "/images/UpcomingEventsColour.png",
-    inActiveIcon: "/images/UpcomingEventsGrey.png",
-    name: "Upcoming Events",
-  },
-  {
-    id: 7,
-    path: "/queryresponses",
-    activeIcon: "/images/QueryResponsesColour.png",
-    inActiveIcon: "/images/QueryResponsesGrey.png",
-    name: "Query Responses",
-  },
-
-  {
-    id: 9,
-    path: "/chat-room",
-    activeIcon: <IoChatbubbleEllipsesOutline fontSize={45} color={"#1d3354"} />,
-    inActiveIcon: (
-      <IoChatbubbleEllipsesOutline fontSize={45} color={"#bfc0c0"} />
-    ),
-    name: "Chat",
-    icon: true,
-  },
-  {
-    id: 10,
-    path: "/ai-chat",
-    activeIcon: <RiWechatLine fontSize={45} color={"#1d3354"} />,
-    inActiveIcon: <RiWechatLine fontSize={45} color={"#bfc0c0"} />,
-    name: "AI Chat",
-    icon: true,
-  },
-  {
-    id: 8,
-    path: "/myaccount",
-    activeIcon: "/images/AccountColour.png",
-    inActiveIcon: "/images/AccountGrey.png",
-    name: "My Account",
-  },
-];

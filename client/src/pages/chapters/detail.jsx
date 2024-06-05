@@ -1,7 +1,5 @@
 import { useNavigate, Link, useParams } from "react-router-dom";
-
 import React, { useEffect, useState } from "react";
-
 import ScoreView from "../../components/chapters/scoreView";
 import QuizView from "../../components/chapters/quizView";
 import { useLoading } from "../../hooks";
@@ -15,7 +13,6 @@ const ChapterDetail = () => {
   const [quiz, setQuiz] = useState({});
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
-
   const [isQuizOver, setIsQuizOver] = useState(false);
 
   const handleAnswerClick = async (answer) => {
@@ -79,6 +76,7 @@ const ChapterDetail = () => {
         setLoading(false);
       });
   };
+
   const handleSkip = async () => {
     setLoading(true);
     await axios
@@ -100,7 +98,7 @@ const ChapterDetail = () => {
 
   const handleBack = () => {
     setCurrentQuestion((prev) => (prev > 0 ? prev - 1 : 0));
-  };  
+  };
 
   useEffect(() => {
     getQuizInfo();
@@ -134,13 +132,15 @@ const ChapterDetail = () => {
 
   return (
     <>
-      {!isQuizOver && (
-        <div className="row">
+      <div className="row">
+        {!isQuizOver && (
           <div className="col-sm-7">
             <p className="fs-4 mt-4 fw-bold navybluetext">
               Chapter: {chapter.name}
             </p>
           </div>
+        )}
+        {!isQuizOver && (
           <div className="col-sm-5">
             <button
               type="button"
@@ -155,8 +155,8 @@ const ChapterDetail = () => {
               Back To Chapter Selection
             </button>
           </div>
-        </div>
-      )}
+        )}
+      </div>
       <div className="App">
         {isQuizOver ? (
           <ScoreView questions={questions} score={quiz} />
@@ -175,8 +175,6 @@ const ChapterDetail = () => {
           )
         )}
       </div>
-
-      {/* End of additional content */}
     </>
   );
 };
