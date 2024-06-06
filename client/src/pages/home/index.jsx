@@ -11,6 +11,8 @@ const HomePagee = () => {
   const [flash, setFlash] = useState({});
   const [chapter, setChapter] = useState({});
   const [event, setEvent] = useState({});
+  const [flaggedQuestions, setFlaggedQuestions] = useState([]);
+  const [questions, setQuestions] = useState([]);
   const { setLoading } = useLoading();
   const { screenTime } = useScreenTime();
 
@@ -22,6 +24,7 @@ const HomePagee = () => {
   useEffect(() => {
     getData();
     getProfile(); // Fetch the profile to get the username
+    fetchFlaggedQuestions(); // Fetch flagged questions
   }, []);
 
   const getData = async () => {
@@ -51,6 +54,28 @@ const HomePagee = () => {
         console.log(err);
       });
   };
+
+  const fetchFlaggedQuestions = async () => {
+    try {
+      const { data } = await axios.get('/flagged/flagged');
+      if (data.status) {
+        setFlaggedQuestions(data.questions);
+
+        const questionIds = data.questions.map(q => q.questionId);
+        const questionData = await axios.post('/chapter/questions/details', { ids: questionIds });
+        setQuestions(questionData.data.questions);
+      }
+    } catch (error) {
+      console.error('Error fetching flagged questions:', error);
+    }
+  };
+
+  const getQuestionText = (questionId) => {
+    const question = questions.find(q => q._id === questionId);
+    return question ? question.question : 'Loading...';
+  };
+
+  const mostRecentFlaggedQuestion = flaggedQuestions.length > 0 ? flaggedQuestions[0] : null;
 
   return (
     <>
@@ -186,19 +211,29 @@ const HomePagee = () => {
                   <p className="h5 navybluetext fw-bold mb-3">Flagged Questions</p>
                 </div>
                 <div className="col-sm-3">
-                  <a href="/flaggedquestions" className="removeunderline">
+                  <Link to="/flaggedquestions" className="removeunderline">
                     <p className="h5 navybluetext fw-bold">View All</p>
-                  </a>
+                  </Link>
                 </div>
               </div>
-              <div className="row borderbottom mb-3">
-                <div className="col-sm-12">
-                </div>
-              </div>
-              <div className="row borderbottom">
-                <div className="col-sm-12">
-                </div>
-              </div>
+              {mostRecentFlaggedQuestion && (
+                <>
+                  <div className="row borderbottom mb-3">
+                    <div className="col-sm-12">
+                      <h4 className="question-id">
+                        1. Question: {getQuestionText(mostRecentFlaggedQuestion.questionId)}
+                      </h4>
+                      <p className="chapter-weighting">Chapter Weighting: High</p>
+                    </div>
+                  </div>
+                  <div className="row borderbottom">
+                    <div className="col-sm-3">User: {mostRecentFlaggedQuestion.userId.username}</div>
+                    <div className="col-sm-3">Reason: {mostRecentFlaggedQuestion.reason}</div>
+                    <div className="col-sm-3">Timestamp: {new Date(mostRecentFlaggedQuestion.timestamp).toLocaleString()}</div>
+                    <div className="col-sm-3">Count: {mostRecentFlaggedQuestion.count || 1}</div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -321,9 +356,9 @@ const HomePagee = () => {
                 </p>
               </div>
               <div className="col-sm-3 center">
-                <a href="#" className="removeunderline">
+                <Link to="/pastchapters" className="removeunderline">
                   <p className="h5 navybluetext fw-bold whitetext">View All</p>
-                </a>
+                </Link>
               </div>
             </div>
             <div className="col-sm-12">

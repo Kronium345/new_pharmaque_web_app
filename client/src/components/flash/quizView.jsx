@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./QuizView.css";
+import axios from 'axios';
 
 const QuizView = ({
   questions = [],
@@ -17,6 +18,34 @@ const QuizView = ({
 
   const { question, answers, explanation } = questions[currentQuestion];
   const [selectedAnswer, setSelectedAnswer] = React.useState({});
+  const [flagReason, setFlagReason] = useState('');
+  const [reportReason, setReportReason] = useState('');
+  const [showFlagOptions, setShowFlagOptions] = useState(false);
+  const [showReportOptions, setShowReportOptions] = useState(false);
+
+  const handleFlagQuestion = async () => {
+    try {
+      const response = await axios.post('/flagged/flag', {
+        questionId: questions[currentQuestion]._id,
+        reason: flagReason,
+      });
+      alert(response.data.message);
+    } catch (error) {
+      console.error('Error flagging question:', error);
+    }
+  };
+
+  const handleReportQuestion = async () => {
+    try {
+      const response = await axios.post('/reported/report', {
+        questionId: questions[currentQuestion]._id,
+        reason: reportReason,
+      });
+      alert(response.data.message);
+    } catch (error) {
+      console.error('Error reporting question:', error);
+    }
+  };
 
   if (questions.length === 0) {
     return <div>No questions found.</div>;
@@ -43,23 +72,32 @@ const QuizView = ({
                 </button>
               </div>
               <div className="col-sm-3">
-                <button
-                  to=""
-                  className="inline removeunderline navybluetext btn"
-                  onClick={handleReport}
-                >
+                <div onClick={() => setShowReportOptions(!showReportOptions)} className="inline removeunderline navybluetext btn">
                   <img
                     src="/images/FlagQuestionIcon.png"
                     className="moderateicon"
                     alt="icon"
                   />{" "}
                   <span className="fs-5 mx-2">Report Flashcard</span>
-                </button>
+                </div>
+                {showReportOptions && (
+                  <>
+                    <select onChange={(e) => setReportReason(e.target.value)}>
+                      <option value="">Select reason</option>
+                      <option value="incorrect">Incorrect</option>
+                      <option value="misleading">Misleading</option>
+                      <option value="other">Other</option>
+                    </select>
+                    <button onClick={handleReportQuestion} className="btn btn-primary mt-2">
+                      Submit Report
+                    </button>
+                  </>
+                )}
               </div>
 
               <div className="col-sm-4 center">
                 <p className="fs-4 fw-bold navybluetext mb-2">
-                  Flashcard {currentQuestion} of {questions.length}
+                  Flashcard {currentQuestion + 1} of {questions.length}
                 </p>
                 <p className="fs-5 fw-bold mediumbluetext mb-4">
                   Chapter Weighting: <span className="redtext">High</span>
@@ -67,17 +105,27 @@ const QuizView = ({
               </div>
 
               <div className="col-sm-3">
-                <button
-                  onClick={handleFlagged}
-                  className="inline removeunderline navybluetext floatright btn"
-                >
+                <div onClick={() => setShowFlagOptions(!showFlagOptions)} className="inline removeunderline navybluetext floatright btn">
                   <img
                     src="/images/FlagIcon.png"
                     className="moderateicon"
                     alt="icon"
                   />{" "}
                   <span className="fs-5 mx-2">Flag Flashcard</span>
-                </button>
+                </div>
+                {showFlagOptions && (
+                  <>
+                    <select onChange={(e) => setFlagReason(e.target.value)}>
+                      <option value="">Select reason</option>
+                      <option value="inappropriate">Inappropriate</option>
+                      <option value="too_cumbersome">Too Cumbersome</option>
+                      <option value="other">Other</option>
+                    </select>
+                    <button onClick={handleFlagQuestion} className="btn btn-primary mt-2">
+                      Submit Flag
+                    </button>
+                  </>
+                )}
               </div>
 
               <div className="col-sm-1">
@@ -147,42 +195,6 @@ const QuizView = ({
                     </div>
                   </div>
                 </div>
-
-                {/* Answer buttons are commented out
-                {answers?.map((answer, index) => (
-                  <button
-                    className={
-                      "btn fs-5 p-0 mb-3 " +
-                      (selectedAnswer?._id === answer?._id
-                        ? "bg-blue"
-                        : "btn-secondary")
-                    }
-                    key={index}
-                    onClick={() => setSelectedAnswer(answer)}
-                  >
-                    <p className="fs-5 py-2 px-4 m-0">{answer?.text}</p>
-                  </button>
-                ))}
-
-                <div
-                  className="d-flex align-items-center "
-                  onClick={() => handleAnswerClick(selectedAnswer)}
-                >
-                  <button
-                    type="submit"
-                    className="btn btn-deactivated fw-bold fs-5 mt-4 mb-4 px-3 py-2"
-                  >
-                    Next Question
-                  </button>{" "}
-                  <button
-                    onClick={handleSkip}
-                    className="mediumbluetext fs-5 fw-bold mx-4 removeunderline btn"
-                  >
-                    Skip Flashcard
-                  </button>
-                </div>
-                */}
-
               </div>
             </div>
 
