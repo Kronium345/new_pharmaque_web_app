@@ -1,0 +1,85 @@
+.report-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+}
+
+.report-form {
+  background-color: #9ED8D8;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  max-width: 100%;
+}
+
+.report-form h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.report-form .form-group {
+  margin-bottom: 15px;
+}
+
+.report-form .form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.report-form .form-group input,
+.report-form .form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.report-form .btn-send-report {
+  width: 100%;
+  padding: 10px;
+  background-color: #1d3354;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.report-form .btn-send-report:hover {
+  background-color: #3f5c8a;
+}
+
+.report-form .btn-cancel {
+  width: 100%;
+  padding: 10px;
+  background-color: #ccc;
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.report-form .btn-cancel:hover {
+  background-color: #bbb;
+}
+
+.row.unread {
+  background-color: #ADD8E6;
+}
+
+.row.read {
+  background-color: #f0f8ff;
+}
