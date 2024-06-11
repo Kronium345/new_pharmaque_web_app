@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './QueryResponses.css';
 
 const QueryResponses = () => {
@@ -12,21 +12,32 @@ const QueryResponses = () => {
   const [showReportForm, setShowReportForm] = useState(false);
   const [reportContent, setReportContent] = useState('');
   const [selectedQuestionForReport, setSelectedQuestionForReport] = useState(null);
+  const [userEmail, setUserEmail] = useState('');
 
   useEffect(() => {
-    const fetchReportedQuestions = async () => {
-      try {
-        const { data } = await axios.get('/reported/reported');
-        if (data.status) {
-          setReportedQuestions(data.questions);
-        }
-      } catch (error) {
-        console.error('Error fetching reported questions:', error);
-      }
-    };
-
     fetchReportedQuestions();
+    getProfile();
   }, []);
+
+  const fetchReportedQuestions = async () => {
+    try {
+      const { data } = await axios.get('/reported/reported');
+      if (data.status) {
+        setReportedQuestions(data.questions);
+      }
+    } catch (error) {
+      console.error('Error fetching reported questions:', error);
+    }
+  };
+
+  const getProfile = async () => {
+    try {
+      const { data } = await axios.get('/auth/get-profile');
+      setUserEmail(data.user.email);
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+    }
+  };
 
   const handleCheckboxChange = (questionId) => {
     setSelectedQuestions((prevSelected) =>
@@ -92,15 +103,19 @@ const QueryResponses = () => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    try {
-      await axios.post('/send-email', { content: reportContent });
-      closeReportForm();
-    } catch (error) {
-      console.error('Error sending email:', error);
-    }
+
+    // Create the mailto link
+    const mailtoLink = `mailto:pharmaque23@gmail.com?subject=Reported Question&body=${encodeURIComponent(
+      `Email: ${userEmail}\nContent: ${reportContent}`
+    )}`;
+
+    // Open the mailto link in a new window
+    window.open(mailtoLink);
+
+    closeReportForm();
   };
 
-  const handleSelectAllChange = () => {
+  const handleSelectAll = () => {
     if (selectedQuestions.length === currentQuestions.length) {
       setSelectedQuestions([]);
     } else {
@@ -123,7 +138,7 @@ const QueryResponses = () => {
                     type="checkbox"
                     value=""
                     id="flexCheckDefault"
-                    onChange={handleSelectAllChange}
+                    onChange={handleSelectAll}
                     checked={selectedQuestions.length === currentQuestions.length}
                   />
                 </p>
@@ -170,10 +185,7 @@ const QueryResponses = () => {
             </div>
 
             {currentQuestions.map((q, index) => (
-              <div
-                className={`row px-0 pt-3 pb-2 m-0 fullborder ${q.status === 'read' ? 'read' : 'unread'}`}
-                key={index}
-              >
+              <div className={`row px-0 pt-3 pb-2 m-0 fullborder ${q.status === 'read' ? 'read' : 'unread'}`} key={index}>
                 <div className="col-sm-1">
                   <p className="floatleft">
                     <input
@@ -211,25 +223,21 @@ const QueryResponses = () => {
 
       {showReportForm && (
         <div className="report-form">
-          <div className="form-container">
-            <h2 className="title">Report Question</h2>
-            <form onSubmit={handleFormSubmit}>
-              <div className="form-group">
-                <label>Content:</label>
-                <textarea
-                  value={reportContent}
-                  onChange={(e) => setReportContent(e.target.value)}
-                  required
-                />
-              </div>
-              <button type="submit" className="btn btn-primary">
-                Send Report
-              </button>
-              <button type="button" className="btn btn-secondary" onClick={closeReportForm}>
-                Cancel
-              </button>
-            </form>
-          </div>
+          <form onSubmit={handleFormSubmit}>
+            <h2>Report Question</h2>
+            <div>
+              <label>Content:</label>
+              <textarea
+                value={reportContent}
+                onChange={(e) => setReportContent(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit">Send Report</button>
+            <button type="button" onClick={closeReportForm}>
+              Cancel
+            </button>
+          </form>
         </div>
       )}
     </>
