@@ -102,7 +102,7 @@ export default function SideBar({ sidebarOpen, toggleSidebar }) {
                 <p className="py-3 m-0" style={greyedOutStyle}>
                   <img src="/images/UpcomingEventsGrey.png" className="navigationicon" alt="navigation" />
                   <span className="fs-5 navigationoption mx-4">Upcoming Events</span>
-                  <FaLock style={lockIconStyle} size={20} />
+                  <FaLock style={lockIconStyle} />
                 </p>
               </div>
               <Link to="/queryresponses" className="removeunderline activelink">

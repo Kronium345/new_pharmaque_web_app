@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo, useLayoutEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { getImageUrl } from "../../utils";
 import { useLoading } from "../../hooks";
+import { FaLock } from "react-icons/fa";
 
 const Chapters = () => {
   const navigate = useNavigate();
@@ -61,8 +62,8 @@ const Chapters = () => {
   };
 
   const handleStart = async (chapter) => {
-    if (chapter.name === "Law & Ethics") {
-      // Do nothing for Law & Ethics chapter
+    if (chapter.name !== "Sample Questions") {
+      // Do nothing for all chapters except "Sample Questions"
       return;
     }
     setLoading(true);
@@ -114,14 +115,18 @@ const Chapters = () => {
                 const isAttempted = attempted.find(
                   (cQuiz) => cQuiz.chapter === chapter._id
                 );
-                const isLawAndEthics = chapter.name === "Law & Ethics";
+                const isSampleQuestions = chapter.name === "Sample Questions";
 
                 return (
                   <div className="col-sm-6 mb-3 d-flex" key={idx}>
                     <div
-                      className={`card p-4 mediumbluebg h-100 w-100 d-flex flex-column ${
-                        isLawAndEthics ? "grayed-out" : ""
+                      className={`card p-4 h-100 w-100 d-flex flex-column ${
+                        !isSampleQuestions ? "grayed-out" : "mediumbluebg"
                       }`}
+                      style={{
+                        backgroundColor: !isSampleQuestions ? "#f0f0f0" : "#1d3354",
+                        color: !isSampleQuestions ? "#a0a0a0" : "#ffffff",
+                      }}
                     >
                       <div className="row flex-grow-1">
                         <div className="col-sm-3">
@@ -133,24 +138,33 @@ const Chapters = () => {
                               borderRadius: "8px",
                               width: "100%",
                               height: "auto",
+                              filter: !isSampleQuestions
+                                ? "grayscale(100%)"
+                                : "none",
                             }}
                           />
                         </div>
                         <div className="col-sm-9">
-                          <p className="fs-5 fw-bold whitetext mb-1">
+                          <p className="fs-5 fw-bold mb-1">
                             {chapter.name}
+                            {!isSampleQuestions && <FaLock style={{ marginLeft: "10px" }} />}
                           </p>
-                          <p className="fs-6 whitetext mb-3">
+                          <p className="fs-6 mb-3">
                             {isAttempted?.attemptedQuestions || 0} Questions
                             Attempted
                           </p>
                           <div className="mt-auto">
                             <button
                               onClick={() => handleStart(chapter)}
-                              className="btn removeunderline boldtext navybluetext fw-bold"
-                              disabled={isLawAndEthics}
+                              className="btn removeunderline boldtext fw-bold"
+                              disabled={!isSampleQuestions}
+                              style={{
+                                backgroundColor: !isSampleQuestions ? "#d0d0d0" : "#ffffff",
+                                color: !isSampleQuestions ? "#a0a0a0" : "#1d3354",
+                                cursor: !isSampleQuestions ? "not-allowed" : "pointer",
+                              }}
                             >
-                              <div className="px-3 py-2 whitebg pseudobutton">
+                              <div className="px-3 py-2">
                                 {isAttempted ? "Resume" : "Start"} Chapter
                               </div>
                             </button>

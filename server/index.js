@@ -17,6 +17,7 @@ import { CommentRouter } from './routes/comment.js'; // Updated to reflect actua
 import { FlaggedRouter } from './routes/flagged.js';
 import { ReportedRouter } from './routes/reported.js';
 import { EmailRouter } from "./routes/email.js";
+import { SampleRouter } from "./routes/sample.js";
 
 
 dotenv.config();
@@ -56,6 +57,7 @@ app.use('/api', CommentRouter);
 app.use('/flagged', FlaggedRouter);
 app.use('/reported', ReportedRouter);
 app.use('/send-email', EmailRouter);
+app.use('/sample', SampleRouter);
 app.use("/", Router);
 
 // Utilizing MongoDB Atlas Connection
