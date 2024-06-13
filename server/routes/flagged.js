@@ -1,3 +1,4 @@
+// routes/flagged.js
 import express from 'express';
 import { FlaggedQuestion } from '../models/FlaggedQuestions.js';
 import { Chapter } from '../models/Chapters.js';
@@ -6,7 +7,7 @@ import checkAuth from '../middleware/checkAuth.js';
 const router = express.Router();
 
 router.post('/flag', checkAuth, async (req, res) => {
-  const { questionId, reason } = req.body;
+  const { questionId } = req.body;
   const { userId } = req.user;
 
   try {
@@ -16,7 +17,7 @@ router.post('/flag', checkAuth, async (req, res) => {
       return res.status(400).json({ message: 'You have already flagged this question.' });
     }
 
-    flaggedQuestion = new FlaggedQuestion({ questionId, userId, reason });
+    flaggedQuestion = new FlaggedQuestion({ questionId, userId });
     await flaggedQuestion.save();
 
     res.json({ message: 'Question flagged successfully.' });

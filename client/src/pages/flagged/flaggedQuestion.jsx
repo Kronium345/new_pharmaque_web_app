@@ -1,6 +1,6 @@
+// FlaggedQuestions.jsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './FlaggedQuestions.css'; // Import the custom CSS file
 
 const FlaggedQuestions = () => {
   const [flagged, setFlagged] = useState([]);
@@ -33,9 +33,8 @@ const FlaggedQuestions = () => {
           </div>
           <div className="card-body">
             <div className="row">
-              <div className="col-sm-3">User ID: {q.userId}</div>
-              <div className="col-sm-3">Reason: {q.reason}</div>
-              <div className="col-sm-3">Timestamp: {new Date(q.createdAt).toLocaleString()}</div>
+              <div className="col-sm-3">User: {q.userId.username}</div>
+              <div className="col-sm-3">Timestamp: {new Date(q.timestamp).toLocaleString()}</div>
               <div className="col-sm-3">Count: {q.count || 1}</div>
             </div>
           </div>

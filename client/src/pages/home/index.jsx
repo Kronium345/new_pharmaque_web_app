@@ -365,14 +365,7 @@ const HomePagee = () => {
               <p className="fs-6 navybluetext fw-bold mb-1 whitetext">
                 <img src="/images/Correct.png" className="smallicon" />
                 <span className="mx-3">
-                  {chapter?.correctAnswers}/{" "}
-                  {chapter?.chapter?.questions?.length} Correct
-                </span>
-
-                <img src="/images/Wrong.png" className="smallicon" />
-                <span className="mx-3">
-                  {chapter?.wrongAnswers}/ {chapter?.chapter?.questions?.length}{" "}
-                  Wrong
+                  {chapter?.correctAnswers + chapter?.wrongAnswers}/{chapter?.chapter?.questions?.length} Questions Attempted
                 </span>
               </p>
             </div>

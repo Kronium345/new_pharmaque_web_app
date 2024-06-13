@@ -1,3 +1,4 @@
+// QuizView.jsx
 import { Link } from "react-router-dom";
 import React, { useState } from "react";
 import "./QuizView.css";
@@ -27,7 +28,6 @@ const QuizView = ({
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [commentsData, setCommentsData] = useState(comments);
   const { insertNode, editNode, deleteNode } = useNode();
-  const [flagReason, setFlagReason] = useState('');
   const [reportReason, setReportReason] = useState('');
   const [showFlagOptions, setShowFlagOptions] = useState(false);
   const [showReportOptions, setShowReportOptions] = useState(false);
@@ -65,8 +65,7 @@ const QuizView = ({
   const handleFlagQuestion = async () => {
     try {
       const response = await axios.post('/flagged/flag', {
-        questionId: questions[currentQuestion]._id,
-        reason: flagReason,
+        questionId: questions[currentQuestion]._id
       });
       alert(response.data.message);
     } catch (error) {
@@ -148,17 +147,9 @@ const QuizView = ({
                   <span className="fs-5 mx-2">Flag Question</span>
                 </div>
                 {showFlagOptions && (
-                  <>
-                    <select onChange={(e) => setFlagReason(e.target.value)}>
-                      <option value="">Select reason</option>
-                      <option value="inappropriate">Inappropriate</option>
-                      <option value="too_cumbersome">Too Cumbersome</option>
-                      <option value="other">Other</option>
-                    </select>
-                    <button onClick={handleFlagQuestion} className="btn btn-primary mt-2">
-                      Submit Flag
-                    </button>
-                  </>
+                  <button onClick={handleFlagQuestion} className="btn btn-primary mt-2">
+                    Submit Flag
+                  </button>
                 )}
               </div>
 
