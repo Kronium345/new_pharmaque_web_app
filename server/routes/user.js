@@ -6,6 +6,9 @@ import jwt, { decode } from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import { upload } from "../middleware/multer.js";
 import checkAuth from "../middleware/checkAuth.js";
+import dotenv from "dotenv";
+
+dotenv.config(); // Load environment variables
 
 const router = express.Router();
 
@@ -72,7 +75,7 @@ router.post("/forgotpassword", async (req, res) => {
       service: "gmail",
       auth: {
         user: "kronium345@gmail.com",
-        pass: "ikmu nivr ahxu nefm",
+        pass: "migh zape legm bpkb",
       },
     });
 
@@ -80,7 +83,7 @@ router.post("/forgotpassword", async (req, res) => {
       from: "kronium345@gmail.com",
       to: email, // Use the dynamic email from the request body
       subject: "Reset Password",
-      text: `http://localhost:3000/resetpassword/${token}`,
+      text: `http://localhost:5173/resetpassword/${token}`,
     };
 
     transporter.sendMail(mailOptions, function (error, info) {

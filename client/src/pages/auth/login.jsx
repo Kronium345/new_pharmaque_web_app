@@ -90,9 +90,9 @@ const Login = () => {
                     id="exampleCheck1"
                     className="checkboxsize"
                   />
-                  <label className="my-0 mx-1 fs-6" htmlFor="exampleCheck1">
+                  {/* <label className="my-0 mx-1 fs-6" htmlFor="exampleCheck1">
                     Remember Me
-                  </label>
+                  </label> */}
                   <p className="my-0 mx-1 floatright link fs-6">
                     Forgot your password?{" "}
                     <Link to="/forgotpassword" className="fw-bold link">

@@ -3,10 +3,10 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-import "../quiz-styles/reset.css";
+// import "../quiz-styles/reset.css";
 import useLoading from "../../hooks/useLoading";
 
-const ForgotPassword = () => {
+const ResetPassword = () => {
   const { setLoading } = useLoading();
   const [password, setPassword] = useState("");
   const { token } = useParams();
@@ -61,7 +61,7 @@ const ForgotPassword = () => {
                     Password
                   </label>
                   <input
-                    type="text"
+                    type="password"
                     className="form-control"
                     id="password"
                     name="password"
@@ -83,4 +83,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default ResetPassword;
