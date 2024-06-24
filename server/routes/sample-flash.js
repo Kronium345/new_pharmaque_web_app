@@ -21,15 +21,15 @@ router.post("/", async (req, res) => {
     const questions = SAMPLE_FLASH_DATA.questions;
     let ques = [];
     for (const question of questions) {
-      const answers = question.options;
+      const answers = question.answers;
       let ans = [];
       for (const answer of answers) {
-        ans.push({ text: answer, isCorrect: answer === question.answer });
+        ans.push({ text: answer.text, isCorrect: answer.isCorrect || false });
       }
       ques.push({
         question: question.question,
         answers: ans,
-        explanation: "No Explanation",
+        explanation: question.explanation,
         difficulty: 'easy', // Set default difficulty
       });
     }
@@ -47,8 +47,8 @@ router.post("/", async (req, res) => {
       message: "Flash Card created successfully",
     });
   } catch (err) {
-    console.error("Error creating flashcard set:", err); // Detailed error logging
-    return res.status(500).json({
+    console.error("Error creating flashcard set:", err); // Log the actual error
+    return res.json({
       status: false,
       message: "Something went wrong",
     });
@@ -60,8 +60,7 @@ router.get("/", async (req, res) => {
     const flashCards = await FlashCard.find({}, { questions: 0 });
     return res.json({ status: true, flashCards });
   } catch (err) {
-    console.error("Error fetching flashcards:", err); // Detailed error logging
-    return res.status(500).json({
+    return res.json({
       status: false,
       message: "Something went wrong",
     });
@@ -82,7 +81,7 @@ router.post('/mark-difficulty', checkAuth, async (req, res) => {
       return res.json({ status: false, message: 'Question not found' });
     }
   } catch (error) {
-    console.error('Error marking difficulty:', error); // Detailed error logging
+    console.error('Error marking difficulty:', error);
     return res.status(500).json({ status: false, error: 'Internal server error' });
   }
 });

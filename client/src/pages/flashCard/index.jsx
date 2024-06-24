@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo, useLayoutEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { getImageUrl } from "../../utils";
 import { useLoading } from "../../hooks";
+import { FaLock } from "react-icons/fa";
 
 const FlashCards = () => {
   const navigate = useNavigate();
@@ -61,6 +62,10 @@ const FlashCards = () => {
   };
 
   const handleStart = async (flash) => {
+    if (flash.name !== "Sample Questions") {
+      // Do nothing for all flashcards except "Sample Questions"
+      return;
+    }
     setLoading(true);
     await axios
       .post("fquiz/create", {
@@ -111,11 +116,18 @@ const FlashCards = () => {
                 const isAttempted = attempted.find(
                   (cQuiz) => cQuiz.flash === flash._id
                 );
+                const isSampleQuestions = flash.name === "Sample Questions";
 
                 return (
                   <div className="col-sm-6 mb-3 d-flex" key={idx}>
                     <div
-                      className={`card p-4 mediumbluebg h-100 w-100 d-flex flex-column`}
+                      className={`card p-4 h-100 w-100 d-flex flex-column ${
+                        !isSampleQuestions ? "grayed-out" : "mediumbluebg"
+                      }`}
+                      style={{
+                        backgroundColor: !isSampleQuestions ? "#f0f0f0" : "#1d3354",
+                        color: !isSampleQuestions ? "#a0a0a0" : "#ffffff",
+                      }}
                     >
                       <div className="row flex-grow-1">
                         <div className="col-sm-3">
@@ -127,24 +139,34 @@ const FlashCards = () => {
                               borderRadius: "8px",
                               width: "100%",
                               height: "auto",
+                              filter: !isSampleQuestions
+                                ? "grayscale(100%)"
+                                : "none",
                             }}
                           />
                         </div>
                         <div className="col-sm-9">
-                          <p className="fs-5 fw-bold whitetext mb-1">
+                          <p className="fs-5 fw-bold mb-1">
                             {flash.name}
+                            {!isSampleQuestions && <FaLock style={{ marginLeft: "10px" }} />}
                           </p>
-                          <p className="fs-6 whitetext mb-3">
+                          <p className="fs-6 mb-3">
                             {isAttempted?.attemptedQuestions || 0} Questions
                             Attempted
                           </p>
                           <div className="mt-auto">
                             <button
                               onClick={() => handleStart(flash)}
-                              className="btn removeunderline boldtext navybluetext fw-bold"
+                              className="btn removeunderline boldtext fw-bold"
+                              disabled={!isSampleQuestions}
+                              style={{
+                                backgroundColor: !isSampleQuestions ? "#d0d0d0" : "#ffffff",
+                                color: !isSampleQuestions ? "#a0a0a0" : "#1d3354",
+                                cursor: !isSampleQuestions ? "not-allowed" : "pointer",
+                              }}
                             >
-                              <div className="px-3 py-2 whitebg pseudobutton">
-                                {isAttempted ? "Resume" : "Start"} Chapter
+                              <div className="px-3 py-2">
+                                {isAttempted ? "Resume" : "Start"} Flashcard
                               </div>
                             </button>
                           </div>
