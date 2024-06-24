@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import "./QuizView.css";
 import axios from 'axios';
 
@@ -16,8 +16,7 @@ const QuizView = ({
   const flipFrontRef = React.useRef(null);
   const flipBackRef = React.useRef(null);
 
-  const { question, answers, explanation } = questions[currentQuestion];
-  const [selectedAnswer, setSelectedAnswer] = React.useState({});
+  const [selectedAnswer, setSelectedAnswer] = useState({});
   const [flagReason, setFlagReason] = useState('');
   const [reportReason, setReportReason] = useState('');
   const [showFlagOptions, setShowFlagOptions] = useState(false);
@@ -27,7 +26,6 @@ const QuizView = ({
     try {
       const response = await axios.post('/flagged/flag', {
         questionId: questions[currentQuestion]._id,
-        reason: flagReason,
       });
       alert(response.data.message);
     } catch (error) {
@@ -47,6 +45,18 @@ const QuizView = ({
     }
   };
 
+  const handleMarkDifficulty = async (difficulty) => {
+    try {
+      const response = await axios.post('/flash/mark-difficulty', {
+        questionId: questions[currentQuestion]._id,
+        difficulty: difficulty,
+      });
+      alert(`Marked as ${difficulty}`);
+    } catch (error) {
+      console.error('Error marking difficulty:', error);
+    }
+  };
+
   if (questions.length === 0) {
     return <div>No questions found.</div>;
   }
@@ -55,6 +65,16 @@ const QuizView = ({
     flipRef.current.style.transform = "rotateY(0deg)";
     flipRef.current.style.height = flipFrontRef.current.offsetHeight + "px";
   }, [currentQuestion]);
+
+  const sortedQuestions = useMemo(() => {
+    return questions.sort((a, b) => {
+      if (a.difficulty === 'hard' && b.difficulty !== 'hard') return -1;
+      if (a.difficulty !== 'hard' && b.difficulty === 'hard') return 1;
+      return 0;
+    });
+  }, [questions]);
+
+  const { question, answers, explanation } = sortedQuestions[currentQuestion];
 
   return (
     <>
@@ -199,7 +219,7 @@ const QuizView = ({
             </div>
 
             <div className="row mt-3">
-              <div className="col-sm-1 ">
+              <div className="col-sm-1">
                 <img
                   src="/images/DummyAvatar.png"
                   className="midsizeicon mb-3"
@@ -221,6 +241,25 @@ const QuizView = ({
                   className="btn btn-deactivated fw-bold fs-5 mt-3 mb-4 px-3 py-2"
                 >
                   Post Comment
+                </button>
+              </div>
+            </div>
+
+            <div className="row mt-3">
+              <div className="col-sm-6">
+                <button
+                  className="btn btn-primary fw-bold fs-5 mt-3 mb-4 px-3 py-2"
+                  onClick={() => handleMarkDifficulty('easy')}
+                >
+                  Mark as Easy
+                </button>
+              </div>
+              <div className="col-sm-6">
+                <button
+                  className="btn btn-primary fw-bold fs-5 mt-3 mb-4 px-3 py-2"
+                  onClick={() => handleMarkDifficulty('hard')}
+                >
+                  Mark as Hard
                 </button>
               </div>
             </div>

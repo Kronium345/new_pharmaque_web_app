@@ -16,6 +16,7 @@ const FlashCardSchema = new mongoose.Schema(
           },
         ],
         explanation: { type: String },
+        difficulty: { type: String, default: 'easy' },
       },
     ],
   },

@@ -18,6 +18,7 @@ import { FlaggedRouter } from './routes/flagged.js';
 import { ReportedRouter } from './routes/reported.js';
 import { EmailRouter } from "./routes/email.js";
 import { SampleRouter } from "./routes/sample.js";
+import { SampleFlashRouter } from "./routes/sample-flash.js";
 
 
 dotenv.config();
@@ -58,6 +59,7 @@ app.use('/flagged', FlaggedRouter);
 app.use('/reported', ReportedRouter);
 app.use('/send-email', EmailRouter);
 app.use('/sample', SampleRouter);
+app.use('/sample-flash', SampleFlashRouter);
 app.use("/", Router);
 
 // Utilizing MongoDB Atlas Connection

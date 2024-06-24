@@ -1,6 +1,6 @@
 import { FlashCard } from "../models/FlashCard.js";
 import express from "express";
-import { QUESTIONS_DATA } from "../data/flash.js";
+import { SAMPLE_FLASH_DATA } from "../data/sample-flash.js";
 import checkAuth from "../middleware/checkAuth.js";
 
 const router = express.Router();
@@ -8,17 +8,17 @@ const router = express.Router();
 router.post("/", async (req, res) => {
   try {
     const isExist = await FlashCard.findOne({
-      name: QUESTIONS_DATA.name,
+      name: SAMPLE_FLASH_DATA.name,
     });
 
     if (isExist) {
       return res.json({
         status: false,
-        message: "FlashCard already exists",
+        message: "Flashcard set already exists",
       });
     }
 
-    const questions = QUESTIONS_DATA.questions;
+    const questions = SAMPLE_FLASH_DATA.questions;
     let ques = [];
     for (const question of questions) {
       const answers = question.options;
@@ -35,8 +35,8 @@ router.post("/", async (req, res) => {
     }
 
     const flashCard = new FlashCard({
-      name: QUESTIONS_DATA.name,
-      image: QUESTIONS_DATA.image,
+      name: SAMPLE_FLASH_DATA.name,
+      image: SAMPLE_FLASH_DATA.image,
       questions: ques,
     });
 
@@ -47,7 +47,8 @@ router.post("/", async (req, res) => {
       message: "Flash Card created successfully",
     });
   } catch (err) {
-    return res.json({
+    console.error("Error creating flashcard set:", err); // Detailed error logging
+    return res.status(500).json({
       status: false,
       message: "Something went wrong",
     });
@@ -59,7 +60,8 @@ router.get("/", async (req, res) => {
     const flashCards = await FlashCard.find({}, { questions: 0 });
     return res.json({ status: true, flashCards });
   } catch (err) {
-    return res.json({
+    console.error("Error fetching flashcards:", err); // Detailed error logging
+    return res.status(500).json({
       status: false,
       message: "Something went wrong",
     });
@@ -80,9 +82,9 @@ router.post('/mark-difficulty', checkAuth, async (req, res) => {
       return res.json({ status: false, message: 'Question not found' });
     }
   } catch (error) {
-    console.error('Error marking difficulty:', error);
+    console.error('Error marking difficulty:', error); // Detailed error logging
     return res.status(500).json({ status: false, error: 'Internal server error' });
   }
 });
 
-export { router as FlashRouter };
+export { router as SampleFlashRouter };
