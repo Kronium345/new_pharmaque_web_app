@@ -11,6 +11,10 @@ import ChangePassword from "../pages/auth/ChangePassword/changePassword";
 import ResetPassword from "../pages/auth/resetPassword";
 
 const SignUpPage = lazy(() => import("../pages/auth/signup"));
+const SignUpPage2 = lazy(() => import("../pages/auth/signup2"));
+const SignUpPage3 = lazy(() => import("../pages/auth/signup3"));
+const SignUpPage4 = lazy(() => import("../pages/auth/signup4"));
+const SignUpPage5 = lazy(() => import("../pages/auth/signup5"));
 const ForgotPasswordPage = lazy(() => import("../pages/auth/forgetPassword"));
 const UpcomingEventsPage = lazy(() => import("../pages/events"));
 const AIChat = lazy(() => import("../pages/chat/aiChat"));
@@ -33,6 +37,10 @@ export default function AppRoutes() {
           <>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/signup2" element={<SignUpPage2 />} />
+            <Route path="/signup3" element={<SignUpPage3 />} />
+            <Route path="/signup4" element={<SignUpPage4 />} />
+            <Route path="/signup5" element={<SignUpPage5 />} />
             <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
             <Route path="/resetpassword/:token" element={<ResetPassword />} />
             <Route path="/*" element={<LoginPage />} />

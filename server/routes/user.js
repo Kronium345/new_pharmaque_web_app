@@ -24,11 +24,53 @@ router.post("/signup", async (req, res) => {
     username,
     email,
     password: hashedPassword,
+    subscriptionPlan: "",
+    university: "",
+    pharmacistType: "",
   });
 
   await newUser.save();
   return res.json({ status: true, message: "User registered successfully" });
 });
+
+
+router.post("/update-profile", checkAuth, async (req, res) => {
+  const { userId } = req.user;
+  const { email, subscriptionPlan, university, pharmacistType, avatar } = req.body;
+
+  console.log("Received data to update profile:", { userId, email, subscriptionPlan, university, pharmacistType, avatar });
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      console.log("User not found with ID:", userId);
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    console.log("Found user:", user);
+
+    if (email) user.email = email;
+    if (subscriptionPlan) user.subscriptionPlan = subscriptionPlan;
+    if (university) user.university = university;
+    if (pharmacistType) user.pharmacistType = pharmacistType;
+    if (avatar) user.avatar = avatar;
+
+    await user.save();
+
+    console.log("Profile updated successfully for user:", userId);
+    return res.json({ status: true, message: "Profile updated successfully" });
+  } catch (error) {
+    console.error("Error updating profile:", error.message);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
+
+
+
+
+
 
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;

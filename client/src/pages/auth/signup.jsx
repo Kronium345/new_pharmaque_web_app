@@ -22,7 +22,7 @@ const SignUpPage = () => {
       })
       .then((response) => {
         if (response.data.status) {
-          navigate("/");
+          navigate("/signup2"); // Navigate to next step
         }
       })
       .catch((err) => {
