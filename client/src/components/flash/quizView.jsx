@@ -219,14 +219,14 @@ const QuizView = ({
             </div>
 
             <div className="row mt-3">
-              <div className="col-sm-1">
+              {/* <div className="col-sm-1">
                 <img
                   src="/images/DummyAvatar.png"
                   className="midsizeicon mb-3"
                   alt="icon"
                 />
-              </div>
-
+              </div> */}
+{/* 
               <div className="col-sm-11">
                 <div className="form">
                   <textarea
@@ -242,7 +242,7 @@ const QuizView = ({
                 >
                   Post Comment
                 </button>
-              </div>
+              </div> */}
             </div>
 
             <div className="row mt-3">

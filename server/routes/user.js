@@ -13,7 +13,7 @@ dotenv.config(); // Load environment variables
 const router = express.Router();
 
 router.post("/signup", async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, subscriptionPlan, university, pharmacistType } = req.body;
   const user = await User.findOne({ email });
   if (user) {
     return res.json({ message: "User already exists" });
@@ -24,41 +24,95 @@ router.post("/signup", async (req, res) => {
     username,
     email,
     password: hashedPassword,
-    subscriptionPlan: "",
-    university: "",
-    pharmacistType: "",
+    subscriptionPlan: subscriptionPlan || "Free",
+    university: university || "",
+    pharmacistType: pharmacistType || "",
   });
 
   await newUser.save();
   return res.json({ status: true, message: "User registered successfully" });
 });
 
-
-router.post("/update-profile", checkAuth, async (req, res) => {
+// New Route for Updating University
+router.post("/update-university", checkAuth, async (req, res) => {
   const { userId } = req.user;
-  const { email, subscriptionPlan, university, pharmacistType, avatar } = req.body;
-
-  console.log("Received data to update profile:", { userId, email, subscriptionPlan, university, pharmacistType, avatar });
+  const { university } = req.body;
 
   try {
     const user = await User.findById(userId);
     if (!user) {
-      console.log("User not found with ID:", userId);
       return res.status(404).json({ message: "User not found" });
     }
 
-    console.log("Found user:", user);
+    user.university = university;
+    await user.save();
 
-    if (email) user.email = email;
+    return res.json({ status: true, message: "University updated successfully" });
+  } catch (error) {
+    console.error("Error updating university:", error.message);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// New Route for Updating Subscription Plan
+router.post("/update-subscription-plan", checkAuth, async (req, res) => {
+  const { userId } = req.user;
+  const { subscriptionPlan } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.subscriptionPlan = subscriptionPlan;
+    await user.save();
+
+    return res.json({ status: true, message: "Subscription plan updated successfully" });
+  } catch (error) {
+    console.error("Error updating subscription plan:", error.message);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// New Route for Updating Pharmacist Type
+router.post("/update-pharmacist-type", checkAuth, async (req, res) => {
+  const { userId } = req.user;
+  const { pharmacistType } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.pharmacistType = pharmacistType;
+    await user.save();
+
+    return res.json({ status: true, message: "Pharmacist type updated successfully" });
+  } catch (error) {
+    console.error("Error updating pharmacist type:", error.message);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// user.js
+router.post("/update-profile", async (req, res) => {
+  const { email, subscriptionPlan, university, pharmacistType, avatar } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
     if (subscriptionPlan) user.subscriptionPlan = subscriptionPlan;
     if (university) user.university = university;
     if (pharmacistType) user.pharmacistType = pharmacistType;
     if (avatar) user.avatar = avatar;
 
     await user.save();
-
-    console.log("Profile updated successfully for user:", userId);
-    return res.json({ status: true, message: "Profile updated successfully" });
+    return res.json({ status: true, message: "Profile updated successfully", user });
   } catch (error) {
     console.error("Error updating profile:", error.message);
     return res.status(500).json({ message: "Internal server error" });
@@ -66,7 +120,27 @@ router.post("/update-profile", checkAuth, async (req, res) => {
 });
 
 
+// Save Profile Endpoint
+router.post("/save-profile", async (req, res) => {
+  const { email, subscriptionPlan, university, pharmacistType } = req.body;
 
+  try {
+    const user = await User.findOne({ email }); // Find user by email
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (subscriptionPlan) user.subscriptionPlan = subscriptionPlan;
+    if (university) user.university = university;
+    if (pharmacistType) user.pharmacistType = pharmacistType;
+
+    await user.save();
+    return res.json({ status: true, message: "Profile updated successfully", user });
+  } catch (error) {
+    console.error("Error updating profile:", error.message);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 
 
@@ -259,12 +333,13 @@ router.get("/get-profile", checkAuth, async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    return res.json({ status: true, user: { username: user.username, email: user.email, avatar: user.avatar } }); // Include username here
+    return res.json({ status: true, user: { username: user.username, email: user.email, avatar: user.avatar, university: user.university, subscriptionPlan: user.subscriptionPlan, pharmacistType: user.pharmacistType } }); // Include all fields here
   } catch (error) {
     console.error("Error getting profile:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 
 export { router as UserRouter };

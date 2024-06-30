@@ -5,6 +5,7 @@ import "./QuizView.css";
 import CommentBox from "../comments/CommentBox";
 import useNode from "../../hooks/useNode";
 import axios from 'axios';
+import { useAuth } from '../../hooks';
 
 const comments = {
   id: 1,
@@ -31,6 +32,8 @@ const QuizView = ({
   const [reportReason, setReportReason] = useState('');
   const [showFlagOptions, setShowFlagOptions] = useState(false);
   const [showReportOptions, setShowReportOptions] = useState(false);
+  const { profile } = useAuth();
+  const [answeredQuestions, setAnsweredQuestions] = useState([]);
 
   const handleInsertNode = (folderId, item) => {
     const finalStructure = insertNode(commentsData, folderId, item);
@@ -58,6 +61,10 @@ const QuizView = ({
     } else {
       setShowExplanation(true);
       setIsAnswerCorrect(selectedAnswer.isCorrect);
+      setAnsweredQuestions(prev => [
+        ...prev,
+        { questionIndex: currentQuestion, isCorrect: selectedAnswer.isCorrect }
+      ]);
       setHasSubmitted(true);
     }
   };
@@ -212,14 +219,29 @@ const QuizView = ({
                   </button>
                 </div>
               </div>
-              {/* <div className="col-sm-3 d-flex align-items-start justify-content-end" style={{ marginTop: '40px' }}>
-                <img
-                  src="/images/ExampleImage1.png"
-                  alt="Example"
-                  className="img-fluid"
-                  style={{ height: '400px', width: '400px' }}
-                />
-              </div> */}
+              <div className="col-sm-3 d-flex flex-column align-items-center justify-content-start question-list">
+                {questions.map((q, index) => {
+                  const answeredQuestion = answeredQuestions.find(
+                    (aq) => aq.questionIndex === index
+                  );
+                  const buttonClass = answeredQuestion
+                    ? answeredQuestion.isCorrect
+                      ? "correct-question"
+                      : "incorrect-question"
+                    : "";
+
+                  return (
+                    <div
+                      key={q._id}
+                      className={`question-item ${
+                        currentQuestion === index ? "current-question" : ""
+                      } ${buttonClass}`}
+                    >
+                      Question {index + 1}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
 
             <CommentBox
@@ -228,6 +250,7 @@ const QuizView = ({
               handleDeleteNode={handleDeleteNode}
               comment={commentsData}
               chapterId={quiz._id}
+              profile={profile}
             />
           </div>
         </div>

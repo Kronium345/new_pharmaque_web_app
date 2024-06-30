@@ -79,4 +79,17 @@ router.post('/mark-as-unread', checkAuth, async (req, res) => {
   }
 });
 
+router.post('/delete', checkAuth, async (req, res) => {
+  const { ids } = req.body;
+
+  try {
+    await ReportedQuestion.deleteMany({ _id: { $in: ids } });
+
+    return res.json({ status: true, message: 'Deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting reported questions:', error);
+    return res.status(500).json({ status: false, error: 'Internal server error' });
+  }
+});
+
 export { router as ReportedRouter };

@@ -85,11 +85,11 @@ const Login = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <input
+                  {/* <input
                     type="checkbox"
                     id="exampleCheck1"
                     className="checkboxsize"
-                  />
+                  /> */}
                   {/* <label className="my-0 mx-1 fs-6" htmlFor="exampleCheck1">
                     Remember Me
                   </label> */}

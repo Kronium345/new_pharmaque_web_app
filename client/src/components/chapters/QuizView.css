@@ -21,7 +21,7 @@
   flex-direction: column;
   gap: 15px;
   width: 70%;
-  margin: auto;
+  margin-right: 30%; /* Adjust this value to move the options to the left */
 }
 
 .answer button:nth-child(n) {
@@ -29,8 +29,9 @@
   cursor: pointer;
   border: 2px solid #1d3354; /* Border added */
   border-radius: 5px;
-  background-color: #e0eafc;
+  background-color: white;
   transition: background-color 0.3s, color 0.3s, border 0.3s;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .answer button:nth-child(n):hover {
@@ -100,4 +101,45 @@
 .btn-deactivated {
   background-color: #ccc;
   cursor: not-allowed;
+}
+
+/* Additional styles for the question list */
+.question-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.question-item {
+  padding: 10px;
+  cursor: pointer;
+  border: 2px solid #1d3354; /* Border added */
+  border-radius: 5px;
+  background-color: #e0eafc;
+  transition: background-color 0.3s, color 0.3s, border 0.3s;
+  text-align: center;
+  width: 100%;
+}
+
+.question-item:hover {
+  background-color: #1d3354;
+  color: white;
+}
+
+.current-question {
+  background-color: #1d3354;
+  color: white;
+}
+
+.correct-question {
+  background-color: #28a745 !important;
+  color: #ffffff !important;
+  border: 2px solid #28a745 !important;
+}
+
+.incorrect-question {
+  background-color: #dc3545 !important;
+  color: #ffffff !important;
+  border: 2px solid #dc3545 !important;
 }

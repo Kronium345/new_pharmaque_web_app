@@ -63,4 +63,51 @@ router.delete('/delete-comment/:commentId', checkAuth, async (req, res) => {
     }
 });
 
+// Like a comment
+router.post('/like-comment/:commentId', checkAuth, async (req, res) => {
+    const { commentId } = req.params;
+    try {
+        const comment = await Comment.findById(commentId);
+        if (!comment.likes.includes(req.user.userId)) {
+            comment.likes.push(req.user.userId);
+            await comment.save();
+            res.json({ success: true, comment });
+        } else {
+            res.status(400).json({ success: false, message: 'You already liked this comment' });
+        }
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Failed to like comment', error });
+    }
+});
+
+// Unlike a comment
+router.post('/unlike-comment/:commentId', checkAuth, async (req, res) => {
+    const { commentId } = req.params;
+    try {
+        const comment = await Comment.findById(commentId);
+        if (comment.likes.includes(req.user.userId)) {
+            comment.likes = comment.likes.filter(userId => userId !== req.user.userId);
+            await comment.save();
+            res.json({ success: true, comment });
+        } else {
+            res.status(400).json({ success: false, message: 'You have not liked this comment' });
+        }
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Failed to unlike comment', error });
+    }
+});
+
+// Report a comment
+router.post('/report-comment/:commentId', checkAuth, async (req, res) => {
+    const { commentId } = req.params;
+    try {
+        const comment = await Comment.findById(commentId);
+        comment.reports.push(req.user.userId);
+        await comment.save();
+        res.json({ success: true, comment });
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Failed to report comment', error });
+    }
+});
+
 export { router as CommentRouter };

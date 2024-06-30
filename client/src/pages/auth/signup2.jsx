@@ -1,19 +1,21 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import axios from "axios";
 import { useLoading } from "../../hooks";
 
 const SignUp2 = () => {
   const { setLoading } = useLoading();
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const { email } = state || {}; // Retrieve email from state
   const [university, setUniversity] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post("auth/signup", { university });
-      navigate("/signup3");
+      await axios.post("/auth/update-profile", { email, university });
+      navigate("/signup3", { state: { email } }); // Pass email to next step
     } catch (error) {
       console.error("Error updating profile:", error);
     } finally {
@@ -24,10 +26,10 @@ const SignUp2 = () => {
   return (
     <main className="mainbg p-4">
       <div className="container-fluid p-4">
-        <a className="navbar-brand" href="index.html">
+        <Link to="/" className="navbar-brand">
           <img src="images/Logo.png" alt="PharmaQue Logo" className="logo" />
           <span className="fs-3 fw-bold mx-3">PharmaQue</span>
-        </a>
+        </Link>
       </div>
       <div className="container-fluid">
         <div className="row p-5">

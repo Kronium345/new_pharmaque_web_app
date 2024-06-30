@@ -27,7 +27,7 @@ const FlaggedQuestions = () => {
       </div>
       {flagged.map((q, index) => (
         <div className="card" key={index}>
-          <div className="card-header">
+          <div className="questionholder hide">
             <h4>Question ID: {q.questionId}</h4>
             <p className="chapter-weighting">Chapter Weighting: High</p>
           </div>

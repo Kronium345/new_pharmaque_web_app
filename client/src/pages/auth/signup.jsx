@@ -8,21 +8,21 @@ const SignUpPage = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     setLoading(true);
     await axios
-      .post("auth/signup", {
+      .post("/auth/signup", {
         username,
         email,
         password,
       })
       .then((response) => {
         if (response.data.status) {
-          navigate("/signup2"); // Navigate to next step
+          navigate("/signup2", { state: { email } }); // Navigate to next step with email
         }
       })
       .catch((err) => {
