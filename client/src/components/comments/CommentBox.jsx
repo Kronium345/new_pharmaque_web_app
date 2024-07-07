@@ -4,7 +4,7 @@ import './commentStyles.css';
 import Action from './Action';
 import { getImageUrl } from '../../utils';
 
-const CommentBox = ({ comment, chapterId, profile }) => {
+const CommentBox = ({ chapterId, profile }) => {
     const [input, setInput] = useState('');
     const [editMode, setEditMode] = useState(false);
     const [showInput, setShowInput] = useState(null); // Track which comment is being replied to
@@ -26,8 +26,10 @@ const CommentBox = ({ comment, chapterId, profile }) => {
         try {
             const response = await axios.get(`/api/comments/${chapterId}`);
             if (response.data.success) {
+                console.log('Fetched comments:', response.data.comments); // Debug log
                 const nestedComments = nestComments(response.data.comments);
                 setComments(nestedComments);
+                console.log('Nested comments:', nestedComments); // Debug log
             }
         } catch (error) {
             console.error('Failed to fetch comments', error);
@@ -90,65 +92,58 @@ const CommentBox = ({ comment, chapterId, profile }) => {
     const renderComments = (comments, parentId = null) => {
         if (!comments || !Array.isArray(comments)) return null;
 
-        return comments
-            .filter(comment => comment.parentId === parentId)
-            .map(cmnt => (
-                <div key={cmnt._id} className="commentContainer">
-                    <div className="row">
-                        <div className="col-sm-1">
-                            <img
-                                src={profile.avatar ? getImageUrl(profile.avatar) : "/images/DummyAvatar.png"}
-                                className="midsizeicon mb-3"
-                                alt="icon"
-                            />
-                        </div>
-                        <div className="col-sm-11">
-                            <span className="fs-5 fw-bold mediumbluetext">{profile.username}</span>
-                            <br />
-                            <span className="fs-5 navybluetext">{cmnt.content}</span>
-                            <p>
-                                <button className="buttonstyle"><img src="/images/ThumbsUp.png" className="moderateicon mx-3 my-3" /></button>
-                                <button className="buttonstyle"><img src="/images/ThumbsDown.png" className="moderateicon mx-3 my-3" /></button>
-                                <span className="fw-bold fs-5 removeunderline navybluetext" onClick={() => handleNewComment(cmnt._id)}>Reply</span>
-                                <span className="fw-bold fs-5 removeunderline navybluetext floatright mx-4 my-2">Report</span>
-                                <span className="fw-bold fs-5 removeunderline navybluetext mx-4 my-2" onClick={() => {
-                                    setEditMode(true);
-                                    setEditCommentId(cmnt._id);
-                                    setEditInput(cmnt.content);
-                                }}>Edit</span>
-                                <span className="fw-bold fs-5 removeunderline navybluetext mx-4 my-2" onClick={() => handleDelete(cmnt._id)}>Delete</span>
-                            </p>
-                        </div>
-                    </div>
-                    {editMode && editCommentId === cmnt._id && (
-                        <div className="inputContainer">
-                            <input type="text" className="inputContainer__input" autoFocus value={editInput} onChange={(e) => setEditInput(e.target.value)} />
-                            <Action className="reply" type="Save" handleClick={() => onAddComment(null)} />
-                            <Action className="reply" type="Cancel" handleClick={() => {
-                                setEditMode(false);
-                                setEditCommentId(null);
-                            }} />
-                        </div>
-                    )}
-                    {showInput === cmnt._id && (
-                        <div className="inputContainer">
-                            <input type="text" className="inputContainer__input" autoFocus value={replyInputs[cmnt._id] || ''} onChange={(e) => handleReplyInputChange(cmnt._id, e.target.value)} />
-                            <Action className="reply" type="Reply" handleClick={() => onAddComment(cmnt._id)} />
-                            <Action className="reply" type="Cancel" handleClick={() => setShowInput(null)} />
-                        </div>
-                    )}
-                    <div className="replies">
-                        {renderComments(cmnt.replies, cmnt._id)}
+        return comments.map(cmnt => (
+            <div key={cmnt._id} className="commentContainer">
+                <img
+                    src={profile?.avatar}
+                    className="midsizeicon mb-3"
+                    alt="icon"
+                />
+                <div className="commentContent">
+                    <span className="fs-5 fw-bold mediumbluetext">{cmnt.createdBy.username}</span>
+                    <span className="fs-5 navybluetext">{cmnt.content}</span>
+                    <div className="commentActions">
+                        <button className="buttonstyle halveopacity"><img src="/images/ThumbsUp.png" className="moderateicon mx-3 my-3" /></button>
+                        <button className="buttonstyle halveopacity"><img src="/images/ThumbsDown.png" className="moderateicon mx-3 my-3" /></button>
+                        <span className="fw-bold fs-5 removeunderline navybluetext" onClick={() => handleNewComment(cmnt._id)}>Reply</span>
+                        <span className="fw-bold fs-5 removeunderline navybluetext floatright mx-4 my-2">Report</span>
+                        <span className="fw-bold fs-5 removeunderline navybluetext mx-4 my-2" onClick={() => {
+                            setEditMode(true);
+                            setEditCommentId(cmnt._id);
+                            setEditInput(cmnt.content);
+                        }}>Edit</span>
+                        <span className="fw-bold fs-5 removeunderline navybluetext mx-4 my-2" onClick={() => handleDelete(cmnt._id)}>Delete</span>
                     </div>
                 </div>
-            ));
+                {editMode && editCommentId === cmnt._id && (
+                    <div className="inputContainer">
+                        <input type="text" className="inputContainer__input" autoFocus value={editInput} onChange={(e) => setEditInput(e.target.value)} />
+                        <Action className="reply" type="Save" handleClick={() => onAddComment(null)} />
+                        <Action className="reply" type="Cancel" handleClick={() => {
+                            setEditMode(false);
+                            setEditCommentId(null);
+                        }} />
+                    </div>
+                )}
+                {showInput === cmnt._id && (
+                    <div className="inputContainer">
+                        <input type="text" className="inputContainer__input" autoFocus value={replyInputs[cmnt._id] || ''} onChange={(e) => handleReplyInputChange(cmnt._id, e.target.value)} />
+                        <Action className="reply" type="Reply" handleClick={() => onAddComment(cmnt._id)} />
+                        <Action className="reply" type="Cancel" handleClick={() => setShowInput(null)} />
+                    </div>
+                )}
+                <div className="replies">
+                    {renderComments(cmnt.replies, cmnt._id)}
+                </div>
+            </div>
+        ));
     };
 
     return (
         <div className="row mt-3">
             <div className="col-sm-1">
                 <img
-                    src={profile?.avatar ? getImageUrl(profile.avatar) : "/images/DummyAvatar.png"}
+                    src={profile?.avatar}
                     className="midsizeicon mb-3"
                     alt="icon"
                 />

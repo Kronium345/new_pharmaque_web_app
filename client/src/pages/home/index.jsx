@@ -94,7 +94,7 @@ const HomePagee = () => {
                 <div className="col-sm-9">
                   <p className="h5 navybluetext fw-bold">Welcome back {username}!</p>
                   <p className="greytext fs-5 mb-1">
-                    There are <span className="fw-bold">3 tasks</span> for you to
+                    There are <span className="fw-bold">0 tasks</span> for you to
                     complete today!
                   </p>
                 </div>

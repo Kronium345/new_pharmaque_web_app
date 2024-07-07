@@ -85,7 +85,7 @@ const MyAccount = () => {
           <div className="card p-4">
             <div className="col-sm-12 center">
               <img
-                src={profile?.avatar ? getImageUrl(profile.avatar) : {avatar10}}
+                src={profile?.avatar}
                 className="logo mb-2"
                 alt="avatar"
                 style={{ borderRadius: "50%", width: "100px", height: "100px", objectFit: "cover", alignItems: "center" }}
@@ -94,8 +94,10 @@ const MyAccount = () => {
               <p className="fs-4 fw-bold mb-1">{profile?.username}</p> {/* Use the username from the profile */}
               <p className="fs-5 mediumnavytext mb-3">{profile?.email}</p>
               <button
-                className="btn btn-tertiary fs-5 fw-bold mb-2"
-                onClick={handleAvatarChange}
+                className="btn btn-tertiary fs-5 fw-bold mb-2 halveopacity"
+                // onClick={handleAvatarChange}
+                style={{ cursor: 'default' }}
+                disabled
               >
                 Change Avatar
               </button>
@@ -106,9 +108,9 @@ const MyAccount = () => {
                     <p className="fs-4 fw-bold navybluetext">Email Address</p>
                   </div>
                   <div className="input-group mb-3">
-                    <input type="text" className="form-control fs-5" value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <input type="text" className="form-control fs-5 halveopacity" value={email} onChange={(e) => setEmail(e.target.value)} readOnly style={{ cursor: 'default' }} />
                     <div className="input-group-append">
-                      <button className="btn btn-outline-secondary fs-5 fw-bold" type="button" onClick={handleSaveChanges}>Edit Email</button>
+                      <button className="btn btn-outline-secondary fs-5 fw-bold halveopacity" type="button" onClick={handleSaveChanges} style={{ cursor: 'default' }} disabled>Edit Email</button>
                     </div>
                   </div>
                 </div>
