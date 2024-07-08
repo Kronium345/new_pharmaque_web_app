@@ -1,8 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
-
 import React, { useEffect, useState } from "react";
-
-import ScoreView from "../../components/chapters/scoreView";
+import FlashcardView from "../../components/flash/FlashcardView";
 import QuizView from "../../components/flash/quizView";
 import { useLoading } from "../../hooks";
 import axios from "axios";
@@ -15,7 +13,6 @@ const FlashCardDetail = () => {
   const [quiz, setQuiz] = useState({});
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
-
   const [isQuizOver, setIsQuizOver] = useState(false);
 
   const handleAnswerClick = async (answer) => {
@@ -80,7 +77,7 @@ const FlashCardDetail = () => {
       });
   };
 
-  const handleSkip = async () => {
+  const handleSkip = async (newIndex = currentQuestion + 1) => {
     setLoading(true);
     await axios
       .patch("fquiz/skip", {
@@ -88,7 +85,7 @@ const FlashCardDetail = () => {
       })
       .then((response) => {
         if (response.data.status) {
-          setCurrentQuestion((prev) => prev + 1);
+          setCurrentQuestion(newIndex);
         }
       })
       .catch((err) => {
@@ -102,7 +99,11 @@ const FlashCardDetail = () => {
   const handleBack = () => {
     setCurrentQuestion((prev) => (prev > 0 ? prev - 1 : 0));
   };
-  
+
+  const handleRetake = () => {
+    setCurrentQuestion(0);
+    setIsQuizOver(false);
+  };
 
   useEffect(() => {
     getQuizInfo();
@@ -114,7 +115,6 @@ const FlashCardDetail = () => {
       .get("fquiz/get/" + id)
       .then((response) => {
         if (response.data.status) {
-          console.log(response.data);
           const { fQuiz } = response.data;
 
           if (fQuiz.attemptedQuestions === fQuiz.flash.questions.length) {
@@ -162,7 +162,7 @@ const FlashCardDetail = () => {
       )}
       <div className="App">
         {isQuizOver ? (
-          <ScoreView questions={questions} score={quiz} />
+          <FlashcardView onRetake={handleRetake} />
         ) : (
           questions.length !== 0 && (
             <QuizView
@@ -177,8 +177,6 @@ const FlashCardDetail = () => {
           )
         )}
       </div>
-
-      {/* End of additional content */}
     </>
   );
 };

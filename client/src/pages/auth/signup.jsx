@@ -2,13 +2,20 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useLoading } from "../../hooks";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import './SignUp.css';
 
 const SignUpPage = () => {
   const { setLoading } = useLoading();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const navigate = useNavigate();
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -82,14 +89,20 @@ const SignUpPage = () => {
                     onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
-                <div className="mb-3">
+                <div className="mb-3 position-relative">
                   <input
-                    type="password"
+                    type={passwordVisible ? "text" : "password"}
                     className="form-control py-2"
                     id="exampleInputPassword1"
                     placeholder="Enter Password"
                     onChange={(e) => setPassword(e.target.value)}
                   />
+                  <span
+                    className="password-toggle-icon"
+                    onClick={togglePasswordVisibility}
+                  >
+                    {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+                  </span>
                 </div>
 
                 <button type="submit" className="btn btn-primary fw-bold fs-5">

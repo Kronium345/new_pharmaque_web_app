@@ -4,6 +4,7 @@ import axios from "axios";
 import { getImageUrl } from "../../utils";
 import { useAuth } from "../../hooks";
 import avatar10 from '../../assets/images/10.png';
+import { useScreenTime } from "../../components/ScreenTime/ScreenTimeContext";
 
 
 const MyAccount = () => {
@@ -17,6 +18,10 @@ const MyAccount = () => {
   const [subscriptionPlan, setSubscriptionPlan] = useState("");
   const [university, setUniversity] = useState("");
   const [pharmacistType, setPharmacistType] = useState("");
+  const { screenTime } = useScreenTime();
+
+  const [lastScreenTime, setLastScreenTime] = useState(null);
+  const [screenTimeDifference, setScreenTimeDifference] = useState(null);
 
   useEffect(() => {
     if (profile) {
@@ -25,9 +30,18 @@ const MyAccount = () => {
       setUniversity(profile.university);
       setPharmacistType(profile.pharmacistType);
     }
-  }, [profile]);
+
+    const lastTime = localStorage.getItem('lastScreenTime');
+    if (lastTime !== null) {
+      const lastTimeInt = parseInt(lastTime, 10);
+      setLastScreenTime(lastTimeInt);
+      const timeDifference = screenTime - lastTimeInt;
+      setScreenTimeDifference(timeDifference);
+    }
+  }, [profile, screenTime]);
 
   const handleLogout = () => {
+    localStorage.setItem('lastScreenTime', screenTime);
     logout();
     navigate("/login");
   };

@@ -1,6 +1,5 @@
-// QuizView.jsx
-import { Link } from "react-router-dom";
-import React, { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import "./QuizView.css";
 import CommentBox from "../comments/CommentBox";
 import useNode from "../../hooks/useNode";
@@ -34,6 +33,14 @@ const QuizView = ({
   const [showReportOptions, setShowReportOptions] = useState(false);
   const { profile } = useAuth();
   const [answeredQuestions, setAnsweredQuestions] = useState([]);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (location.state?.retake) {
+      handleRetake();
+    }
+  }, [location.state]);
 
   const handleInsertNode = (folderId, item) => {
     const finalStructure = insertNode(commentsData, folderId, item);
@@ -90,6 +97,15 @@ const QuizView = ({
     } catch (error) {
       console.error('Error reporting question:', error);
     }
+  };
+
+  const handleRetake = () => {
+    setSelectedAnswer({});
+    setShowExplanation(false);
+    setIsAnswerCorrect(null);
+    setHasSubmitted(false);
+    setAnsweredQuestions([]);
+    navigate('/chapters');
   };
 
   if (questions.length === 0) {

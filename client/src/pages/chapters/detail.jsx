@@ -100,6 +100,11 @@ const ChapterDetail = () => {
     setCurrentQuestion((prev) => (prev > 0 ? prev - 1 : 0));
   };
 
+  const handleRetake = () => {
+    setCurrentQuestion(0);
+    setIsQuizOver(false);
+  };
+
   useEffect(() => {
     getQuizInfo();
   }, []);
@@ -159,7 +164,7 @@ const ChapterDetail = () => {
       </div>
       <div className="App">
         {isQuizOver ? (
-          <ScoreView questions={questions} score={quiz} />
+          <ScoreView questions={questions} score={quiz} onRetake={handleRetake} />
         ) : (
           questions.length !== 0 && (
             <QuizView

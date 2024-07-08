@@ -21,10 +21,21 @@ const HomePagee = () => {
   const minutes = Math.floor((screenTime % 3600000) / 60000);
   const seconds = ((screenTime % 60000) / 1000).toFixed(0);
 
+  const [lastScreenTime, setLastScreenTime] = useState(null);
+  const [screenTimeDifference, setScreenTimeDifference] = useState(null);
+
   useEffect(() => {
     getData();
     getProfile(); // Fetch the profile to get the username
     fetchFlaggedQuestions(); // Fetch flagged questions
+
+    const lastTime = localStorage.getItem('lastScreenTime');
+    if (lastTime !== null) {
+      const lastTimeInt = parseInt(lastTime, 10);
+      setLastScreenTime(lastTimeInt);
+      const timeDifference = screenTime - lastTimeInt;
+      setScreenTimeDifference(timeDifference);
+    }
   }, []);
 
   const getData = async () => {
@@ -76,6 +87,13 @@ const HomePagee = () => {
   };
 
   const mostRecentFlaggedQuestion = flaggedQuestions.length > 0 ? flaggedQuestions[0] : null;
+
+  const formatScreenTime = (time) => {
+    const hrs = Math.floor(time / 3600000);
+    const mins = Math.floor((time % 3600000) / 60000);
+    const secs = Math.floor((time % 60000) / 1000);
+    return `${hrs}h ${mins}m ${secs}s`;
+  };
 
   return (
     <>
@@ -247,9 +265,21 @@ const HomePagee = () => {
                 <div className="col-sm-9">
                   <p className="h5 navybluetext fw-bold">User Insights</p>
                   <p className="greytext fs-5 mb-1">
-                      Your screen time is: 
+                    Your screen time is: 
                     <span className="fw-bold"> {hours}h {minutes}m {seconds}s</span>
                   </p>
+                  {lastScreenTime !== null && (
+                    <p className="greytext fs-5 mb-1">
+                      Last recorded screen time: 
+                      <span className="fw-bold"> {formatScreenTime(lastScreenTime)}</span>
+                    </p>
+                  )}
+                  {/* {screenTimeDifference !== null && (
+                    <p className="greytext fs-5 mb-1">
+                      Difference: 
+                      <span className="fw-bold"> {formatScreenTime(screenTimeDifference)}</span>
+                    </p>
+                  )} */}
                 </div>
               </div>
             </div>
@@ -340,9 +370,9 @@ const HomePagee = () => {
                   </a>
                 </div>
                 <div className="col-sm-3 center">
-                  <a href="#" className="removeunderline">
+                  <Link to="/pastchapters" className="removeunderline">
                     <p className="h5 navybluetext fw-bold whitetext">View All</p>
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

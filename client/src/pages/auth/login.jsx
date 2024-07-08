@@ -2,14 +2,21 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth, useLoading } from "../../hooks";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import './Login.css';
 
 const Login = () => {
   const { setLoading } = useLoading();
   const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate("");
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -75,24 +82,22 @@ const Login = () => {
                     onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
-                <div className="mb-3">
+                <div className="mb-3 position-relative">
                   <input
-                    type="password"
+                    type={passwordVisible ? "text" : "password"}
                     className="form-control py-2"
                     id="exampleInputPassword1"
                     placeholder="Enter Password"
                     onChange={(e) => setPassword(e.target.value)}
                   />
+                  <span
+                    className="password-toggle-icon"
+                    onClick={togglePasswordVisibility}
+                  >
+                    {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+                  </span>
                 </div>
                 <div className="mb-3">
-                  {/* <input
-                    type="checkbox"
-                    id="exampleCheck1"
-                    className="checkboxsize"
-                  /> */}
-                  {/* <label className="my-0 mx-1 fs-6" htmlFor="exampleCheck1">
-                    Remember Me
-                  </label> */}
                   <p className="my-0 mx-1 floatright link fs-6">
                     Forgot your password?{" "}
                     <Link to="/forgotpassword" className="fw-bold link">

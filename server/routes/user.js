@@ -190,13 +190,13 @@ router.post("/forgotpassword", async (req, res) => {
     var transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "kronium345@gmail.com",
-        pass: "migh zape legm bpkb",
+        user: "pharmaque23@gmail.com",
+        pass: "gapb jwqn zehc ipss",
       },
     });
 
     var mailOptions = {
-      from: "kronium345@gmail.com",
+      from: "pharmaque23@gmail.com",
       to: email, // Use the dynamic email from the request body
       subject: "Reset Password",
       text: `http://localhost:5173/resetpassword/${token}`,

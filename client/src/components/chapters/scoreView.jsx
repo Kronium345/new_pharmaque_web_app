@@ -1,24 +1,23 @@
-import { Link, useNavigate } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 import React from "react";
-
 import "./ScoreView.css";
 
-const ScoreView = ({ score = {}, questions = [] }) => {
+const ScoreView = ({ score = {}, questions = [], onRetake }) => {
   const navigate = useNavigate();
+
   return (
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="card p-4">
+    <div className="row">
+      <div className="col-sm-12">
+        <div className="card p-4">
           <img
             src="/images/ResultsIcon.png"
-            class="logo text-center"
+            className="logo text-center"
             alt="PharmaQue Logo"
           />
-          <p class="text-header">Chapter Results</p>
+          <p className="text-header">Chapter Results</p>
           <p>Congratulations! You have completed the chapter.</p>
           <Option
-            text="Socre Gained"
+            text="Score Gained"
             value={score?.correctAnswers + "/" + questions.length}
             image="/images/ScoreIcon.png"
           />
@@ -40,11 +39,17 @@ const ScoreView = ({ score = {}, questions = [] }) => {
 
           <button
             onClick={() => navigate(-1)}
-            to="/chapters"
-            class="scoreview-btn"
+            className="scoreview-btn"
           >
             <img src="/images/backarrowicon.png" alt="icon" />
             Back to Chapter Selection
+          </button>
+          <button
+            onClick={onRetake}
+            className="scoreview-btn"
+          >
+            <img src="/images/backarrowicon.png" alt="icon" />
+            Retake Questions
           </button>
         </div>
       </div>
@@ -56,14 +61,14 @@ export default ScoreView;
 
 const Option = ({ text, value, image = "" }) => {
   return (
-    <div class="otp-card">
-      <div class="otp-card-left">
-        <div class="card-icon">
+    <div className="otp-card">
+      <div className="otp-card-left">
+        <div className="card-icon">
           <img src={image} alt="icon" />
         </div>
-        <p class="card-text">{text}</p>
+        <p className="card-text">{text}</p>
       </div>
-      <p class="card-value">{value}</p>
+      <p className="card-value">{value}</p>
     </div>
   );
 };

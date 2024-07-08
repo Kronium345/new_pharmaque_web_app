@@ -48,7 +48,7 @@ const CommentBox = ({ chapterId, profile }) => {
 
     const handleNewComment = (parentId = null) => {
         setShowInput(parentId);
-        setInput('');  // Clear the main input when replying
+        if (!parentId) setInput('');  // Clear the main input only when replying
     };
 
     const handleReplyInputChange = (parentId, value) => {
@@ -57,28 +57,30 @@ const CommentBox = ({ chapterId, profile }) => {
 
     const onAddComment = async (parentId = null) => {
         const content = parentId ? replyInputs[parentId] : input;
-        if (editMode) {
-            await axios.put(`/api/update-comment/${editCommentId}`, { content: editInput })
-                .then(response => {
-                    setEditInput('');
-                    setEditMode(false);
-                    setEditCommentId(null);
-                    fetchComments();
-                }).catch(error => console.error('Failed to update comment', error));
-        } else {
-            await axios.post('/api/add-comment', {
-                content,
-                chapterId: chapterId,
-                parentId: parentId || null
-            }).then(response => {
+        if (!content.trim()) return; // Prevent posting empty comments
+
+        try {
+            if (editMode) {
+                await axios.put(`/api/update-comment/${editCommentId}`, { content: editInput });
+                setEditInput('');
+                setEditMode(false);
+                setEditCommentId(null);
+            } else {
+                await axios.post('/api/add-comment', {
+                    content,
+                    chapterId,
+                    parentId: parentId || null
+                });
                 if (parentId) {
                     setReplyInputs({ ...replyInputs, [parentId]: '' });
                 } else {
                     setInput('');
                 }
-                setShowInput(null);
-                fetchComments();
-            }).catch(error => console.error('Failed to add comment', error));
+            }
+            setShowInput(null);
+            fetchComments();
+        } catch (error) {
+            console.error('Failed to add or update comment', error);
         }
     };
 
@@ -105,8 +107,8 @@ const CommentBox = ({ chapterId, profile }) => {
                     <div className="commentActions">
                         <button className="buttonstyle halveopacity"><img src="/images/ThumbsUp.png" className="moderateicon mx-3 my-3" /></button>
                         <button className="buttonstyle halveopacity"><img src="/images/ThumbsDown.png" className="moderateicon mx-3 my-3" /></button>
-                        <span className="fw-bold fs-5 removeunderline navybluetext" onClick={() => handleNewComment(cmnt._id)}>Reply</span>
-                        <span className="fw-bold fs-5 removeunderline navybluetext floatright mx-4 my-2">Report</span>
+                        <span className="fw-bold fs-5 removeunderline navybluetext" style={{ cursor: 'default', color: 'gray' }} disabled>Reply</span>
+                        <span className="fw-bold fs-5 removeunderline navybluetext floatright mx-4 my-2" style={{ cursor: 'default', color: 'gray' }} disabled>Report</span>
                         <span className="fw-bold fs-5 removeunderline navybluetext mx-4 my-2" onClick={() => {
                             setEditMode(true);
                             setEditCommentId(cmnt._id);

@@ -85,4 +85,18 @@ router.post('/mark-difficulty', checkAuth, async (req, res) => {
   }
 });
 
+router.get('/hard', checkAuth, async (req, res) => {
+  try {
+    const flashCards = await FlashCard.find({ "questions.difficulty": "hard" });
+    const hardQuestions = flashCards.flatMap(flashCard =>
+      flashCard.questions.filter(question => question.difficulty === 'hard')
+    );
+    return res.json({ status: true, questions: hardQuestions });
+  } catch (err) {
+    console.error('Error fetching hard questions:', err);
+    return res.json({ status: false, message: "Something went wrong" });
+  }
+});
+
+
 export { router as FlashRouter };

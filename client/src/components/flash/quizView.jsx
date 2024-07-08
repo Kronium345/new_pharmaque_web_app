@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
+// QuizView.jsx
 import React, { useEffect, useState, useMemo } from "react";
 import "./QuizView.css";
 import axios from 'axios';
+import FlashcardView from './FlashcardView';
 
 const QuizView = ({
   questions = [],
@@ -21,6 +22,7 @@ const QuizView = ({
   const [reportReason, setReportReason] = useState('');
   const [showFlagOptions, setShowFlagOptions] = useState(false);
   const [showReportOptions, setShowReportOptions] = useState(false);
+  const [isSessionCompleted, setIsSessionCompleted] = useState(false);
 
   const handleFlagQuestion = async () => {
     try {
@@ -57,6 +59,19 @@ const QuizView = ({
     }
   };
 
+  const handleNext = () => {
+    if (currentQuestion + 1 < questions.length) {
+      handleSkip();
+    } else {
+      setIsSessionCompleted(true);
+    }
+  };
+
+  const handleRetake = () => {
+    setIsSessionCompleted(false);
+    handleSkip(0); // Reset to the first question
+  };
+
   if (questions.length === 0) {
     return <div>No questions found.</div>;
   }
@@ -74,7 +89,11 @@ const QuizView = ({
     });
   }, [questions]);
 
-  const { question, answers, explanation } = sortedQuestions[currentQuestion];
+  const { question, answers, explanation } = sortedQuestions[currentQuestion] || {};
+
+  if (isSessionCompleted) {
+    return <FlashcardView onRetake={handleRetake} />;
+  }
 
   return (
     <>
@@ -149,7 +168,7 @@ const QuizView = ({
               </div>
 
               <div className="col-sm-1">
-                <button onClick={handleSkip} className="inline floatright mb-3">
+                <button onClick={handleNext} className="inline floatright mb-3">
                   <img
                     src="/images/NextBlue.png"
                     className="mediumicon"
@@ -216,33 +235,6 @@ const QuizView = ({
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div className="row mt-3">
-              {/* <div className="col-sm-1">
-                <img
-                  src="/images/DummyAvatar.png"
-                  className="midsizeicon mb-3"
-                  alt="icon"
-                />
-              </div> */}
-{/* 
-              <div className="col-sm-11">
-                <div className="form">
-                  <textarea
-                    className="form-control fs-5"
-                    rows="2"
-                    id="comment"
-                    placeholder="Write a comment"
-                  ></textarea>
-                </div>
-                <button
-                  type="submit"
-                  className="btn btn-deactivated fw-bold fs-5 mt-3 mb-4 px-3 py-2"
-                >
-                  Post Comment
-                </button>
-              </div> */}
             </div>
 
             <div className="row mt-3">
