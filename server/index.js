@@ -62,6 +62,10 @@ app.use('/sample', SampleRouter);
 app.use('/sample-flash', SampleFlashRouter);
 app.use("/", Router);
 
+app.get('/', (req, res) => {
+  res.send('Hello, world! Server is working.');
+});
+
 // Utilizing MongoDB Atlas Connection
 mongoose
   .connect(ENV.ATLAS_URI)
