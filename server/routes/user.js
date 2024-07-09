@@ -199,7 +199,7 @@ router.post("/forgotpassword", async (req, res) => {
       from: "pharmaque23@gmail.com",
       to: email, // Use the dynamic email from the request body
       subject: "Reset Password",
-      text: `http://localhost:5173/resetpassword/${token}`,
+      text: `https://www.pharmaque.com/resetpassword/${token}`,
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
