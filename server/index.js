@@ -29,7 +29,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: ["https://www.pharmaque.com"],
+    origin: ["https://www.pharmaque.com", "http://localhost:5173/"],
     credentials: true,
   })
 );
