@@ -44,7 +44,7 @@ const MyAccount = () => {
     navigate("/login");
   };
 
-  const handleSaveChanges = async () => {
+    const handleSaveChanges = async () => {
     console.log("Saving changes...");
     console.log("Email:", email);
     console.log("Subscription Plan:", subscriptionPlan);
