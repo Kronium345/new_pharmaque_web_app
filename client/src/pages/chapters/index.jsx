@@ -63,7 +63,6 @@ const Chapters = () => {
 
   const handleStart = async (chapter) => {
     if (chapter.name !== "Sample Questions") {
-      // Do nothing for all chapters except "Sample Questions"
       return;
     }
     setLoading(true);

@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import { getImageUrl } from "../../utils";
 import { useAuth } from "../../hooks";
-import avatar10 from '../../assets/images/10.png';
 import { useScreenTime } from "../../components/ScreenTime/ScreenTimeContext";
-
 
 const MyAccount = () => {
   const navigate = useNavigate();
@@ -25,6 +22,7 @@ const MyAccount = () => {
 
   useEffect(() => {
     if (profile) {
+      console.log("Profile loaded:", profile);
       setEmail(profile.email); // Set email from profile
       setSubscriptionPlan(profile.subscriptionPlan);
       setUniversity(profile.university);
@@ -47,6 +45,12 @@ const MyAccount = () => {
   };
 
   const handleSaveChanges = async () => {
+    console.log("Saving changes...");
+    console.log("Email:", email);
+    console.log("Subscription Plan:", subscriptionPlan);
+    console.log("University:", university);
+    console.log("Pharmacist Type:", pharmacistType);
+
     try {
       const response = await axios.post("/auth/update-profile", {
         email,
@@ -64,6 +68,60 @@ const MyAccount = () => {
       await getProfile(); // Re-fetch the profile to update the changes
     } catch (error) {
       console.error('Error updating profile:', error.response?.data?.message || error.message);
+    }
+  };
+
+  const handleSubscriptionPlanChange = async (e) => {
+    const newSubscriptionPlan = e.target.value;
+    setSubscriptionPlan(newSubscriptionPlan);
+    console.log("Updated Subscription Plan:", newSubscriptionPlan);
+
+    try {
+      await axios.post("/auth/update-subscription-plan", { subscriptionPlan: newSubscriptionPlan }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      console.log('Subscription plan updated successfully');
+      await getProfile(); // Re-fetch the profile to update the changes
+    } catch (error) {
+      console.error('Error updating subscription plan:', error.response?.data?.message || error.message);
+    }
+  };
+
+  const handleUniversityChange = async (e) => {
+    const newUniversity = e.target.value;
+    setUniversity(newUniversity);
+    console.log("Updated University:", newUniversity);
+
+    try {
+      await axios.post("/auth/update-university", { university: newUniversity }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      console.log('University updated successfully');
+      await getProfile(); // Re-fetch the profile to update the changes
+    } catch (error) {
+      console.error('Error updating university:', error.response?.data?.message || error.message);
+    }
+  };
+
+  const handlePharmacistTypeChange = async (e) => {
+    const newPharmacistType = e.target.value;
+    setPharmacistType(newPharmacistType);
+    console.log("Updated Pharmacist Type:", newPharmacistType);
+
+    try {
+      await axios.post("/auth/update-pharmacist-type", { pharmacistType: newPharmacistType }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      console.log('Pharmacist type updated successfully');
+      await getProfile(); // Re-fetch the profile to update the changes
+    } catch (error) {
+      console.error('Error updating pharmacist type:', error.response?.data?.message || error.message);
     }
   };
 
@@ -104,12 +162,10 @@ const MyAccount = () => {
                 alt="avatar"
                 style={{ borderRadius: "50%", width: "100px", height: "100px", objectFit: "cover", alignItems: "center" }}
               />
-              {/* <input type="file" accept="image/*" onChange={handleFileChange} /> */}
               <p className="fs-4 fw-bold mb-1">{profile?.username}</p> {/* Use the username from the profile */}
               <p className="fs-5 mediumnavytext mb-3">{profile?.email}</p>
               <button
                 className="btn btn-tertiary fs-5 fw-bold mb-2 halveopacity"
-                // onClick={handleAvatarChange}
                 style={{ cursor: 'default' }}
                 disabled
               >
@@ -147,7 +203,7 @@ const MyAccount = () => {
                   <div className='d-flex justify-content-start'>
                     <p className="fs-4 fw-bold navybluetext">Current Subscription Plan</p>
                   </div>
-                  <select className="form-select px-4 py-2 fs-5 mb-3" value={subscriptionPlan} onChange={(e) => setSubscriptionPlan(e.target.value)}>
+                  <select className="form-select px-4 py-2 fs-5 mb-3" value={subscriptionPlan} onChange={handleSubscriptionPlanChange}>
                     <option value="Demo">Demo</option>
                     <option value="Six Months">Six Months (£29 per month)</option>
                     <option value="One Year">One Year (£18 per month)</option>
@@ -158,7 +214,7 @@ const MyAccount = () => {
                   <div className='d-flex justify-content-start'>
                     <p className="fs-4 fw-bold navybluetext">University Attended</p>
                   </div>
-                  <select className="form-select px-4 py-2 fs-5 mb-3" value={university} onChange={(e) => setUniversity(e.target.value)}>
+                  <select className="form-select px-4 py-2 fs-5 mb-3" value={university} onChange={handleUniversityChange}>
                     <option value="University of Aberdeen">University of Aberdeen</option>
                     <option value="Abertay University">Abertay University</option>
                     <option value="Aberystwyth University">Aberystwyth University</option>
@@ -219,7 +275,6 @@ const MyAccount = () => {
                     <option value="University of Huddersfield">University of Huddersfield</option>
                     <option value="University of Hull">University of Hull</option>
                     <option value="Imperial College London">Imperial College London</option>
-                    <option selected>Select Your University</option>
                     <option value="Keele University">Keele University</option>
                     <option value="University of Kent">University of Kent</option>
                     <option value="Kingston University">Kingston University</option>
@@ -328,7 +383,7 @@ const MyAccount = () => {
                   <div className='d-flex justify-content-start'>
                     <p className="fs-4 fw-bold navybluetext">Pharmacist Type</p>
                   </div>
-                  <select className="form-select px-4 py-2 fs-5 mb-3" value={pharmacistType} onChange={(e) => setPharmacistType(e.target.value)}>
+                  <select className="form-select px-4 py-2 fs-5 mb-3" value={pharmacistType} onChange={handlePharmacistTypeChange}>
                     <option value="Pre-Registration Pharmacist">Pre-Registration Pharmacist</option>
                     <option value="Qualified Pharmacist">Qualified Pharmacist</option>
                     <option value="Pharmacy Student">Pharmacy Student</option>

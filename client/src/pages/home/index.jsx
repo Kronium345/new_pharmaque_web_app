@@ -274,12 +274,12 @@ const HomePagee = () => {
                       <span className="fw-bold"> {formatScreenTime(lastScreenTime)}</span>
                     </p>
                   )}
-                  {screenTimeDifference !== null && (
+                  {/* {screenTimeDifference !== null && (
                     <p className="greytext fs-5 mb-1">
                       Difference: 
                       <span className="fw-bold"> {formatScreenTime(screenTimeDifference)}</span>
                     </p>
-                  )}
+                  )} */}
                 </div>
               </div>
             </div>
