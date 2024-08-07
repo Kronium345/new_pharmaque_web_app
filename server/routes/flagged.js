@@ -40,8 +40,10 @@ router.post('/questions/details', checkAuth, async (req, res) => {
 });
 
 router.get('/flagged', checkAuth, async (req, res) => {
+  const { userId } = req.user;
+
   try {
-    const flaggedQuestions = await FlaggedQuestion.find().populate('userId', 'username');
+    const flaggedQuestions = await FlaggedQuestion.find({ userId }).populate('userId', 'username');
     return res.json({ status: true, questions: flaggedQuestions });
   } catch (error) {
     console.error('Error fetching flagged questions:', error);
@@ -51,9 +53,10 @@ router.get('/flagged', checkAuth, async (req, res) => {
 
 router.post('/delete', checkAuth, async (req, res) => {
   const { ids } = req.body;
+  const { userId } = req.user;
 
   try {
-    await FlaggedQuestion.deleteMany({ _id: { $in: ids } });
+    await FlaggedQuestion.deleteMany({ _id: { $in: ids }, userId });
 
     return res.json({ status: true, message: 'Deleted successfully' });
   } catch (error) {

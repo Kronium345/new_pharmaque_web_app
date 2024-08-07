@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './FlaggedQuestions.css';
+import { useAuth } from '../../hooks';
 
 const FlaggedQuestions = () => {
+  const { profile } = useAuth();
   const [flagged, setFlagged] = useState([]);
   const [questions, setQuestions] = useState([]);
 
@@ -11,9 +13,11 @@ const FlaggedQuestions = () => {
       try {
         const { data } = await axios.get('/flagged/flagged');
         if (data.status) {
-          setFlagged(data.questions);
+          // Filter questions based on the logged-in user's username
+          const userFlagged = data.questions.filter(q => q.userId.username === profile.username);
+          setFlagged(userFlagged);
 
-          const questionIds = data.questions.map(q => q.questionId);
+          const questionIds = userFlagged.map(q => q.questionId);
           const questionData = await axios.post('/chapter/questions/details', { ids: questionIds });
           setQuestions(questionData.data.questions);
         }
@@ -23,7 +27,7 @@ const FlaggedQuestions = () => {
     };
 
     fetchFlaggedQuestions();
-  }, []);
+  }, [profile]);
 
   const handleDelete = async (id) => {
     try {
@@ -42,21 +46,20 @@ const FlaggedQuestions = () => {
   };
 
   return (
-    
     <div className="flagged-questions-container">
       <div className="flagged-questions-header">
-        <p class="fs-4 mt-4 fw-bold navybluetext">Flagged Questions</p>
+        <p className="fs-4 mt-4 fw-bold navybluetext">Flagged Questions</p>
       </div>
-      <div class="row mt-2">
-        <div class="col-sm-4">
-          <p><img src="images/FlagIcon.png" class="mediumicon" /><span class="fw-bold fs-5 mb-1 mx-3 redtext">Flagged</span></p>
+      <div className="row mt-2">
+        <div className="col-sm-4">
+          <p><img src="images/FlagIcon.png" className="mediumicon" /><span className="fw-bold fs-5 mb-1 mx-3 redtext">Flagged</span></p>
         </div>
-        <div class="col-sm-4 center">
-          {/* <p class = "fs-4 fw-bold navybluetext mb-2">Question 5 of 100</p>
-                                    <p class = "fs-5 navybluetext"><span class = "fw-bold mediumbluetext">Topic:</span> Drug Interactions</p> */}
-        </div>
-        <div class="col-sm-4">
-          <button onclick="toggleQuestion()" class="navybluetext floatright flipbutton"><span class="fs-5 mx-3 questionshowingtext">Show Question</span><img src="images/Dropdown.png" class="mediumicon showquestionicon" /></button>
+        <div className="col-sm-4 center"></div>
+        <div className="col-sm-4">
+          <button onClick={() => {}} className="navybluetext floatright flipbutton">
+            <span className="fs-5 mx-3 questionshowingtext">Show Question</span>
+            <img src="images/Dropdown.png" className="mediumicon showquestionicon" />
+          </button>
         </div>
       </div>
       {flagged.map((q, index) => (

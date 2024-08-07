@@ -23,6 +23,7 @@ const HomePagee = () => {
 
   const [lastScreenTime, setLastScreenTime] = useState(null);
   const [screenTimeDifference, setScreenTimeDifference] = useState(null);
+  const [examCountdown, setExamCountdown] = useState({ hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
     getData();
@@ -35,6 +36,11 @@ const HomePagee = () => {
       setLastScreenTime(lastTimeInt);
       const timeDifference = screenTime - lastTimeInt;
       setScreenTimeDifference(timeDifference);
+    }
+
+    const examDate = localStorage.getItem('examDate');
+    if (examDate) {
+      startCountdown(new Date(examDate));
     }
   }, []);
 
@@ -95,6 +101,25 @@ const HomePagee = () => {
     return `${hrs}h ${mins}m ${secs}s`;
   };
 
+  const startCountdown = (examDate) => {
+    const countdown = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = examDate.getTime() - now;
+
+      if (distance < 0) {
+        clearInterval(countdown);
+        setExamCountdown({ hours: 0, minutes: 0, seconds: 0 });
+        return;
+      }
+
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      setExamCountdown({ hours, minutes, seconds });
+    }, 1000);
+  };
+
   return (
     <>
       <p className="fs-4 mt-4 fw-bold navybluetext">HomePage</p>
@@ -103,12 +128,6 @@ const HomePagee = () => {
           <div className="col-sm-12 mb-3">
             <div className="card p-4">
               <div className="row">
-                <div className="col-sm-3">
-                  <svg viewBox="0 0 250 250" className="circular-progress">
-                    <circle className="bg"></circle>
-                    <circle className="fg"></circle>
-                  </svg>
-                </div>
                 <div className="col-sm-9">
                   <p className="h5 navybluetext fw-bold">Welcome back {username}!</p>
                   <p className="greytext fs-5 mb-1">
@@ -265,21 +284,19 @@ const HomePagee = () => {
                 <div className="col-sm-9">
                   <p className="h5 navybluetext fw-bold">User Insights</p>
                   <p className="greytext fs-5 mb-1">
-                    Your screen time is: 
-                    <span className="fw-bold"> {hours}h {minutes}m {seconds}s</span>
+                    So far, you have completed: 
+                    <span className="fw-bold"> {chapter?.correctAnswers + chapter?.wrongAnswers}/{chapter?.chapter?.questions?.length} Questions</span>
+                  </p>
+                  <p className="greytext fs-5 mb-1"> 
+                    in: 
+                    <span className="fw-bold"> {chapter?.chapter?.name}</span>
                   </p>
                   {lastScreenTime !== null && (
                     <p className="greytext fs-5 mb-1">
-                      Last recorded screen time: 
-                      <span className="fw-bold"> {formatScreenTime(lastScreenTime)}</span>
+                      Countdown until your exam is: 
+                      <span className="fw-bold"> {`${examCountdown.hours}h ${examCountdown.minutes}m ${examCountdown.seconds}s`}</span>
                     </p>
                   )}
-                  {/* {screenTimeDifference !== null && (
-                    <p className="greytext fs-5 mb-1">
-                      Difference: 
-                      <span className="fw-bold"> {formatScreenTime(screenTimeDifference)}</span>
-                    </p>
-                  )} */}
                 </div>
               </div>
             </div>

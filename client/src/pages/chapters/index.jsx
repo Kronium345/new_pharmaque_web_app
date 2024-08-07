@@ -33,7 +33,10 @@ const Chapters = () => {
       .get("chapter")
       .then((response) => {
         if (response.data.status) {
-          setData(response.data.chapters);
+          const chapters = response.data.chapters;
+          const sampleQuestions = chapters.find(chapter => chapter.name === "Sample Questions");
+          const otherChapters = chapters.filter(chapter => chapter.name !== "Sample Questions");
+          setData([sampleQuestions, ...otherChapters]);
         }
       })
       .catch((err) => {
@@ -111,6 +114,7 @@ const Chapters = () => {
 
             <div className="row">
               {filteredChapters.map((chapter, idx) => {
+                if (!chapter) return null;
                 const isAttempted = attempted.find(
                   (cQuiz) => cQuiz.chapter === chapter._id
                 );

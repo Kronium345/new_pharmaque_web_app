@@ -47,7 +47,7 @@ const SignUp5 = () => {
                 <div className="row">
                   <div className="col-sm-10 px-0">
                     <p className="fs-4 mediumbluetext fw-bold px-4 mb-1">Demo</p>
-                    <p className="fs-3 fw-bold px-4 navybluetext">£0</p>
+                    {/* <p className="fs-3 fw-bold px-4 navybluetext">£0</p> */}
                   </div>
                   <div className="col-sm-2 px-0">
                     <input
@@ -81,8 +81,8 @@ const SignUp5 = () => {
                 <div className="row">
                   <div className="col-sm-10 px-0">
                     <p className="fs-4 mediumbluetext fw-bold px-4 mb-1">Six Months</p>
-                    <p className="fs-3 fw-bold px-4 navybluetext mb-1">£29 per month</p>
-                    <p className="fs-5 navybluetext px-4 mb-4">(£174 for six months)</p>
+                    <p className="fs-3 fw-bold px-4 navybluetext mb-1">Coming Soon</p>
+                    {/* <p className="fs-5 navybluetext px-4 mb-4">(£174 for six months)</p> */}
                   </div>
                   <div className="col-sm-2 px-0">
                     <input
@@ -116,8 +116,8 @@ const SignUp5 = () => {
                 <div className="row">
                   <div className="col-sm-10 px-0">
                     <p className="fs-4 mediumbluetext fw-bold px-4 mb-1">One Year</p>
-                    <p className="fs-3 fw-bold px-4 navybluetext mb-1">£18 per month</p>
-                    <p className="fs-5 navybluetext px-4 mb-4">(£216 for twelve months)</p>
+                    <p className="fs-3 fw-bold px-4 navybluetext mb-1">Coming Soon</p>
+                    {/* <p className="fs-5 navybluetext px-4 mb-4">(£216 for twelve months)</p> */}
                   </div>
                   <div className="col-sm-2 px-0">
                     <input

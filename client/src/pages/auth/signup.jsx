@@ -44,7 +44,7 @@ const SignUpPage = () => {
     <main>
       <div className="mainbg p-4">
         <div className="container-fluid p-4">
-          <Link to="/signup" className="navbar-brand">
+          <Link to="https://www.pharmaque.com/" className="navbar-brand">
             <img src="/images/Logo.png" alt="PharmaQue Logo" className="logo" />
             <span className="fs-3 fw-bold mx-3">PharmaQue</span>
           </Link>

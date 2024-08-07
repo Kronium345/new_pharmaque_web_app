@@ -143,3 +143,9 @@
   color: #ffffff !important;
   border: 2px solid #dc3545 !important;
 }
+
+.scrollable-question-list {
+  max-height: 400px; /* Adjust the height as needed */
+  overflow-y: auto;
+  width: 100%;
+}
