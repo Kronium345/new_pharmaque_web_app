@@ -149,3 +149,37 @@
   overflow-y: auto;
   width: 100%;
 }
+
+.score-container {
+  background-color: #1d3354;
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.score-value {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.question-list-no-scroll {
+  width: 100%;
+  max-height: 400px; /* Adjust the height as needed */
+}
+
+.question-item.current-question {
+  background-color: #1d3354;
+  color: white;
+}
+
+.question-item.correct-question {
+  background-color: #28a745;
+  color: #ffffff;
+}
+
+.question-item.incorrect-question {
+  background-color: #dc3545;
+  color: #ffffff;
+}

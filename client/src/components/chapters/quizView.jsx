@@ -287,7 +287,9 @@ const QuizView = ({
                     );
                   })}
                 </div>
-                <p>Current Score: {isNaN(currentScore) ? 0 : currentScore}%</p>
+                <div className="score-container">
+                  <p className="current-score">Current Score: {isNaN(currentScore) ? 0 : currentScore}%</p>
+                </div>
               </div>
             </div>
 

@@ -223,7 +223,7 @@ const MyAccount = () => {
                     <option value="Cardiff University">Cardiff University</option>
                     <option value="University of Central Lancashire (Preston)">University of Central Lancashire (Preston)</option>
                     <option value="University College London">University College London</option>
-                    <option value="De Montford University (Leicester)">De Montford University (Leicester)</option>
+                    <option value="De Montfort University (Leicester)">De Montfort University (Leicester)</option>
                     <option value="University of East Anglia (Norwich)">University of East Anglia (Norwich)</option>
                     <option value="University of Hertfordshire (Hatfield)">University of Hertfordshire (Hatfield)</option>
                     <option value="University of Huddersfield">University of Huddersfield</option>
