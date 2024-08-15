@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect, useMemo, useLayoutEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getImageUrl } from "../../utils";
 import { useLoading } from "../../hooks";
 import { FaLock } from "react-icons/fa";
@@ -21,6 +21,15 @@ const FlashCards = () => {
       flash.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [searchQuery, data]);
+
+  // Sort the flashcards so that "Sample Questions" is at the top
+  const sortedChapters = useMemo(() => {
+    return filteredChapters.sort((a, b) => {
+      if (a.name === "Sample Questions") return -1;
+      if (b.name === "Sample Questions") return 1;
+      return 0;
+    });
+  }, [filteredChapters]);
 
   useLayoutEffect(() => {
     getData();
@@ -112,7 +121,7 @@ const FlashCards = () => {
             </form>
 
             <div className="row">
-              {filteredChapters.map((flash, idx) => {
+              {sortedChapters.map((flash, idx) => {
                 const isAttempted = attempted.find(
                   (cQuiz) => cQuiz.flash === flash._id
                 );
