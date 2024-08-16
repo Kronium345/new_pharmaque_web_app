@@ -205,8 +205,8 @@ const MyAccount = () => {
                   </div>
                   <select className="form-select px-4 py-2 fs-5 mb-3" value={subscriptionPlan} onChange={handleSubscriptionPlanChange}>
                     <option value="Demo">Demo</option>
-                    <option value="Six Months">Six Months (£29 per month)</option>
-                    <option value="One Year">One Year (£18 per month)</option>
+                    <option value="Six Months">Six Months</option>
+                    <option value="One Year">One Year</option>
                   </select>
                 </div>
 
