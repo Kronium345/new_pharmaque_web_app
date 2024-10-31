@@ -4,35 +4,37 @@ import { SAMPLE_DATA } from "../data/new-sample.js";
 
 const router = express.Router();
 
-router.post("/", async (req, res) => {
-  try {
-    const isExist = await Chapter.findOne({ name: SAMPLE_DATA.name });
-
-    if (isExist) {
+router.post("/new-sample", async (req, res) => {
+    try {
+      const isExist = await Chapter.findOne({ name: SAMPLE_DATA.name });
+  
+      if (isExist) {
+        // Overwrite the document if it already exists
+        await Chapter.updateOne({ name: SAMPLE_DATA.name }, SAMPLE_DATA);
+        return res.json({
+          status: true,
+          message: "Chapter updated successfully",
+        });
+      }
+  
+      const newChapter = new Chapter(SAMPLE_DATA);
+      await newChapter.save();
+  
       return res.json({
+        status: true,
+        message: "Chapter created successfully",
+      });
+    } catch (err) {
+      console.error("Error creating chapter:", err);
+      return res.status(500).json({
         status: false,
-        message: "Chapter already exists",
+        message: "Something went wrong",
       });
     }
+  });
+  
 
-    const newChapter = new Chapter(SAMPLE_DATA);
-
-    await newChapter.save();
-
-    return res.json({
-      status: true,
-      message: "Chapter created successfully",
-    });
-  } catch (err) {
-    console.error("Error creating chapter:", err);
-    return res.status(500).json({
-      status: false,
-      message: "Something went wrong",
-    });
-  }
-});
-
-router.get("/", async (req, res) => {
+router.get("/new-sample", async (req, res) => {
   try {
     const chapters = await Chapter.find({}, { questions: 0 });
     return res.json({ status: true, chapters });
@@ -60,4 +62,4 @@ router.post("/questions/details", async (req, res) => {
   }
 });
 
-export { router as SampleRouter };
+export { router as NewSampleRouter };

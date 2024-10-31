@@ -16,6 +16,7 @@ const ChapterSchema = new mongoose.Schema(
           },
         ],
         explanation: { type: String },
+        bnf_link: { type: String }
       },
     ],
   },

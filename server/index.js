@@ -19,6 +19,7 @@ import { ReportedRouter } from './routes/reported.js';
 import { EmailRouter } from "./routes/email.js";
 import { SampleRouter } from "./routes/sample.js";
 import { SampleFlashRouter } from "./routes/sample-flash.js";
+import { NewSampleRouter } from "./routes/new-sample.js";
 
 
 dotenv.config();
@@ -59,6 +60,7 @@ app.use('/flagged', FlaggedRouter);
 app.use('/reported', ReportedRouter);
 app.use('/send-email', EmailRouter);
 app.use('/sample', SampleRouter);
+app.use('/new-sample', NewSampleRouter);
 app.use('/sample-flash', SampleFlashRouter);
 app.use("/", Router);
 
