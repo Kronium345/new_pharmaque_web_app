@@ -33,11 +33,6 @@ async function updateSubscriptionPlanByEmail(email, subscriptionPlan) {
 
 router.post("/create-checkout-session", async (req, res) => {
   const { priceId, email } = req.body;
-
-  if (!priceId || !email) {
-    return res.status(400).json({ error: "Price ID and email are required" });
-  }
-
   const successUrl = process.env.NODE_ENV === 'development'
     ? 'http://localhost:5173/success'
     : `${process.env.FRONTEND_URL}/success`;
@@ -47,7 +42,7 @@ router.post("/create-checkout-session", async (req, res) => {
       payment_method_types: ["card"],
       customer_email: email,
       line_items: [{ price: priceId, quantity: 1 }],
-      mode: "payment",
+      mode: "subscription", // Change from "payment" to "subscription"
       success_url: successUrl,
       cancel_url: `${process.env.FRONTEND_URL}/cancel`,
     });
@@ -55,9 +50,10 @@ router.post("/create-checkout-session", async (req, res) => {
     res.json({ sessionId: session.id });
   } catch (error) {
     console.error("Error creating checkout session:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).send("Internal Server Error");
   }
 });
+
 
 
 router.post("/webhook", bodyParser.raw({ type: "application/json" }), async (req, res) => {
