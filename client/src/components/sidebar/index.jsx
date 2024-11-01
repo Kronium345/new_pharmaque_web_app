@@ -55,22 +55,6 @@ export default function SideBar({ sidebarOpen, toggleSidebar }) {
     color: "#1D3354",
   };
 
-  const specialLinkStyle = {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-start", // Align text and icons to the left
-    paddingLeft: "1px",
-    textDecoration: "none",
-    color: "#A9A9A9",
-  };
-
-  const iconStyle = {
-    width: "48px", // Adjust the size as needed
-    height: "48px",
-    marginRight: "10px",
-    color: "#DBDCDA"
-  };
-
   return (
     <>
       <div style={{ display: 'flex', alignItems: 'center', padding: '10px' }}>
@@ -115,7 +99,7 @@ export default function SideBar({ sidebarOpen, toggleSidebar }) {
                 <p className="py-3 m-0" style={{ ...linkStyle, ...(path === "/flashcards" && activeLinkStyle) }}>
                   <img src={path === "/flashcards" ? "/images/FlashcardsColour.png" : "/images/FlashcardsGrey.png"} className="navigationicon" alt="navigation" />
                   <span className="fs-5 navigationoption mx-4">Flashcards</span>
-                  {userSubscriptionLevel !== 'nineMonths' && <FaLock style={{ marginLeft: '10px' }} />}
+                  {userSubscriptionLevel !== 'nineMonths' && <FaLock style={lockIconStyle} />}
                 </p>
               </Link>
               <Link to="/flaggedquestions" className="removeunderline activelink">
@@ -130,9 +114,9 @@ export default function SideBar({ sidebarOpen, toggleSidebar }) {
                   <span className="fs-5 navigationoption mx-4">Past Chapters</span>
                 </p>
               </Link>
-              <div style={specialLinkStyle}>
-                <p className="py-3 m-0" style={greyedOutStyle}>
-                  <img src={upcomingEventsDisabled} className="navigationicon" alt="navigation" style={iconStyle} />
+              <div style={greyedOutStyle}>
+                <p className="py-3 m-0">
+                  <img src={upcomingEventsDisabled} className="navigationicon" alt="navigation" />
                   <span className="fs-5 navigationoption mx-3">Upcoming Events</span>
                   <FaLock style={lockIconStyle} />
                 </p>
@@ -143,15 +127,15 @@ export default function SideBar({ sidebarOpen, toggleSidebar }) {
                   <span className="fs-5 navigationoption mx-4">Query Responses</span>
                 </p>
               </Link>
-              <div style={specialLinkStyle}>
-                <p className="py-3 m-0" style={greyedOutStyle}>
-                  <img src={chatImageDisabled} alt="Chat" style={iconStyle} />
+              <div style={greyedOutStyle}>
+                <p className="py-3 m-0">
+                  <img src={chatImageDisabled} alt="Chat" className="navigationicon" />
                   <span className="fs-5 navigationoption mx-3">Chat</span>
                 </p>
               </div>
-              <div style={specialLinkStyle}>
-                <p className="py-3 m-0" style={greyedOutStyle}>
-                  <img src={aiChatImageDisabled} alt="AIChat" style={iconStyle} />
+              <div style={greyedOutStyle}>
+                <p className="py-3 m-0">
+                  <img src={aiChatImageDisabled} alt="AIChat" className="navigationicon" />
                   <span className="fs-5 navigationoption mx-3">AI Chat</span>
                 </p>
               </div>

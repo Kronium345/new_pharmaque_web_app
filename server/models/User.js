@@ -8,7 +8,7 @@ const UserSchema = new mongoose.Schema({
   subscriptionPlan: {
     type: String,
     enum: ["Free", "threeMonths", "nineMonths"],
-    default: "Free",
+    required: true,
   },  
   university: { type: String, default: "" },
   pharmacistType: { type: String, default: "" },

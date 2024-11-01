@@ -13,26 +13,52 @@ dotenv.config(); // Load environment variables
 const router = express.Router();
 
 
+import bcrypt from "bcrypt"; // Ensure correct import of bcrypt if not imported already
+
 router.post("/signup", async (req, res) => {
-  const { username, email, password, subscriptionPlan, university, pharmacistType } = req.body;
-  const user = await User.findOne({ email });
-  if (user) {
-    return res.json({ message: "User already exists" });
+  try {
+    const { username, email, password, subscriptionPlan, university, pharmacistType } = req.body;
+    
+    // Check if the user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    // Hash the user's password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create a new user, setting the subscriptionPlan as chosen by the user, or defaulting to "Free"
+    const newUser = new User({
+      username,
+      email,
+      password: hashedPassword,
+      subscriptionPlan: subscriptionPlan || "Free", // Defaults to "Free" if subscriptionPlan is not provided
+      university: university || "", // Default to empty string if not provided
+      pharmacistType: pharmacistType || "", // Default to empty string if not provided
+    });
+
+    // Save the new user to the database
+    await newUser.save();
+
+    // Return success message along with user details (excluding password)
+    return res.status(201).json({ 
+      status: true, 
+      message: "User registered successfully", 
+      user: {
+        username: newUser.username,
+        email: newUser.email,
+        subscriptionPlan: newUser.subscriptionPlan,
+        university: newUser.university,
+        pharmacistType: newUser.pharmacistType,
+      }
+    });
+  } catch (error) {
+    console.error("Error during user registration:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
-
-  const hashedPassword = await bycrypt.hash(password, 10);
-  const newUser = new User({
-    username,
-    email,
-    password: hashedPassword,
-    subscriptionPlan: subscriptionPlan || "Free",
-    university: university || "",
-    pharmacistType: pharmacistType || "",
-  });
-
-  await newUser.save();
-  return res.json({ status: true, message: "User registered successfully" });
 });
+
 
 // New Route for Updating University
 router.post("/update-university", checkAuth, async (req, res) => {

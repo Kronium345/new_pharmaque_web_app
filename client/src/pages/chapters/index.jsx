@@ -1,4 +1,3 @@
-// Chapters/index.jsx
 import axios from "axios";
 import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +13,7 @@ const Chapters = () => {
   const [attempted, setAttempted] = useState([]);
   const [userSubscription, setUserSubscription] = useState("Free");
 
+  // Filter chapters based on search query
   const filteredChapters = useMemo(() => {
     if (!searchQuery) return data;
     return data.filter((chapter) =>
@@ -22,26 +22,41 @@ const Chapters = () => {
   }, [searchQuery, data]);
 
   useEffect(() => {
+    // Fetch initial data and user subscription on load
     getData();
     getAttemptedChapters();
     fetchUserSubscription();
   }, []);
 
-  const fetchUserSubscription = async () => {
-    try {
-      const response = await axios.get("/auth/get-profile");
-      setUserSubscription(response.data.user.subscriptionPlan);
-    } catch (error) {
-      console.error("Error fetching user subscription:", error);
-    }
-  };
+// Fetches the user's subscription plan from the backend
+const fetchUserSubscription = async () => {
+  try {
+    const response = await axios.get("/auth/get-profile");
+    const subscriptionPlan = response.data.user.subscriptionPlan;
+    
+    console.log("Fetched subscription plan from backend:", subscriptionPlan); // Log the fetched plan
 
+    if (subscriptionPlan) {
+      setUserSubscription(subscriptionPlan);
+      console.log("User subscription plan set to:", subscriptionPlan); // Confirm state update
+    } else {
+      console.warn("No subscription plan set for the user. Please check the backend.");
+    }
+  } catch (error) {
+    console.error("Error fetching user subscription:", error);
+  }
+};
+
+
+
+  // Fetches the list of chapters
   const getData = async () => {
     setLoading(true);
-    await axios.get("chapter").then((response) => {
+    try {
+      const response = await axios.get("/chapter");
       if (response.data.status) {
         let chapters = response.data.chapters;
-        // Ensure "Sample Questions" is at the top
+        // Sort so "Sample Questions" appears at the top
         chapters = chapters.sort((a, b) => {
           if (a.name === "Sample Questions") return -1;
           if (b.name === "Sample Questions") return 1;
@@ -49,38 +64,49 @@ const Chapters = () => {
         });
         setData(chapters);
       }
-    }).catch((err) => console.log(err))
-      .finally(() => setLoading(false));
+    } catch (error) {
+      console.error("Error fetching chapters:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  // Fetches attempted chapters
   const getAttemptedChapters = async () => {
     setLoading(true);
-    await axios.get("cquiz/get").then((response) => {
+    try {
+      const response = await axios.get("/cquiz/get");
       if (response.data.status) {
         setAttempted(response.data.cQuiz);
       }
-    }).catch((err) => console.log(err))
-      .finally(() => setLoading(false));
+    } catch (error) {
+      console.error("Error fetching attempted chapters:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  // Starts a chapter if the user has access, otherwise prompts to upgrade
   const handleStart = async (chapter) => {
-    // Grant access based on subscription
     const isLocked = userSubscription === "Free" && chapter.name !== "Sample Questions";
+    
     if (isLocked) {
       alert("Upgrade to access more chapters");
       return;
     }
 
     setLoading(true);
-    await axios.post("cquiz/create", { chapter: chapter._id })
-      .then((response) => {
-        if (response.data.status) {
-          const { cQuiz } = response.data;
-          navigate("/chapter/" + cQuiz._id);
-        }
-      })
-      .catch((err) => console.log(err))
-      .finally(() => setLoading(false));
+    try {
+      const response = await axios.post("cquiz/create", { chapter: chapter._id });
+      if (response.data.status) {
+        const { cQuiz } = response.data;
+        navigate("/chapter/" + cQuiz._id);
+      }
+    } catch (error) {
+      console.error("Error starting chapter:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

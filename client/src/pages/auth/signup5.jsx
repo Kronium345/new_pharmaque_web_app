@@ -26,8 +26,9 @@ const SignUp5 = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // **For Free Plan**: Directly update the user's profile without Stripe
     if (subscriptionPlan === PRICE_IDS.free) {
-      // Directly update profile for the free plan
       setLoading(true);
       try {
         await axios.post("/auth/update-profile", { email, subscriptionPlan: "Free" });
