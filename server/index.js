@@ -74,7 +74,7 @@ app.get('/', (req, res) => {
   res.send('Hello, world! Server is working.');
 });
 
-// Utilizing MongoDB Atlas Connection
+// Utilizing MongoDB Atlas Connection Here
 mongoose
   .connect(ENV.ATLAS_URI)
   .then(() => {
