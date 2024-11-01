@@ -64,10 +64,13 @@ const Chapters = () => {
   };
 
   const handleStart = async (chapter) => {
-    if (userSubscription === "Free" && chapter.name !== "Sample Questions") {
+    // Grant access based on subscription
+    const isLocked = userSubscription === "Free" && chapter.name !== "Sample Questions";
+    if (isLocked) {
       alert("Upgrade to access more chapters");
       return;
     }
+
     setLoading(true);
     await axios.post("cquiz/create", { chapter: chapter._id })
       .then((response) => {
