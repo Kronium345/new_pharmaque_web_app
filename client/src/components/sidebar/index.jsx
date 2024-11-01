@@ -16,9 +16,11 @@ import upcomingEventsDisabled from '../../assets/images/UpcomingEventsDisabled.p
 
 export default function SideBar({ sidebarOpen, toggleSidebar }) {
   const location = useLocation();
+  const { user } = useAuth(); // Retrieve user information with subscription plan
   const { logout } = useAuth();
   const { resetScreenTime } = useScreenTime();
   const path = location.pathname;
+  const userSubscriptionLevel = user?.subscriptionPlan || "free";
 
   const handleLogout = () => {
     logout();
@@ -144,14 +146,12 @@ export default function SideBar({ sidebarOpen, toggleSidebar }) {
                 <p className="py-3 m-0" style={greyedOutStyle}>
                   <img src={chatImageDisabled} alt="Chat" style={iconStyle} />
                   <span className="fs-5 navigationoption mx-3">Chat</span>
-                  {/* <FaLock style={lockIconStyle} /> */}
                 </p>
               </div>
               <div style={specialLinkStyle}>
                 <p className="py-3 m-0" style={greyedOutStyle}>
                   <img src={aiChatImageDisabled} alt="AIChat" style={iconStyle} />
                   <span className="fs-5 navigationoption mx-3">AI Chat</span>
-                  {/* <FaLock style={lockIconStyle} /> */}
                 </p>
               </div>
               <Link to="/myaccount" className="removeunderline activelink">

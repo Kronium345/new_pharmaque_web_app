@@ -1,70 +1,77 @@
-// routes/stripe.js
 import express from "express";
 import Stripe from "stripe";
 import dotenv from "dotenv";
-import { User } from "../models/User.js"; // Import User model
+import bodyParser from "body-parser";
+import { User } from "../models/User.js"; // Import User model to update the database
 
 dotenv.config();
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const router = express.Router();
 
-const FRONTEND_URL = process.env.NODE_ENV === "production"
-  ? process.env.FRONTEND_URL || "https://www.pharmaque.co.uk"
-  : "http://localhost:5173";
+const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+const THREE_MONTH_PRICE_ID = process.env.THREE_MONTH_PRICE_ID;
+const NINE_MONTH_PRICE_ID = process.env.NINE_MONTH_PRICE_ID;
 
-// Route to create a checkout session
-router.post("/create-checkout-session", async (req, res) => {
-  const { priceId, userId } = req.body; // Assume `userId` is passed from the frontend
-
+// Function to update subscription plan in the database
+async function updateSubscriptionPlanByEmail(email, subscriptionPlan) {
   try {
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      mode: "subscription",
-      line_items: [{ price: priceId, quantity: 1 }],
-      success_url: `${FRONTEND_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${FRONTEND_URL}/cancel`,
-      metadata: { userId } // Attach userId for use in webhook
-    });
+    const user = await User.findOneAndUpdate(
+      { email },
+      { subscriptionPlan },
+      { new: true }
+    );
 
-    res.json({ sessionId: session.id });
+    if (!user) {
+      console.error(`User with email ${email} not found.`);
+      return null;
+    }
+    console.log(`Updated user ${email} with plan ${subscriptionPlan}.`);
+    return user;
   } catch (error) {
-    console.error("Error creating checkout session:", error);
-    res.status(500).json({ error: error.message });
+    console.error("Error updating subscription plan:", error);
+    return null;
   }
-});
+}
 
-// Stripe Webhook to confirm subscription and update user data
-router.post("/webhook", express.raw({ type: "application/json" }), async (req, res) => {
-  const sig = req.headers["stripe-signature"];
+router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req, res) => {
+  const sig = req.headers['stripe-signature'];
   let event;
 
   try {
-    event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+    event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
   } catch (err) {
-    console.error("Webhook signature verification failed:", err.message);
-    return res.status(400).send(`Webhook error: ${err.message}`);
+    console.error("⚠️  Webhook signature verification failed.", err.message);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
-  if (event.type === "checkout.session.completed") {
-    const session = event.data.object;
-    const userId = session.metadata.userId;
-
-    // Determine the subscription plan based on price ID
-    const priceId = session.display_items[0].price.id;
-    let subscriptionPlan = "free";
-    if (priceId === process.env.THREE_MONTH_PRICE_ID) subscriptionPlan = "threeMonths";
-    if (priceId === process.env.NINE_MONTH_PRICE_ID) subscriptionPlan = "nineMonths";
-
-    try {
-      await User.findByIdAndUpdate(userId, { subscriptionPlan });
-      console.log("User subscription updated successfully.");
-    } catch (err) {
-      console.error("Error updating user subscription:", err);
-    }
+  switch (event.type) {
+    case 'checkout.session.completed':
+      const session = event.data.object;
+      await handleCheckoutSessionCompleted(session);
+      break;
+    default:
+      console.log(`Unhandled event type ${event.type}`);
   }
 
-  res.status(200).send("Webhook received");
+  res.json({ received: true });
 });
+
+// Handle the checkout session completed event
+async function handleCheckoutSessionCompleted(session) {
+  const email = session.customer_details.email;
+  const priceId = session.line_items?.[0]?.price.id;
+
+  let subscriptionPlan;
+  if (priceId === THREE_MONTH_PRICE_ID) {
+    subscriptionPlan = 'threeMonths';
+  } else if (priceId === NINE_MONTH_PRICE_ID) {
+    subscriptionPlan = 'nineMonths';
+  }
+
+  if (subscriptionPlan) {
+    await updateSubscriptionPlanByEmail(email, subscriptionPlan);
+  }
+}
 
 export default router;

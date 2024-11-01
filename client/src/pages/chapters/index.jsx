@@ -30,7 +30,7 @@ const Chapters = () => {
   const fetchUserSubscription = async () => {
     try {
       const response = await axios.get("/auth/get-profile");
-      setUserSubscription(response.data.subscriptionPlan);
+      setUserSubscription(response.data.user.subscriptionPlan);
     } catch (error) {
       console.error("Error fetching user subscription:", error);
     }

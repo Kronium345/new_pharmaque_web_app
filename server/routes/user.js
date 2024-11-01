@@ -54,7 +54,7 @@ router.post("/update-university", checkAuth, async (req, res) => {
   }
 });
 
-// New Route for Updating Subscription Plan
+// Update Subscription Plan Route
 router.post("/update-subscription-plan", checkAuth, async (req, res) => {
   const { userId } = req.user;
   const { subscriptionPlan } = req.body;
