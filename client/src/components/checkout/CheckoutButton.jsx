@@ -1,4 +1,4 @@
-// src/components/checkout/CheckoutButton.jsx
+// CheckoutButton.jsx
 import React from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
@@ -10,16 +10,11 @@ const CheckoutButton = ({ priceId, email }) => {
     const stripe = await stripePromise;
 
     try {
-      // Call your backend to create the checkout session
-      const response = await axios.post(
-        `${import.meta.env.VITE_SERVER_URL}/stripe/create-checkout-session`,
-        {
-          priceId,
-          email, // Pass the email if needed for backend handling
-        }
-      );
+      const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/stripe/create-checkout-session`, {
+        priceId,
+        email,
+      });
 
-      // Redirect to Stripe Checkout
       const result = await stripe.redirectToCheckout({
         sessionId: response.data.sessionId,
       });
