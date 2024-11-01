@@ -20,6 +20,7 @@ import { EmailRouter } from "./routes/email.js";
 import { SampleRouter } from "./routes/sample.js";
 import { SampleFlashRouter } from "./routes/sample-flash.js";
 import { NewSampleRouter } from "./routes/new-sample.js";
+import StripeRouter from "./routes/stripe.js";
 
 
 dotenv.config();
@@ -30,7 +31,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: ["https://www.pharmaque.co.uk", "http://localhost:5173"],
+    origin: ["https://www.pharmaque.co.uk", "http://localhost:5173", process.env.FRONTEND_URL],
     credentials: true,
   })
 );
@@ -62,6 +63,7 @@ app.use('/send-email', EmailRouter);
 app.use('/sample', SampleRouter);
 app.use('/new-sample', NewSampleRouter);
 app.use('/sample-flash', SampleFlashRouter);
+app.use("/stripe", StripeRouter);
 app.use("/", Router);
 
 app.get('/', (req, res) => {

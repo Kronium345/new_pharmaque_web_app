@@ -22,7 +22,7 @@ const QuizView = ({
   quiz
 }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(currentQuestion);
-  const { question, answers, explanation } = questions[currentQuestionIndex] || {};
+  const { question, answers, explanation, bnf_link } = questions[currentQuestionIndex] || {};
   const [selectedAnswer, setSelectedAnswer] = useState({});
   const [showExplanation, setShowExplanation] = useState(false);
   const [isAnswerCorrect, setIsAnswerCorrect] = useState(null);
@@ -251,6 +251,16 @@ const QuizView = ({
                     <strong>{explanation}</strong>
                   </div>
                 )}
+
+                    {/* New BNF Link Section, conditionally rendered with showExplanation */}
+                {showExplanation && bnf_link && (
+                  <div className="bnf-link">
+                    <a href={bnf_link} target="_blank" rel="noopener noreferrer" className="btn btn-info">
+                      View BNF Reference
+                    </a>
+                  </div>
+                )}
+         
 
                 <div>
                   <button

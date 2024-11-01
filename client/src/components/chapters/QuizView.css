@@ -183,3 +183,15 @@
   background-color: #dc3545;
   color: #ffffff;
 }
+
+.bnf-link {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
+.bnf-link .btn {
+  padding: 8px 12px;
+  font-size: 14px;
+}
+

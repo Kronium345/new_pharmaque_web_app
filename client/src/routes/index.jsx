@@ -9,6 +9,8 @@ import FlashCards from "../pages/flashCard";
 import FlashCardDetail from "../pages/flashCard/detail";
 import ChangePassword from "../pages/auth/ChangePassword/changePassword";
 import ResetPassword from "../pages/auth/resetPassword";
+import Success from "../pages/checkout-page/Success";
+import Cancel from "../pages/checkout-page/Cancel";
 
 const SignUpPage = lazy(() => import("../pages/auth/signup"));
 const SignUpPage2 = lazy(() => import("../pages/auth/signup2"));
@@ -43,6 +45,8 @@ export default function AppRoutes() {
             <Route path="/signup5" element={<SignUpPage5 />} />
             <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
             <Route path="/resetpassword/:token" element={<ResetPassword />} />
+            <Route path="/success" element={<Success />} />
+            <Route path="/cancel" element={<Cancel />} />
             <Route path="/*" element={<LoginPage />} />
           </>
         ) : (

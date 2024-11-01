@@ -3,6 +3,7 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import axios from "axios";
 import { useLoading } from "../../hooks";
 import subscriptionPlanImage from '../../assets/images/Subscriptions.png';
+import CheckoutButton from "../../components/checkout/CheckoutButton";
 
 const SignUp5 = () => {
   const { setLoading } = useLoading();
@@ -11,16 +12,30 @@ const SignUp5 = () => {
   const { email } = state || {}; // Retrieve email from state
   const [subscriptionPlan, setSubscriptionPlan] = useState("");
 
+  // Price IDs for each subscription plan
+  const PRICE_IDS = {
+    free: "free", // Placeholder for free plan (no checkout needed)
+    threeMonths: "price_1QFzZvFMQn0VxZqSRQxEIM05", // Replace with the actual price ID for Three Months plan
+    nineMonths: "price_1QFzf1FMQn0VxZqS6te9I1sU", // Replace with the actual price ID for Nine Months plan
+  };
+
+  const handlePlanChange = (e) => {
+    setSubscriptionPlan(e.target.value);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    try {
-      await axios.post("/auth/update-profile", { email, subscriptionPlan });
-      navigate("/myaccount", { state: { email } }); // Pass email to MyAccount page
-    } catch (error) {
-      console.error("Error updating profile:", error);
-    } finally {
-      setLoading(false);
+    if (subscriptionPlan === PRICE_IDS.free) {
+      // Directly update profile for the free plan
+      setLoading(true);
+      try {
+        await axios.post("/auth/update-profile", { email, subscriptionPlan });
+        navigate("/myaccount", { state: { email } }); // Navigate to the account page
+      } catch (error) {
+        console.error("Error updating profile:", error);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -43,20 +58,20 @@ const SignUp5 = () => {
             </div>
             <h1 className="h3 fw-bold leftalign mb-3">Choose Your Subscription Plan</h1>
             <form onSubmit={handleSubmit}>
+              {/* Free Plan */}
               <div className="row py-3 whitebg borderradius mb-4">
                 <div className="row">
                   <div className="col-sm-10 px-0">
-                    <p className="fs-4 mediumbluetext fw-bold px-4 mb-1">Demo</p>
-                    {/* <p className="fs-3 fw-bold px-4 navybluetext">£0</p> */}
+                    <p className="fs-4 mediumbluetext fw-bold px-4 mb-1">Free - 50 Questions</p>
+                    <p className="fs-3 fw-bold px-4 navybluetext">£0</p>
                   </div>
                   <div className="col-sm-2 px-0">
                     <input
                       className="form-check-input fs-4 mx-0"
                       type="radio"
                       name="plans"
-                      id="planone"
-                      value="Demo"
-                      onChange={(e) => setSubscriptionPlan(e.target.value)}
+                      value={PRICE_IDS.free}
+                      onChange={handlePlanChange}
                     />
                   </div>
                 </div>
@@ -77,21 +92,21 @@ const SignUp5 = () => {
                   </div>
                 </div>
               </div>
+
+              {/* Three Months Plan */}
               <div className="row py-3 whitebg borderradius mb-4">
                 <div className="row">
                   <div className="col-sm-10 px-0">
-                    <p className="fs-4 mediumbluetext fw-bold px-4 mb-1">Six Months</p>
-                    <p className="fs-3 fw-bold px-4 navybluetext mb-1">Coming Soon</p>
-                    {/* <p className="fs-5 navybluetext px-4 mb-4">(£174 for six months)</p> */}
+                    <p className="fs-4 mediumbluetext fw-bold px-4 mb-1">Three Months</p>
+                    <p className="fs-3 fw-bold px-4 navybluetext">£35</p>
                   </div>
                   <div className="col-sm-2 px-0">
                     <input
                       className="form-check-input fs-4 mx-0"
                       type="radio"
                       name="plans"
-                      id="plantwo"
-                      value="Six Months"
-                      onChange={(e) => setSubscriptionPlan(e.target.value)}
+                      value={PRICE_IDS.threeMonths}
+                      onChange={handlePlanChange}
                     />
                   </div>
                 </div>
@@ -100,7 +115,7 @@ const SignUp5 = () => {
                     <img src="images/Point.png" className="mediumicon" alt="Point icon" />
                   </div>
                   <div className="col-sm-11 px-3">
-                    <p className="fs-5 mx-3">Access to at least 2,500 questions</p>
+                    <p className="fs-5 mx-3">Access to at least 2,500 questions.</p>
                   </div>
                 </div>
                 <div className="row px-4">
@@ -112,21 +127,21 @@ const SignUp5 = () => {
                   </div>
                 </div>
               </div>
+
+              {/* Nine Months Plan */}
               <div className="row py-3 whitebg borderradius mb-4">
                 <div className="row">
                   <div className="col-sm-10 px-0">
-                    <p className="fs-4 mediumbluetext fw-bold px-4 mb-1">One Year</p>
-                    <p className="fs-3 fw-bold px-4 navybluetext mb-1">Coming Soon</p>
-                    {/* <p className="fs-5 navybluetext px-4 mb-4">(£216 for twelve months)</p> */}
+                    <p className="fs-4 mediumbluetext fw-bold px-4 mb-1">Nine Months</p>
+                    <p className="fs-3 fw-bold px-4 navybluetext">£80</p>
                   </div>
                   <div className="col-sm-2 px-0">
                     <input
                       className="form-check-input fs-4 mx-0"
                       type="radio"
                       name="plans"
-                      id="planthree"
-                      value="One Year"
-                      onChange={(e) => setSubscriptionPlan(e.target.value)}
+                      value={PRICE_IDS.nineMonths}
+                      onChange={handlePlanChange}
                     />
                   </div>
                 </div>
@@ -135,7 +150,7 @@ const SignUp5 = () => {
                     <img src="images/Point.png" className="mediumicon" alt="Point icon" />
                   </div>
                   <div className="col-sm-11 px-3">
-                    <p className="fs-5 mx-3">Access to at least 2,500 questions</p>
+                    <p className="fs-5 mx-3">Access to at least 2,500 questions.</p>
                   </div>
                 </div>
                 <div className="row px-4 mb-3">
@@ -155,8 +170,18 @@ const SignUp5 = () => {
                   </div>
                 </div>
               </div>
-              <button type="submit" className="btn btn-primary fw-bold fs-5 mt-3">Previous</button>
-              <button type="submit" className="btn btn-primary fw-bold fs-5 mx-3 mt-3">Next</button>
+
+              {/* Action Buttons */}
+              <div className="d-flex justify-content-between">
+                <button type="button" className="btn btn-primary fw-bold fs-5" onClick={() => navigate(-1)}>
+                  Previous
+                </button>
+                {subscriptionPlan === PRICE_IDS.free ? (
+                  <button type="submit" className="btn btn-primary fw-bold fs-5">Next</button>
+                ) : (
+                  <CheckoutButton priceId={subscriptionPlan} email={email} />
+                )}
+              </div>
             </form>
           </div>
         </div>
