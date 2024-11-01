@@ -33,10 +33,15 @@ async function updateSubscriptionPlanByEmail(email, subscriptionPlan) {
 
 router.post("/create-checkout-session", async (req, res) => {
   const { priceId, email } = req.body;
+
+  if (!priceId || !email) {
+    return res.status(400).json({ error: "Price ID and email are required" });
+  }
+
   const successUrl = process.env.NODE_ENV === 'development'
     ? 'http://localhost:5173/success'
-    : 'https://www.pharmaque.co.uk/success';
-  
+    : `${process.env.FRONTEND_URL}/success`;
+
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -44,15 +49,16 @@ router.post("/create-checkout-session", async (req, res) => {
       line_items: [{ price: priceId, quantity: 1 }],
       mode: "payment",
       success_url: successUrl,
-      cancel_url: successUrl,
+      cancel_url: `${process.env.FRONTEND_URL}/cancel`,
     });
 
     res.json({ sessionId: session.id });
   } catch (error) {
     console.error("Error creating checkout session:", error);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 
 router.post("/webhook", bodyParser.raw({ type: "application/json" }), async (req, res) => {
   const sig = req.headers["stripe-signature"];
