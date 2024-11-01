@@ -1,3 +1,4 @@
+// src/routes/stripe.js
 import express from "express";
 import Stripe from "stripe";
 import dotenv from "dotenv";
@@ -13,7 +14,6 @@ const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 const THREE_MONTH_PRICE_ID = process.env.THREE_MONTH_PRICE_ID;
 const NINE_MONTH_PRICE_ID = process.env.NINE_MONTH_PRICE_ID;
 
-// Function to update subscription plan in the database
 async function updateSubscriptionPlanByEmail(email, subscriptionPlan) {
   try {
     const user = await User.findOneAndUpdate(
@@ -33,6 +33,31 @@ async function updateSubscriptionPlanByEmail(email, subscriptionPlan) {
     return null;
   }
 }
+
+router.post('/create-checkout-session', async (req, res) => {
+  const { priceId, email } = req.body;
+
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "subscription",
+      line_items: [
+        {
+          price: priceId,
+          quantity: 1,
+        },
+      ],
+      customer_email: email,
+      success_url: `${process.env.FRONTEND_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.FRONTEND_URL}/cancel`,
+    });
+
+    res.json({ sessionId: session.id });
+  } catch (error) {
+    console.error("Error creating checkout session:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
 
 router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req, res) => {
   const sig = req.headers['stripe-signature'];
@@ -57,10 +82,9 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
   res.json({ received: true });
 });
 
-// Handle the checkout session completed event
 async function handleCheckoutSessionCompleted(session) {
   const email = session.customer_details.email;
-  const priceId = session.line_items?.[0]?.price.id;
+  const priceId = session.metadata.priceId;
 
   let subscriptionPlan;
   if (priceId === THREE_MONTH_PRICE_ID) {
