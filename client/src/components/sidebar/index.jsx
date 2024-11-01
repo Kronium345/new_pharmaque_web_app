@@ -20,7 +20,7 @@ export default function SideBar({ sidebarOpen, toggleSidebar }) {
   const { logout } = useAuth();
   const { resetScreenTime } = useScreenTime();
   const path = location.pathname;
-  const userSubscriptionLevel = user?.subscriptionPlan || "free";
+  const userSubscriptionLevel = user?.subscriptionPlan || "Free";
 
   const handleLogout = () => {
     logout();

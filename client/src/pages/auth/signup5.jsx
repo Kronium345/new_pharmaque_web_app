@@ -10,13 +10,14 @@ const SignUp5 = () => {
   const { setLoading } = useLoading();
   const navigate = useNavigate();
   const { state } = useLocation();
-  const { email } = state || {};
+  const { email } = state || {}; // Retrieve email from state
   const [subscriptionPlan, setSubscriptionPlan] = useState("");
 
+  // Price IDs for each subscription plan
   const PRICE_IDS = {
-    free: "free",
-    threeMonths: "price_1QFzZvFMQn0VxZqSRQxEIM05",
-    nineMonths: "price_1QFzf1FMQn0VxZqS6te9I1sU",
+    free: "Free", // Free plan does not require Stripe checkout
+    threeMonths: "price_1QFzZvFMQn0VxZqSRQxEIM05", // Replace with actual price ID for Three Months plan
+    nineMonths: "price_1QFzf1FMQn0VxZqS6te9I1sU", // Replace with actual price ID for Nine Months plan
   };
 
   const handlePlanChange = (e) => {
@@ -26,10 +27,11 @@ const SignUp5 = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (subscriptionPlan === PRICE_IDS.free) {
+      // Directly update profile for the free plan
       setLoading(true);
       try {
-        await axios.post("http://localhost:4000/auth/update-profile", { email, subscriptionPlan: "free" });
-        navigate("/myaccount", { state: { email } });
+        await axios.post("/auth/update-profile", { email, subscriptionPlan: "Free" });
+        navigate("/myaccount", { state: { email } }); // Navigate to the account page
       } catch (error) {
         console.error("Error updating profile:", error);
       } finally {
@@ -57,6 +59,7 @@ const SignUp5 = () => {
             </div>
             <h1 className="h3 fw-bold leftalign mb-3">Choose Your Subscription Plan</h1>
             <form onSubmit={handleSubmit}>
+              {/* Free Plan */}
               <div className="row py-3 whitebg borderradius mb-4">
                 <div className="row">
                   <div className="col-sm-10 px-0">
@@ -81,8 +84,17 @@ const SignUp5 = () => {
                     <p className="fs-5 mx-3">Access to 50 questions.</p>
                   </div>
                 </div>
+                <div className="row px-4">
+                  <div className="col-sm-1">
+                    <img src="images/Point.png" className="mediumicon" alt="Point icon" />
+                  </div>
+                  <div className="col-sm-11 px-3">
+                    <p className="fs-5 mx-3">Useful for students to see what the question bank is like.</p>
+                  </div>
+                </div>
               </div>
 
+              {/* Three Months Plan */}
               <div className="row py-3 whitebg borderradius mb-4">
                 <div className="row">
                   <div className="col-sm-10 px-0">
@@ -99,8 +111,25 @@ const SignUp5 = () => {
                     />
                   </div>
                 </div>
+                <div className="row px-4 mb-3">
+                  <div className="col-sm-1">
+                    <img src="images/Point.png" className="mediumicon" alt="Point icon" />
+                  </div>
+                  <div className="col-sm-11 px-3">
+                    <p className="fs-5 mx-3">Access to at least 2,500 questions.</p>
+                  </div>
+                </div>
+                <div className="row px-4">
+                  <div className="col-sm-1">
+                    <img src="images/Point.png" className="mediumicon" alt="Point icon" />
+                  </div>
+                  <div className="col-sm-11 px-3">
+                    <p className="fs-5 mx-3">Comes with one mock exam.</p>
+                  </div>
+                </div>
               </div>
 
+              {/* Nine Months Plan */}
               <div className="row py-3 whitebg borderradius mb-4">
                 <div className="row">
                   <div className="col-sm-10 px-0">
@@ -117,8 +146,33 @@ const SignUp5 = () => {
                     />
                   </div>
                 </div>
+                <div className="row px-4 mb-3">
+                  <div className="col-sm-1">
+                    <img src="images/Point.png" className="mediumicon" alt="Point icon" />
+                  </div>
+                  <div className="col-sm-11 px-3">
+                    <p className="fs-5 mx-3">Access to at least 2,500 questions.</p>
+                  </div>
+                </div>
+                <div className="row px-4 mb-3">
+                  <div className="col-sm-1">
+                    <img src="images/Point.png" className="mediumicon" alt="Point icon" />
+                  </div>
+                  <div className="col-sm-11 px-3">
+                    <p className="fs-5 mx-3">Comes with two mock exams.</p>
+                  </div>
+                </div>
+                <div className="row px-4">
+                  <div className="col-sm-1">
+                    <img src="images/Point.png" className="mediumicon" alt="Point icon" />
+                  </div>
+                  <div className="col-sm-11 px-3">
+                    <p className="fs-5 mx-3">Access to flashcards.</p>
+                  </div>
+                </div>
               </div>
 
+              {/* Action Buttons */}
               <div className="d-flex justify-content-between">
                 <button type="button" className="btn btn-primary fw-bold fs-5" onClick={() => navigate(-1)}>
                   Previous

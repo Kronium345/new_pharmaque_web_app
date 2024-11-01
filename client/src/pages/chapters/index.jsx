@@ -12,7 +12,7 @@ const Chapters = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [data, setData] = useState([]);
   const [attempted, setAttempted] = useState([]);
-  const [userSubscription, setUserSubscription] = useState("free");
+  const [userSubscription, setUserSubscription] = useState("Free");
 
   const filteredChapters = useMemo(() => {
     if (!searchQuery) return data;
@@ -40,7 +40,13 @@ const Chapters = () => {
     setLoading(true);
     await axios.get("chapter").then((response) => {
       if (response.data.status) {
-        const chapters = response.data.chapters;
+        let chapters = response.data.chapters;
+        // Ensure "Sample Questions" is at the top
+        chapters = chapters.sort((a, b) => {
+          if (a.name === "Sample Questions") return -1;
+          if (b.name === "Sample Questions") return 1;
+          return 0;
+        });
         setData(chapters);
       }
     }).catch((err) => console.log(err))
@@ -58,7 +64,7 @@ const Chapters = () => {
   };
 
   const handleStart = async (chapter) => {
-    if (userSubscription === "free" && chapter.name !== "Sample Questions") {
+    if (userSubscription === "Free" && chapter.name !== "Sample Questions") {
       alert("Upgrade to access more chapters");
       return;
     }
@@ -98,7 +104,7 @@ const Chapters = () => {
             <div className="row">
               {filteredChapters.map((chapter, idx) => {
                 if (!chapter) return null;
-                const isLocked = userSubscription === "free" && chapter.name !== "Sample Questions";
+                const isLocked = userSubscription === "Free" && chapter.name !== "Sample Questions";
 
                 return (
                   <div className="col-sm-6 mb-3 d-flex" key={idx}>
