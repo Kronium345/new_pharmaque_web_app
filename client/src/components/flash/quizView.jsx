@@ -24,14 +24,14 @@ const QuizView = ({
   const [showReportOptions, setShowReportOptions] = useState(false);
   const [isSessionCompleted, setIsSessionCompleted] = useState(false);
 
-  const handleFlagQuestion = async () => {
+  const handleFlagFlashcard = async () => {
     try {
       const response = await axios.post('/flagged/flag', {
         questionId: questions[currentQuestion]._id,
       });
       alert(response.data.message);
     } catch (error) {
-      console.error('Error flagging question:', error);
+      console.error('Error flagging flashcard:', error);
     }
   };
 
@@ -110,6 +110,24 @@ const QuizView = ({
                   />
                 </button>
               </div>
+
+              {/* Flag Flashcard Button (Direct Action) */}
+              <div className="col-sm-3">
+                <div onClick={handleFlagFlashcard} className="inline removeunderline navybluetext btn">
+                  <img src="/images/FlagQuestionIcon.png" className="moderateicon" alt="icon" />{" "}
+                  <span className="fs-5 mx-2">Flag Flashcard</span>
+                </div>
+              </div>
+
+              <div className="col-sm-4 center">
+                <p className="fs-4 fw-bold navybluetext mb-2">
+                  Flashcard {currentQuestion + 1} of {questions.length}
+                </p>
+                <p className="fs-5 fw-bold mediumbluetext mb-4">
+                  Chapter Weighting: <span className="redtext">High</span>
+                </p>
+              </div>
+
               <div className="col-sm-3">
                 <div onClick={() => setShowReportOptions(!showReportOptions)} className="inline removeunderline navybluetext btn">
                   <img
@@ -134,38 +152,9 @@ const QuizView = ({
                 )}
               </div>
 
-              <div className="col-sm-4 center">
-                <p className="fs-4 fw-bold navybluetext mb-2">
-                  Flashcard {currentQuestion + 1} of {questions.length}
-                </p>
-                <p className="fs-5 fw-bold mediumbluetext mb-4">
-                  Chapter Weighting: <span className="redtext">High</span>
-                </p>
-              </div>
 
-              <div className="col-sm-3">
-                <div onClick={() => setShowFlagOptions(!showFlagOptions)} className="inline removeunderline navybluetext floatright btn">
-                  <img
-                    src="/images/FlagIcon.png"
-                    className="moderateicon"
-                    alt="icon"
-                  />{" "}
-                  <span className="fs-5 mx-2">Flag Flashcard</span>
-                </div>
-                {showFlagOptions && (
-                  <>
-                    <select onChange={(e) => setFlagReason(e.target.value)}>
-                      <option value="">Select reason</option>
-                      <option value="inappropriate">Inappropriate</option>
-                      <option value="too_cumbersome">Too Cumbersome</option>
-                      <option value="other">Other</option>
-                    </select>
-                    <button onClick={handleFlagQuestion} className="btn btn-primary mt-2">
-                      Submit Flag
-                    </button>
-                  </>
-                )}
-              </div>
+
+              
 
               <div className="col-sm-1">
                 <button onClick={handleNext} className="inline floatright mb-3">

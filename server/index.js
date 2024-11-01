@@ -21,6 +21,7 @@ import { SampleRouter } from "./routes/sample.js";
 import { SampleFlashRouter } from "./routes/sample-flash.js";
 import { NewSampleRouter } from "./routes/new-sample.js";
 import { NewSampleFlashRouter } from "./routes/new-sample-flash.js";
+import { FlaggedFlashcardRouter } from "./routes/flaggedFlashcards.js";
 import StripeRouter from "./routes/stripe.js";
 
 
@@ -59,6 +60,7 @@ app.use("/flash", FlashRouter);
 app.use("/fquiz", FQuizRouter);
 app.use('/api', CommentRouter);
 app.use('/flagged', FlaggedRouter);
+app.use('/flagged-flashcards', FlaggedRouter);
 app.use('/reported', ReportedRouter);
 app.use('/send-email', EmailRouter);
 app.use('/sample', SampleRouter);
