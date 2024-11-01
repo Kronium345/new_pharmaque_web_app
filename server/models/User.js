@@ -5,7 +5,7 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   avatar: { type: String },
-  subscriptionPlan: { type: String, default: "free", enum: ["free", "threeMonths", "nineMonths"] },
+  subscriptionPlan: { type: String, default: "free", enum: ["free", "Free", "threeMonths", "ThreeMonths", "nineMonths", "NineMonths"] },
   university: { type: String, default: "" },
   pharmacistType: { type: String, default: "" },
 });
