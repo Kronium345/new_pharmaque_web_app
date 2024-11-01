@@ -108,10 +108,11 @@ export default function SideBar({ sidebarOpen, toggleSidebar }) {
                   <span className="fs-5 navigationoption mx-4">Chapters</span>
                 </p>
               </Link>
-              <Link to="/flashcards" className="removeunderline activelink">
+              <Link to={userSubscriptionLevel === 'nineMonths' ? "/flashcards" : "#"} className="removeunderline activelink">
                 <p className="py-3 m-0" style={{ ...linkStyle, ...(path === "/flashcards" && activeLinkStyle) }}>
                   <img src={path === "/flashcards" ? "/images/FlashcardsColour.png" : "/images/FlashcardsGrey.png"} className="navigationicon" alt="navigation" />
                   <span className="fs-5 navigationoption mx-4">Flashcards</span>
+                  {userSubscriptionLevel !== 'nineMonths' && <FaLock style={{ marginLeft: '10px' }} />}
                 </p>
               </Link>
               <Link to="/flaggedquestions" className="removeunderline activelink">

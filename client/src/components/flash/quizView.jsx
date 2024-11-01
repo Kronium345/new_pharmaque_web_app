@@ -26,7 +26,7 @@ const QuizView = ({
 
   const handleFlagFlashcard = async () => {
     try {
-      const response = await axios.post('/flagged/flag', {
+      const response = await axios.post('/flagged-flashcards/flag', {
         questionId: questions[currentQuestion]._id,
       });
       alert(response.data.message);
