@@ -15,7 +15,7 @@ const SignUp5 = () => {
   // Price IDs for each subscription plan
   const PRICE_IDS = {
     free: "free", // Placeholder for free plan (no checkout needed)
-    threeMonths: "price_1QGK8fFMQn0VxZqSfQ74LGuA", // Replace with actual price ID for Three Months plan
+    threeMonths: "price_1QFzZvFMQn0VxZqSRQxEIM05", // Replace with actual price ID for Three Months plan
     nineMonths: "price_1QFzf1FMQn0VxZqS6te9I1sU", // Replace with actual price ID for Nine Months plan
   };
 
