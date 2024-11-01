@@ -1,13 +1,10 @@
 import React from "react";
 import { loadStripe } from "@stripe/stripe-js";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const stripePromise = loadStripe(import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY);
+const stripePromise = loadStripe(import.meta.env.VITE_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 const CheckoutButton = ({ priceId }) => {
-  const navigate = useNavigate();
-
   const handleCheckout = async () => {
     const stripe = await stripePromise;
 
@@ -27,7 +24,6 @@ const CheckoutButton = ({ priceId }) => {
       }
     } catch (error) {
       console.error("Error creating checkout session:", error);
-      // You can navigate to an error page or display an error message here
     }
   };
 

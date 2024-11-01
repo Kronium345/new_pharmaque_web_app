@@ -21,7 +21,7 @@ import { SampleRouter } from "./routes/sample.js";
 import { SampleFlashRouter } from "./routes/sample-flash.js";
 import { NewSampleRouter } from "./routes/new-sample.js";
 import { NewSampleFlashRouter } from "./routes/new-sample-flash.js";
-// import StripeRouter from "./routes/stripe.js";
+import StripeRouter from "./routes/stripe.js";
 
 
 dotenv.config();
@@ -65,7 +65,7 @@ app.use('/sample', SampleRouter);
 app.use('/new-sample', NewSampleRouter);
 app.use('/sample-flash', SampleFlashRouter);
 app.use('/new-sample-flash', NewSampleFlashRouter);
-// app.use("/stripe", StripeRouter);
+app.use("/stripe", StripeRouter);
 app.use("/", Router);
 
 app.get('/', (req, res) => {
