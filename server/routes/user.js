@@ -33,7 +33,7 @@ router.post("/signup", async (req, res) => {
       username,
       email,
       password: hashedPassword,
-      subscriptionPlan: subscriptionPlan || "", // Defaults to "Free" if subscriptionPlan is not provided
+      subscriptionPlan: subscriptionPlan || "Free", // Defaults to "Free" if subscriptionPlan is not provided
       university: university || "", // Default to empty string if not provided
       pharmacistType: pharmacistType || "", // Default to empty string if not provided
     });

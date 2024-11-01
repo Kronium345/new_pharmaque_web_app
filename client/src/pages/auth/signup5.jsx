@@ -13,26 +13,32 @@ const SignUp5 = () => {
   const { email } = state || {}; // Retrieve email from state
   const [subscriptionPlan, setSubscriptionPlan] = useState("");
 
-  // Price IDs for each subscription plan
+  // Mapping human-readable plan names to Stripe price IDs
   const PRICE_IDS = {
-    free: "Free", // Free plan does not require Stripe checkout
-    threeMonths: "price_1QFzZvFMQn0VxZqSRQxEIM05", // Replace with actual price ID for Three Months plan
-    nineMonths: "price_1QFzf1FMQn0VxZqS6te9I1sU", // Replace with actual price ID for Nine Months plan
+    threeMonths: "price_1QFzZvFMQn0VxZqSRQxEIM05", // Replace with actual Stripe price ID for Three Months plan
+    nineMonths: "price_1QFzf1FMQn0VxZqS6te9I1sU", // Replace with actual Stripe price ID for Nine Months plan
+  };
+
+  // Plan names for internal usage
+  const PLAN_NAMES = {
+    free: "Free",
+    threeMonths: "threeMonths",
+    nineMonths: "nineMonths",
   };
 
   const handlePlanChange = (e) => {
-    setSubscriptionPlan(e.target.value);
+    const selectedPlan = e.target.value;
+    setSubscriptionPlan(selectedPlan);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // **For Free Plan**: Directly update the user's profile without Stripe
-    if (subscriptionPlan === PRICE_IDS.free) {
+    if (subscriptionPlan === PLAN_NAMES.free) {
       setLoading(true);
       try {
-        await axios.post("/auth/update-profile", { email, subscriptionPlan: "Free" });
-        navigate("/myaccount", { state: { email } }); // Navigate to the account page
+        await axios.post("/auth/update-profile", { email, subscriptionPlan: PLAN_NAMES.free });
+        navigate("/myaccount", { state: { email } });
       } catch (error) {
         console.error("Error updating profile:", error);
       } finally {
@@ -72,25 +78,9 @@ const SignUp5 = () => {
                       className="form-check-input fs-4 mx-0"
                       type="radio"
                       name="plans"
-                      value={PRICE_IDS.free}
+                      value={PLAN_NAMES.free}
                       onChange={handlePlanChange}
                     />
-                  </div>
-                </div>
-                <div className="row px-4 mb-3">
-                  <div className="col-sm-1">
-                    <img src="images/Point.png" className="mediumicon" alt="Point icon" />
-                  </div>
-                  <div className="col-sm-11 px-3">
-                    <p className="fs-5 mx-3">Access to 50 questions.</p>
-                  </div>
-                </div>
-                <div className="row px-4">
-                  <div className="col-sm-1">
-                    <img src="images/Point.png" className="mediumicon" alt="Point icon" />
-                  </div>
-                  <div className="col-sm-11 px-3">
-                    <p className="fs-5 mx-3">Useful for students to see what the question bank is like.</p>
                   </div>
                 </div>
               </div>
@@ -107,25 +97,9 @@ const SignUp5 = () => {
                       className="form-check-input fs-4 mx-0"
                       type="radio"
                       name="plans"
-                      value={PRICE_IDS.threeMonths}
+                      value={PLAN_NAMES.threeMonths}
                       onChange={handlePlanChange}
                     />
-                  </div>
-                </div>
-                <div className="row px-4 mb-3">
-                  <div className="col-sm-1">
-                    <img src="images/Point.png" className="mediumicon" alt="Point icon" />
-                  </div>
-                  <div className="col-sm-11 px-3">
-                    <p className="fs-5 mx-3">Access to at least 2,500 questions.</p>
-                  </div>
-                </div>
-                <div className="row px-4">
-                  <div className="col-sm-1">
-                    <img src="images/Point.png" className="mediumicon" alt="Point icon" />
-                  </div>
-                  <div className="col-sm-11 px-3">
-                    <p className="fs-5 mx-3">Comes with one mock exam.</p>
                   </div>
                 </div>
               </div>
@@ -142,33 +116,9 @@ const SignUp5 = () => {
                       className="form-check-input fs-4 mx-0"
                       type="radio"
                       name="plans"
-                      value={PRICE_IDS.nineMonths}
+                      value={PLAN_NAMES.nineMonths}
                       onChange={handlePlanChange}
                     />
-                  </div>
-                </div>
-                <div className="row px-4 mb-3">
-                  <div className="col-sm-1">
-                    <img src="images/Point.png" className="mediumicon" alt="Point icon" />
-                  </div>
-                  <div className="col-sm-11 px-3">
-                    <p className="fs-5 mx-3">Access to at least 2,500 questions.</p>
-                  </div>
-                </div>
-                <div className="row px-4 mb-3">
-                  <div className="col-sm-1">
-                    <img src="images/Point.png" className="mediumicon" alt="Point icon" />
-                  </div>
-                  <div className="col-sm-11 px-3">
-                    <p className="fs-5 mx-3">Comes with two mock exams.</p>
-                  </div>
-                </div>
-                <div className="row px-4">
-                  <div className="col-sm-1">
-                    <img src="images/Point.png" className="mediumicon" alt="Point icon" />
-                  </div>
-                  <div className="col-sm-11 px-3">
-                    <p className="fs-5 mx-3">Access to flashcards.</p>
                   </div>
                 </div>
               </div>
@@ -178,10 +128,13 @@ const SignUp5 = () => {
                 <button type="button" className="btn btn-primary fw-bold fs-5" onClick={() => navigate(-1)}>
                   Previous
                 </button>
-                {subscriptionPlan === PRICE_IDS.free ? (
+                {subscriptionPlan === PLAN_NAMES.free ? (
                   <button type="submit" className="btn btn-primary fw-bold fs-5">Next</button>
                 ) : (
-                  <CheckoutButton priceId={subscriptionPlan} email={email} />
+                  <CheckoutButton
+                    priceId={PRICE_IDS[subscriptionPlan]}
+                    email={email}
+                  />
                 )}
               </div>
             </form>
