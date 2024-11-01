@@ -12,6 +12,7 @@ dotenv.config(); // Load environment variables
 
 const router = express.Router();
 
+
 router.post("/signup", async (req, res) => {
   const { username, email, password, subscriptionPlan, university, pharmacistType } = req.body;
   const user = await User.findOne({ email });
@@ -54,7 +55,7 @@ router.post("/update-university", checkAuth, async (req, res) => {
   }
 });
 
-// Update Subscription Plan Route
+// New Route for Updating Subscription Plan
 router.post("/update-subscription-plan", checkAuth, async (req, res) => {
   const { userId } = req.user;
   const { subscriptionPlan } = req.body;
