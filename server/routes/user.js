@@ -17,12 +17,7 @@ import bcrypt from "bcrypt"; // Ensure correct import of bcrypt if not imported 
 
 router.post("/signup", async (req, res) => {
   try {
-    const { username, email, password, subscriptionLevel, university, pharmacistType } = req.body;
-    
-    // Ensure subscriptionLevel is provided in the request
-    if (subscriptionLevel === undefined) {
-      return res.status(400).json({ message: "Subscription level is required" });
-    }
+    const { username, email, password, university, pharmacistType } = req.body;
 
     // Check if the user already exists
     const existingUser = await User.findOne({ email });
@@ -33,12 +28,12 @@ router.post("/signup", async (req, res) => {
     // Hash the user's password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create a new user without any default values, using provided subscriptionLevel
+    // Create a new user with default subscription level
     const newUser = new User({
       username,
       email,
       password: hashedPassword,
-      subscriptionLevel: subscriptionLevel || 1,
+      subscriptionLevel: 1, // Default to 1 (Free)
       university: university || "", // Default to empty string if not provided
       pharmacistType: pharmacistType || "", // Default to empty string if not provided
     });

@@ -28,16 +28,16 @@ const SignUp5 = () => {
 
     // Determine subscription level based on selected plan
     let subscriptionLevel;
-    switch (subscriptionPlan) {
-      case PRICE_IDS.threeMonths:
-        subscriptionLevel = 2; // Three Months subscription level
-        break;
-      case PRICE_IDS.nineMonths:
-        subscriptionLevel = 3; // Nine Months subscription level
-        break;
-      default:
-        subscriptionLevel = 1; // Free plan
-    }
+  switch (subscriptionPlan) {
+    case PRICE_IDS.threeMonths:
+      subscriptionLevel = 2; // Three Months subscription level
+      break;
+    case PRICE_IDS.nineMonths:
+      subscriptionLevel = 3; // Nine Months subscription level
+      break;
+    default:
+      subscriptionLevel = 1; // Free plan
+  }
 
     // **For Free Plan**: Directly update the user's profile without Stripe
     if (subscriptionPlan === PRICE_IDS.free) {
