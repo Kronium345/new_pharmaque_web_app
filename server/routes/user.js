@@ -17,46 +17,41 @@ import bcrypt from "bcrypt"; // Ensure correct import of bcrypt if not imported 
 
 router.post("/signup", async (req, res) => {
   try {
-    const { username, email, password, subscriptionType, university, pharmacistType } = req.body;
+    const { username, email, password, subscriptionLevel, university, pharmacistType } = req.body;
     
+    // Ensure subscriptionLevel is provided in the request
+    if (subscriptionLevel === undefined) {
+      return res.status(400).json({ message: "Subscription level is required" });
+    }
+
+    // Check if the user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
 
+    // Hash the user's password
     const hashedPassword = await bcrypt.hash(password, 10);
-    let subscriptionLevel;
 
-    switch (subscriptionType) {
-      case "Three Months":
-        subscriptionLevel = 2;
-        break;
-      case "Nine Months":
-        subscriptionLevel = 3;
-        break;
-      default:
-        subscriptionLevel = 1;
-    }
-
+    // Create a new user without any default values, using provided subscriptionLevel
     const newUser = new User({
       username,
       email,
       password: hashedPassword,
-      subscriptionType: subscriptionType || "Free",
       subscriptionLevel,
-      university: university || "",
-      pharmacistType: pharmacistType || ""
+      university: university || "", // Default to empty string if not provided
+      pharmacistType: pharmacistType || "", // Default to empty string if not provided
     });
 
+    // Save the new user to the database
     await newUser.save();
 
-    return res.status(201).json({
-      status: true,
-      message: "User registered successfully",
+    return res.status(201).json({ 
+      status: true, 
+      message: "User registered successfully", 
       user: {
         username: newUser.username,
         email: newUser.email,
-        subscriptionType: newUser.subscriptionType,
         subscriptionLevel: newUser.subscriptionLevel,
         university: newUser.university,
         pharmacistType: newUser.pharmacistType,
@@ -93,33 +88,21 @@ router.post("/update-university", checkAuth, async (req, res) => {
 // New Route for Updating Subscription Plan
 router.post("/update-subscription-plan", checkAuth, async (req, res) => {
   const { userId } = req.user;
-  const { subscriptionType } = req.body;
-
-  let subscriptionLevel;
-  switch (subscriptionType) {
-    case "Three Months":
-      subscriptionLevel = 2;
-      break;
-    case "Nine Months":
-      subscriptionLevel = 3;
-      break;
-    default:
-      subscriptionLevel = 1;
-  }
+  const { subscriptionLevel } = req.body;
 
   try {
-    const user = await User.findByIdAndUpdate(
-      userId,
-      { subscriptionType, subscriptionLevel },
-      { new: true }
-    );
+    const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    return res.json({ status: true, message: "Subscription updated successfully", user });
+    // Update the subscriptionLevel field
+    user.subscriptionLevel = subscriptionLevel;
+    await user.save();
+
+    return res.json({ status: true, message: "Subscription level updated successfully" });
   } catch (error) {
-    console.error("Error updating subscription:", error.message);
+    console.error("Error updating subscription level:", error.message);
     return res.status(500).json({ message: "Internal server error" });
   }
 });

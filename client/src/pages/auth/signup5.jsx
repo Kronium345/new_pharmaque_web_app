@@ -40,11 +40,11 @@ const SignUp5 = () => {
         subscriptionLevel = 1; // Free plan
     }
 
-    // **For Free Plan**: Directly update the user's profile without Stripe
+    // For Free Plan: Directly update the user's profile without Stripe
     if (subscriptionPlan === PRICE_IDS.free) {
       setLoading(true);
       try {
-        await axios.post("/auth/update-profile", { email, subscriptionType: "Free", subscriptionLevel });
+        await axios.post("/auth/update-profile", { email, subscriptionLevel });
         navigate("/myaccount", { state: { email } }); // Navigate to the account page
       } catch (error) {
         console.error("Error updating profile:", error);
