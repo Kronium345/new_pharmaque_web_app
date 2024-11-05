@@ -1,3 +1,4 @@
+// SideBar.jsx
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
@@ -16,11 +17,11 @@ import upcomingEventsDisabled from '../../assets/images/UpcomingEventsDisabled.p
 
 export default function SideBar({ sidebarOpen, toggleSidebar }) {
   const location = useLocation();
-  const { user } = useAuth();
+  const { user } = useAuth(); // Retrieve user information with subscription plan
   const { logout } = useAuth();
   const { resetScreenTime } = useScreenTime();
   const path = location.pathname;
-  const userSubscriptionLevel = user?.subscriptionLevel || 1; // Default to level 1 (Free) if not set
+  const userSubscriptionLevel = user?.subscriptionPlan || "Free";
 
   const handleLogout = () => {
     logout();
@@ -34,7 +35,7 @@ export default function SideBar({ sidebarOpen, toggleSidebar }) {
     justifyContent: "flex-start",
     paddingLeft: "20px",
     textDecoration: "none",
-    pointerEvents: "none",
+    pointerEvents: "none", // Make the link not clickable
   };
 
   const lockIconStyle = {
@@ -94,11 +95,11 @@ export default function SideBar({ sidebarOpen, toggleSidebar }) {
                   <span className="fs-5 navigationoption mx-4">Chapters</span>
                 </p>
               </Link>
-              <Link to={userSubscriptionLevel === 3 ? "/flashcards" : "#"} className="removeunderline activelink">
+              <Link to={userSubscriptionLevel === 'nineMonths' ? "/flashcards" : "#"} className="removeunderline activelink">
                 <p className="py-3 m-0" style={{ ...linkStyle, ...(path === "/flashcards" && activeLinkStyle) }}>
                   <img src={path === "/flashcards" ? "/images/FlashcardsColour.png" : "/images/FlashcardsGrey.png"} className="navigationicon" alt="navigation" />
                   <span className="fs-5 navigationoption mx-4">Flashcards</span>
-                  {userSubscriptionLevel !== 3 && <FaLock style={lockIconStyle} />}
+                  {userSubscriptionLevel !== 'nineMonths' && <FaLock style={lockIconStyle} />}
                 </p>
               </Link>
               <Link to="/flaggedquestions" className="removeunderline activelink">

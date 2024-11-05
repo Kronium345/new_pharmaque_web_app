@@ -1,3 +1,4 @@
+// SignUp5.jsx
 import React, { useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import axios from "axios";
@@ -26,41 +27,14 @@ const SignUp5 = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Determine subscription level based on selected plan
-    let subscriptionLevel;
-    switch (subscriptionPlan) {
-      case PRICE_IDS.threeMonths:
-        subscriptionLevel = 2; // Three Months subscription level
-        break;
-      case PRICE_IDS.nineMonths:
-        subscriptionLevel = 3; // Nine Months subscription level
-        break;
-      default:
-        subscriptionLevel = 1; // Free plan
-    }
-
-    // **For Free Plan**: Directly update the user's subscription level without Stripe
+    // **For Free Plan**: Directly update the user's profile without Stripe
     if (subscriptionPlan === PRICE_IDS.free) {
       setLoading(true);
       try {
-        await axios.post("/auth/update-subscription-level", { email, subscriptionLevel });
+        await axios.post("/auth/update-profile", { email, subscriptionPlan: "Free" });
         navigate("/myaccount", { state: { email } }); // Navigate to the account page
       } catch (error) {
-        console.error("Error updating subscription level:", error);
-      } finally {
-        setLoading(false);
-      }
-    } else {
-      // For paid plans, initiate checkout process with Stripe
-      setLoading(true);
-      try {
-        const response = await axios.post("/stripe/create-checkout-session", {
-          priceId: subscriptionPlan,
-          email,
-        });
-        window.location.href = response.data.url; // Redirect to Stripe checkout
-      } catch (error) {
-        console.error("Error with checkout:", error);
+        console.error("Error updating profile:", error);
       } finally {
         setLoading(false);
       }
