@@ -13,11 +13,11 @@ const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 const THREE_MONTH_PRICE_ID = process.env.THREE_MONTH_PRICE_ID;
 const NINE_MONTH_PRICE_ID = process.env.NINE_MONTH_PRICE_ID;
 
-async function updateSubscriptionPlanByEmail(email, subscriptionLevel) {
+async function updateSubscriptionPlanByEmail(email, subscriptionPlan) {
   try {
     const user = await User.findOneAndUpdate(
       { email },
-      { subscriptionLevel },
+      { subscriptionPlan },
       { new: true }
     );
     if (!user) {
@@ -26,7 +26,7 @@ async function updateSubscriptionPlanByEmail(email, subscriptionLevel) {
     }
     return user;
   } catch (error) {
-    console.error("Error updating subscription level:", error);
+    console.error("Error updating subscription plan:", error);
     return null;
   }
 }
@@ -45,6 +45,7 @@ router.post("/create-checkout-session", async (req, res) => {
       mode: "subscription",
       success_url: successUrl,
       cancel_url: `${process.env.FRONTEND_URL}/cancel`,
+      expand: ["line_items.data.price"] // Expand line items to access price ID in the webhook
     });
 
     res.json({ sessionId: session.id });
@@ -67,21 +68,19 @@ router.post("/webhook", bodyParser.raw({ type: "application/json" }), async (req
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object;
-    const priceId = session.line_items?.[0]?.price?.id; // Adjust this if line_items is not directly accessible
-    let subscriptionLevel;
+    const priceId = session.line_items?.data[0]?.price?.id; // Access price ID from expanded line items
 
-    // Determine the subscription level based on priceId
+    let subscriptionPlan;
     if (priceId === THREE_MONTH_PRICE_ID) {
-      subscriptionLevel = 2; // Represents the Three Months level
+      subscriptionPlan = "Three Months";
     } else if (priceId === NINE_MONTH_PRICE_ID) {
-      subscriptionLevel = 3; // Represents the Nine Months level
+      subscriptionPlan = "Nine Months";
     } else {
-      subscriptionLevel = 1; // Default level if free or unknown
+      subscriptionPlan = "Free";
     }
 
-    // Update subscription level if it has a recognized value
-    if (subscriptionLevel) {
-      await updateSubscriptionPlanByEmail(session.customer_details.email, subscriptionLevel);
+    if (subscriptionPlan) {
+      await updateSubscriptionPlanByEmail(session.customer_details.email, subscriptionPlan);
     }
   }
 

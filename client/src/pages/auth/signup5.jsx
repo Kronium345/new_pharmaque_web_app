@@ -27,14 +27,27 @@ const SignUp5 = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // **For Free Plan**: Directly update the user's profile without Stripe
+    setLoading(true);
     if (subscriptionPlan === PRICE_IDS.free) {
-      setLoading(true);
       try {
+        // For Free Plan: Directly update the user's profile without Stripe
         await axios.post("/auth/update-profile", { email, subscriptionPlan: "Free" });
         navigate("/myaccount", { state: { email } }); // Navigate to the account page
       } catch (error) {
         console.error("Error updating profile:", error);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      try {
+        // For paid plans, initiate the checkout process with Stripe
+        const response = await axios.post("/stripe/create-checkout-session", {
+          priceId: subscriptionPlan,
+          email,
+        });
+        window.location.href = response.data.url; // Redirect to Stripe checkout
+      } catch (error) {
+        console.error("Error with checkout:", error);
       } finally {
         setLoading(false);
       }
