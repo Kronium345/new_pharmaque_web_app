@@ -38,7 +38,7 @@ router.post("/signup", async (req, res) => {
       username,
       email,
       password: hashedPassword,
-      subscriptionLevel,
+      subscriptionLevel: subscriptionLevel || 1,
       university: university || "", // Default to empty string if not provided
       pharmacistType: pharmacistType || "", // Default to empty string if not provided
     });
@@ -86,26 +86,26 @@ router.post("/update-university", checkAuth, async (req, res) => {
 });
 
 // New Route for Updating Subscription Plan
-router.post("/update-subscription-plan", checkAuth, async (req, res) => {
-  const { userId } = req.user;
-  const { subscriptionLevel } = req.body;
-
+router.post("/update-subscription-level", async (req, res) => {
+  const { email, subscriptionLevel } = req.body;
+  
   try {
-    const user = await User.findById(userId);
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-
-    // Update the subscriptionLevel field
+    
+    // Update the user's subscription level
     user.subscriptionLevel = subscriptionLevel;
     await user.save();
-
+    
     return res.json({ status: true, message: "Subscription level updated successfully" });
   } catch (error) {
-    console.error("Error updating subscription level:", error.message);
+    console.error("Error updating subscription level:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 });
+
 
 // New Route for Updating Pharmacist Type
 router.post("/update-pharmacist-type", checkAuth, async (req, res) => {
