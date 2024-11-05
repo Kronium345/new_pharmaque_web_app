@@ -17,38 +17,47 @@ import bcrypt from "bcrypt"; // Ensure correct import of bcrypt if not imported 
 
 router.post("/signup", async (req, res) => {
   try {
-    const { username, email, password, subscriptionPlan, university, pharmacistType } = req.body;
+    const { username, email, password, subscriptionType, university, pharmacistType } = req.body;
     
-    // Check if the user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // Hash the user's password
     const hashedPassword = await bcrypt.hash(password, 10);
+    let subscriptionLevel;
 
-    // Create a new user, setting the subscriptionPlan as chosen by the user, or defaulting to "Free"
+    switch (subscriptionType) {
+      case "Three Months":
+        subscriptionLevel = 2;
+        break;
+      case "Nine Months":
+        subscriptionLevel = 3;
+        break;
+      default:
+        subscriptionLevel = 1;
+    }
+
     const newUser = new User({
       username,
       email,
       password: hashedPassword,
-      subscriptionPlan: subscriptionPlan || "Free", // Defaults to "Free" if subscriptionPlan is not provided
-      university: university || "", // Default to empty string if not provided
-      pharmacistType: pharmacistType || "", // Default to empty string if not provided
+      subscriptionType: subscriptionType || "Free",
+      subscriptionLevel,
+      university: university || "",
+      pharmacistType: pharmacistType || ""
     });
 
-    // Save the new user to the database
     await newUser.save();
 
-    // Return success message along with user details (excluding password)
-    return res.status(201).json({ 
-      status: true, 
-      message: "User registered successfully", 
+    return res.status(201).json({
+      status: true,
+      message: "User registered successfully",
       user: {
         username: newUser.username,
         email: newUser.email,
-        subscriptionPlan: newUser.subscriptionPlan,
+        subscriptionType: newUser.subscriptionType,
+        subscriptionLevel: newUser.subscriptionLevel,
         university: newUser.university,
         pharmacistType: newUser.pharmacistType,
       }
@@ -84,20 +93,33 @@ router.post("/update-university", checkAuth, async (req, res) => {
 // New Route for Updating Subscription Plan
 router.post("/update-subscription-plan", checkAuth, async (req, res) => {
   const { userId } = req.user;
-  const { subscriptionPlan } = req.body;
+  const { subscriptionType } = req.body;
+
+  let subscriptionLevel;
+  switch (subscriptionType) {
+    case "Three Months":
+      subscriptionLevel = 2;
+      break;
+    case "Nine Months":
+      subscriptionLevel = 3;
+      break;
+    default:
+      subscriptionLevel = 1;
+  }
 
   try {
-    const user = await User.findById(userId);
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { subscriptionType, subscriptionLevel },
+      { new: true }
+    );
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    user.subscriptionPlan = subscriptionPlan;
-    await user.save();
-
-    return res.json({ status: true, message: "Subscription plan updated successfully" });
+    return res.json({ status: true, message: "Subscription updated successfully", user });
   } catch (error) {
-    console.error("Error updating subscription plan:", error.message);
+    console.error("Error updating subscription:", error.message);
     return res.status(500).json({ message: "Internal server error" });
   }
 });

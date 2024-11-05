@@ -11,9 +11,8 @@ const Chapters = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [data, setData] = useState([]);
   const [attempted, setAttempted] = useState([]);
-  const [userSubscription, setUserSubscription] = useState("Free");
+  const [userSubscriptionLevel, setUserSubscriptionLevel] = useState(1);
 
-  // Filter chapters based on search query
   const filteredChapters = useMemo(() => {
     if (!searchQuery) return data;
     return data.filter((chapter) =>
@@ -22,32 +21,26 @@ const Chapters = () => {
   }, [searchQuery, data]);
 
   useEffect(() => {
-    // Fetch initial data and user subscription on load
     getData();
     getAttemptedChapters();
-    fetchUserSubscription();
+    fetchUserSubscriptionLevel();
   }, []);
 
-// Fetches the user's subscription plan from the backend
-const fetchUserSubscription = async () => {
-  try {
-    const response = await axios.get("/auth/get-profile");
-    const subscriptionPlan = response.data.user.subscriptionPlan;
-    
-    console.log("Fetched subscription plan from backend:", subscriptionPlan); // Log the fetched plan
+  // Fetches the user's subscription level from the backend
+  const fetchUserSubscriptionLevel = async () => {
+    try {
+      const response = await axios.get("/auth/get-profile");
+      const subscriptionLevel = response.data.user.subscriptionLevel;
 
-    if (subscriptionPlan) {
-      setUserSubscription(subscriptionPlan);
-      console.log("User subscription plan set to:", subscriptionPlan); // Confirm state update
-    } else {
-      console.warn("No subscription plan set for the user. Please check the backend.");
+      if (subscriptionLevel) {
+        setUserSubscriptionLevel(subscriptionLevel);
+      } else {
+        console.warn("No subscription level set for the user. Please check the backend.");
+      }
+    } catch (error) {
+      console.error("Error fetching user subscription level:", error);
     }
-  } catch (error) {
-    console.error("Error fetching user subscription:", error);
-  }
-};
-
-
+  };
 
   // Fetches the list of chapters
   const getData = async () => {
@@ -56,7 +49,6 @@ const fetchUserSubscription = async () => {
       const response = await axios.get("/chapter");
       if (response.data.status) {
         let chapters = response.data.chapters;
-        // Sort so "Sample Questions" appears at the top
         chapters = chapters.sort((a, b) => {
           if (a.name === "Sample Questions") return -1;
           if (b.name === "Sample Questions") return 1;
@@ -88,8 +80,10 @@ const fetchUserSubscription = async () => {
 
   // Starts a chapter if the user has access, otherwise prompts to upgrade
   const handleStart = async (chapter) => {
-    const isLocked = userSubscription === "Free" && chapter.name !== "Sample Questions";
-    
+    const isLocked =
+      (userSubscriptionLevel === 1 && chapter.name !== "Sample Questions") || // Level 1 can only access "Sample Questions"
+      (userSubscriptionLevel === 2 && chapter.name === "Full Access"); // Level 2 can't access "Full Access" chapters
+
     if (isLocked) {
       alert("Upgrade to access more chapters");
       return;
@@ -133,7 +127,9 @@ const fetchUserSubscription = async () => {
             <div className="row">
               {filteredChapters.map((chapter, idx) => {
                 if (!chapter) return null;
-                const isLocked = userSubscription === "Free" && chapter.name !== "Sample Questions";
+                const isLocked =
+                  (userSubscriptionLevel === 1 && chapter.name !== "Sample Questions") ||
+                  (userSubscriptionLevel === 2 && chapter.name === "Full Access");
 
                 return (
                   <div className="col-sm-6 mb-3 d-flex" key={idx}>
