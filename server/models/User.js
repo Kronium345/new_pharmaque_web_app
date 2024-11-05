@@ -5,11 +5,7 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   avatar: { type: String },
-  subscriptionLevel: {
-    type: Number,
-    enum: [1, 2, 3], // 1: Free, 2: Three Months, 3: Nine Months
-    required: true,
-  },  
+  subscriptionLevel: { type: Number, default: 1 },
   university: { type: String, default: "" },
   pharmacistType: { type: String, default: "" },
 });
