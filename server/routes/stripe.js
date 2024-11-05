@@ -13,11 +13,11 @@ const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 const THREE_MONTH_PRICE_ID = process.env.THREE_MONTH_PRICE_ID;
 const NINE_MONTH_PRICE_ID = process.env.NINE_MONTH_PRICE_ID;
 
-async function updateSubscriptionPlanByEmail(email, subscriptionPlan) {
+async function updateSubscriptionPlanByEmail(email, subscriptionLevel) {
   try {
     const user = await User.findOneAndUpdate(
       { email },
-      { subscriptionPlan },
+      { subscriptionLevel },
       { new: true }
     );
     if (!user) {
@@ -26,7 +26,7 @@ async function updateSubscriptionPlanByEmail(email, subscriptionPlan) {
     }
     return user;
   } catch (error) {
-    console.error("Error updating subscription plan:", error);
+    console.error("Error updating subscription level:", error);
     return null;
   }
 }
@@ -42,7 +42,7 @@ router.post("/create-checkout-session", async (req, res) => {
       payment_method_types: ["card"],
       customer_email: email,
       line_items: [{ price: priceId, quantity: 1 }],
-      mode: "subscription", // Change from "payment" to "subscription"
+      mode: "subscription",
       success_url: successUrl,
       cancel_url: `${process.env.FRONTEND_URL}/cancel`,
     });
@@ -53,8 +53,6 @@ router.post("/create-checkout-session", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
-
-
 
 router.post("/webhook", bodyParser.raw({ type: "application/json" }), async (req, res) => {
   const sig = req.headers["stripe-signature"];
@@ -69,17 +67,21 @@ router.post("/webhook", bodyParser.raw({ type: "application/json" }), async (req
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object;
-    const priceId = session.line_items?.[0]?.price?.id;
-    let subscriptionPlan;
+    const priceId = session.line_items?.[0]?.price?.id; // Adjust this if line_items is not directly accessible
+    let subscriptionLevel;
 
+    // Determine the subscription level based on priceId
     if (priceId === THREE_MONTH_PRICE_ID) {
-      subscriptionPlan = "threeMonths";
+      subscriptionLevel = 2; // Represents the Three Months level
     } else if (priceId === NINE_MONTH_PRICE_ID) {
-      subscriptionPlan = "nineMonths";
+      subscriptionLevel = 3; // Represents the Nine Months level
+    } else {
+      subscriptionLevel = 1; // Default level if free or unknown
     }
 
-    if (subscriptionPlan) {
-      await updateSubscriptionPlanByEmail(session.customer_details.email, subscriptionPlan);
+    // Update subscription level if it has a recognized value
+    if (subscriptionLevel) {
+      await updateSubscriptionPlanByEmail(session.customer_details.email, subscriptionLevel);
     }
   }
 
