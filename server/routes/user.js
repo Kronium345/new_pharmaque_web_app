@@ -80,12 +80,13 @@ router.post("/update-university", checkAuth, async (req, res) => {
   }
 });
 
-// New Route for Updating Subscription Plan
-router.post("/update-subscription-level", async (req, res) => {
-  const { email, subscriptionLevel } = req.body;
+// Route for updating Subscription Level
+router.post("/update-subscription-level", checkAuth, async (req, res) => {
+  const { userId } = req.user;
+  const { subscriptionLevel } = req.body;
   
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -100,6 +101,7 @@ router.post("/update-subscription-level", async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 });
+
 
 
 // New Route for Updating Pharmacist Type
