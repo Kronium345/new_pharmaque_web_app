@@ -55,7 +55,7 @@ router.post("/create-checkout-session", async (req, res) => {
   }
 });
 
-router.post("/webhook", bodyParser.raw({ type: "application/json" }), async (req, res) => {
+router.post("/webhook", express.raw({ type: "application/json" }), async (req, res) => {
   const sig = req.headers["stripe-signature"];
   let event;
 
@@ -68,23 +68,22 @@ router.post("/webhook", bodyParser.raw({ type: "application/json" }), async (req
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object;
-    const priceId = session.line_items?.data[0]?.price?.id; // Access price ID from expanded line items
+    const priceId = session.line_items?.data[0]?.price?.id;
 
     let subscriptionPlan;
     if (priceId === THREE_MONTH_PRICE_ID) {
-      subscriptionPlan = "Three Months";
+      subscriptionPlan = "threeMonths";
     } else if (priceId === NINE_MONTH_PRICE_ID) {
-      subscriptionPlan = "Nine Months";
-    } else {
-      subscriptionPlan = "Free";
+      subscriptionPlan = "nineMonths";
     }
 
     if (subscriptionPlan) {
-      await updateSubscriptionPlanByEmail(session.customer_details.email, subscriptionPlan);
+      await updateSubscriptionPlanByEmail(session.customer_email, subscriptionPlan);
     }
   }
 
   res.json({ received: true });
 });
+
 
 export default router;
