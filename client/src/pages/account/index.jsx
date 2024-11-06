@@ -28,13 +28,12 @@ const MyAccount = () => {
     nineMonths: "price_1QFzf1FMQn0VxZqS6te9I1sU", // Replace with actual price ID for Nine Months plan
   };
 
-// Fetch the latest profile data when the component loads
   useEffect(() => {
-    const fetchProfile = async () => {
-      await getProfile(); // This will ensure the latest subscription plan is fetched
-    };
-    fetchProfile();
-  }, [getProfile]);
+    if (profile) {
+      console.log("Loaded profile with subscriptionPlan:", profile.subscriptionPlan);
+      setSubscriptionPlan(profile.subscriptionPlan);
+    }
+  }, [profile]);
 
   useEffect(() => {
     if (profile) {
@@ -92,37 +91,49 @@ const MyAccount = () => {
     setSubscriptionPlan(newSubscriptionPlan);
 
     if (newSubscriptionPlan === "Free") {
-      // Directly update the user's plan to Free without Stripe
-      try {
-        await axios.post("/auth/update-subscription-plan", { subscriptionPlan: newSubscriptionPlan, email: profile.email });
-        console.log('Subscription plan updated to Free');
-        await getProfile(); // Refresh the profile to reflect the change
-      } catch (error) {
-        console.error('Error updating subscription plan:', error.response?.data?.message || error.message);
-      }
+        // Directly update to Free plan without payment
+        try {
+            await axios.post("/auth/update-subscription-plan", { 
+                subscriptionPlan: newSubscriptionPlan, 
+                email: profile.email 
+            });
+            console.log("Subscription plan updated to Free");
+            await getProfile(); // Refresh the profile to reflect the change
+        } catch (error) {
+            console.error("Error updating subscription plan:", error.response?.data?.message || error.message);
+        }
     } else {
-      // For paid plans, initiate the Stripe checkout process
-      const stripe = await stripePromise;
-      const priceId = newSubscriptionPlan === "threeMonths" ? "price_1QFzZvFMQn0VxZqSRQxEIM05" : "price_1QFzf1FMQn0VxZqS6te9I1sU";
+        // Prompt confirmation before initiating Stripe checkout for paid plans
+        const confirmPayment = window.confirm("Are you sure you want to proceed with payment?");
+        if (confirmPayment) {
+            initiateStripePayment(newSubscriptionPlan);
+        }
+    }
+};
 
-      try {
-        const response = await axios.post("/stripe/create-checkout-session", {
+// Separate function to handle Stripe payment initiation
+const initiateStripePayment = async (subscriptionPlan) => {
+  const stripe = await stripePromise;
+  const priceId = subscriptionPlan === "threeMonths" ? "price_1QFzZvFMQn0VxZqSRQxEIM05" : "price_1QFzf1FMQn0VxZqS6te9I1sU";
+
+  try {
+      const response = await axios.post("/stripe/create-checkout-session", {
           priceId,
           email: profile.email,
-        });
+      });
 
-        const result = await stripe.redirectToCheckout({
+      const result = await stripe.redirectToCheckout({
           sessionId: response.data.sessionId,
-        });
+      });
 
-        if (result.error) {
+      if (result.error) {
           console.error(result.error.message);
-        }
-      } catch (error) {
-        console.error("Error creating checkout session:", error);
       }
-    }
-  };
+  } catch (error) {
+      console.error("Error creating checkout session:", error);
+  }
+};
+  
 
   const handleUniversityChange = async (e) => {
     const newUniversity = e.target.value;
