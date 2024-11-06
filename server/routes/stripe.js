@@ -68,6 +68,7 @@ router.post("/webhook", express.raw({ type: "application/json" }), async (req, r
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object;
+    const email = session.customer_email;
     const priceId = session.line_items?.data[0]?.price?.id;
 
     let subscriptionPlan;
@@ -78,7 +79,8 @@ router.post("/webhook", express.raw({ type: "application/json" }), async (req, r
     }
 
     if (subscriptionPlan) {
-      await updateSubscriptionPlanByEmail(session.customer_email, subscriptionPlan);
+      await updateSubscriptionPlanByEmail(email, subscriptionPlan);
+      console.log(`User with email ${email} subscription updated to ${subscriptionPlan}`);
     }
   }
 

@@ -28,11 +28,13 @@ const MyAccount = () => {
     nineMonths: "price_1QFzf1FMQn0VxZqS6te9I1sU", // Replace with actual price ID for Nine Months plan
   };
 
+// Fetch the latest profile data when the component loads
   useEffect(() => {
-    if (profile) {
-      setSubscriptionPlan(profile.subscriptionPlan);
-    }
-  }, [profile]);
+    const fetchProfile = async () => {
+      await getProfile(); // This will ensure the latest subscription plan is fetched
+    };
+    fetchProfile();
+  }, [getProfile]);
 
   useEffect(() => {
     if (profile) {
