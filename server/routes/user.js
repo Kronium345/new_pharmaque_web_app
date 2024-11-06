@@ -92,10 +92,15 @@ router.post("/update-subscription-plan", checkAuth, async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    user.subscriptionPlan = subscriptionPlan;
-    await user.save();
-
-    return res.json({ status: true, message: "Subscription plan updated successfully" });
+    // Allow direct updates only for the Free plan
+    if (subscriptionPlan === "Free") {
+      user.subscriptionPlan = subscriptionPlan;
+      await user.save();
+      return res.json({ status: true, message: "Subscription plan updated to Free successfully" });
+    } else {
+      // For paid plans, instruct the user to go through the Stripe checkout process
+      return res.status(400).json({ message: "Cannot update to paid plans directly. Please use Stripe payment." });
+    }
   } catch (error) {
     console.error("Error updating subscription plan:", error.message);
     return res.status(500).json({ message: "Internal server error" });
