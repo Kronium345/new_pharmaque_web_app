@@ -30,7 +30,6 @@ dotenv.config();
 const app = express();
 
 // Middlewares
-app.use(express.json());
 app.use(
   cors({
     origin: ["https://www.pharmaque.co.uk", "http://localhost:5173", process.env.FRONTEND_URL],
@@ -39,6 +38,15 @@ app.use(
 );
 app.use(morgan("tiny"));
 app.use(cookieParser());
+
+// Use express.json() only for non-webhook routes
+app.use((req, res, next) => {
+  if (req.originalUrl === "/stripe/webhook") {
+    next(); // Skip JSON parsing for the webhook route
+  } else {
+    express.json()(req, res, next); // Apply JSON parsing to other routes
+  }
+});
 
 app.use("/uploads", express.static("uploads"));
 
