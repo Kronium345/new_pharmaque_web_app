@@ -23,7 +23,7 @@ const MyAccount = () => {
   const [screenTimeDifference, setScreenTimeDifference] = useState(null);
 
   const PRICE_IDS = {
-    free: "Free", // Free plan does not require Stripe checkout
+    free: "Free", // Free plan require's no Stripe checkout
     threeMonths: "price_1QFzZvFMQn0VxZqSRQxEIM05", // Replace with actual price ID for Three Months plan
     nineMonths: "price_1QFzf1FMQn0VxZqS6te9I1sU", // Replace with actual price ID for Nine Months plan
   };
