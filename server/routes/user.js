@@ -82,29 +82,25 @@ router.post("/update-university", checkAuth, async (req, res) => {
 });
 
 // New Route for Updating Subscription Plan
-router.post("/update-subscription-plan", async (req, res) => {
-  const { email, subscriptionPlan } = req.body;
+router.post("/update-subscription-plan", checkAuth, async (req, res) => {
+  const { userId } = req.user;
+  const { subscriptionPlan } = req.body;
 
   try {
-      // Allow update only if plan is "Free" or user is not currently in a Stripe-paid subscription
-      if (subscriptionPlan === "Free") {
-          // Directly update the subscription plan for the free plan
-          const updatedUser = await User.findOneAndUpdate(
-              { email },
-              { subscriptionPlan },
-              { new: true }
-          );
-          return res.status(200).json({ success: true, user: updatedUser });
-      } else {
-          // For paid plans, restrict updates here
-          return res.status(400).json({ error: "Cannot manually change to a paid plan. Please use Stripe payment." });
-      }
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.subscriptionPlan = subscriptionPlan;
+    await user.save();
+
+    return res.json({ status: true, message: "Subscription plan updated successfully" });
   } catch (error) {
-      console.error("Error updating subscription plan:", error);
-      return res.status(500).json({ error: "Server error" });
+    console.error("Error updating subscription plan:", error.message);
+    return res.status(500).json({ message: "Internal server error" });
   }
 });
-
 
 // New Route for Updating Pharmacist Type
 router.post("/update-pharmacist-type", checkAuth, async (req, res) => {
