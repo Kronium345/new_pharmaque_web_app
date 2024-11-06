@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../hooks";
 import { useScreenTime } from "../../components/ScreenTime/ScreenTimeContext";
+import { loadStripe } from "@stripe/stripe-js";
 
 const MyAccount = () => {
   const navigate = useNavigate();
@@ -16,9 +17,22 @@ const MyAccount = () => {
   const [university, setUniversity] = useState("");
   const [pharmacistType, setPharmacistType] = useState("");
   const { screenTime } = useScreenTime();
+  const stripePromise = loadStripe(import.meta.env.VITE_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
   const [lastScreenTime, setLastScreenTime] = useState(null);
   const [screenTimeDifference, setScreenTimeDifference] = useState(null);
+
+  const PRICE_IDS = {
+    free: "Free", // Free plan does not require Stripe checkout
+    threeMonths: "price_1QFzZvFMQn0VxZqSRQxEIM05", // Replace with actual price ID for Three Months plan
+    nineMonths: "price_1QFzf1FMQn0VxZqS6te9I1sU", // Replace with actual price ID for Nine Months plan
+  };
+
+  useEffect(() => {
+    if (profile) {
+      setSubscriptionPlan(profile.subscriptionPlan);
+    }
+  }, [profile]);
 
   useEffect(() => {
     if (profile) {
@@ -74,18 +88,37 @@ const MyAccount = () => {
   const handleSubscriptionPlanChange = async (e) => {
     const newSubscriptionPlan = e.target.value;
     setSubscriptionPlan(newSubscriptionPlan);
-    console.log("Updated Subscription Plan:", newSubscriptionPlan);
 
-    try {
-      await axios.post("/auth/update-subscription-plan", { subscriptionPlan: newSubscriptionPlan }, {
-        headers: {
-          'Content-Type': 'application/json'
+    if (newSubscriptionPlan === "Free") {
+      // Directly update the user's plan to Free without Stripe
+      try {
+        await axios.post("/auth/update-subscription-plan", { subscriptionPlan: newSubscriptionPlan, email: profile.email });
+        console.log('Subscription plan updated to Free');
+        await getProfile(); // Refresh the profile to reflect the change
+      } catch (error) {
+        console.error('Error updating subscription plan:', error.response?.data?.message || error.message);
+      }
+    } else {
+      // For paid plans, initiate the Stripe checkout process
+      const stripe = await stripePromise;
+      const priceId = newSubscriptionPlan === "threeMonths" ? "price_1QFzZvFMQn0VxZqSRQxEIM05" : "price_1QFzf1FMQn0VxZqS6te9I1sU";
+
+      try {
+        const response = await axios.post("/stripe/create-checkout-session", {
+          priceId,
+          email: profile.email,
+        });
+
+        const result = await stripe.redirectToCheckout({
+          sessionId: response.data.sessionId,
+        });
+
+        if (result.error) {
+          console.error(result.error.message);
         }
-      });
-      console.log('Subscription plan updated successfully');
-      await getProfile(); // Re-fetch the profile to update the changes
-    } catch (error) {
-      console.error('Error updating subscription plan:', error.response?.data?.message || error.message);
+      } catch (error) {
+        console.error("Error creating checkout session:", error);
+      }
     }
   };
 
@@ -205,8 +238,8 @@ const MyAccount = () => {
                   </div>
                   <select className="form-select px-4 py-2 fs-5 mb-3" value={subscriptionPlan} onChange={handleSubscriptionPlanChange}>
                     <option value="Free">Free - 50 Questions</option>
-                    <option value="threeMonths">Three Months</option>
-                    <option value="nineMonths">Six Months</option>
+                    <option value="threeMonths">Three Months - £35</option>
+                    <option value="nineMonths">Nine Months - £80</option>
                   </select>
                 </div>
 
