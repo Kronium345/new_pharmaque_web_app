@@ -1,7 +1,17 @@
-import React from "react";
-import { Link } from "react-router-dom";
+// Success.jsx
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks";
 
 const Success = () => {
+  const { getProfile } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Refresh profile to get the updated subscription plan
+    getProfile();
+  }, [getProfile]);
+
   return (
     <div className="container text-center mt-5">
       <h1>Payment Successful!</h1>

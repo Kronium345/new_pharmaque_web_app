@@ -35,7 +35,7 @@ router.post("/create-checkout-session", async (req, res) => {
   const { priceId, email } = req.body;
   const successUrl = process.env.NODE_ENV === 'development'
     ? 'http://localhost:5173/success'
-    : `${process.env.FRONTEND_URL}/success`;
+    : `${process.env.FRONTEND_URL}success`;
 
   try {
     const session = await stripe.checkout.sessions.create({
