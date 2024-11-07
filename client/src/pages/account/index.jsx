@@ -24,8 +24,8 @@ const MyAccount = () => {
 
   const PRICE_IDS = {
     free: "Free",
-    threeMonths: import.meta.env.VITE_THREE_MONTH_PRICE_ID, // from .env
-    nineMonths: import.meta.env.VITE_NINE_MONTH_PRICE_ID,   // from .env
+    threeMonths: "price_1QFzZvFMQn0VxZqSRQxEIM05", // from .env
+    nineMonths: "price_1QFzf1FMQn0VxZqS6te9I1sU",   // from .env
   };
 
   useEffect(() => {

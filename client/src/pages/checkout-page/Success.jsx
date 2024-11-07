@@ -9,8 +9,11 @@ const Success = () => {
 
   useEffect(() => {
     // Refresh profile to get the updated subscription plan
-    getProfile();
-  }, [getProfile]);
+    getProfile().then(() => {
+      // Optional: Add a small delay to ensure the backend has processed the webhook
+      setTimeout(() => navigate("/myaccount"), 1000);
+    });
+  }, [getProfile, navigate]);
 
   return (
     <div className="container text-center mt-5">
