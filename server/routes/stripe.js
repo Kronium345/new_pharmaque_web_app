@@ -1,19 +1,14 @@
-// stripe.js
 import express from "express";
 import Stripe from "stripe";
 import dotenv from "dotenv";
-import bodyParser from "body-parser";
 import { User } from "../models/User.js";
 
 dotenv.config();
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const router = express.Router();
-const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
-const THREE_MONTH_PRICE_ID = process.env.THREE_MONTH_PRICE_ID;
-const NINE_MONTH_PRICE_ID = process.env.NINE_MONTH_PRICE_ID;
 
-async function updateSubscriptionPlanByEmail(email, subscriptionPlan) {
+const updateSubscriptionPlanByEmail = async (email, subscriptionPlan) => {
   try {
     const user = await User.findOneAndUpdate(
       { email },
@@ -29,13 +24,12 @@ async function updateSubscriptionPlanByEmail(email, subscriptionPlan) {
     console.error("Error updating subscription plan:", error);
     return null;
   }
-}
+};
 
 router.post("/create-checkout-session", async (req, res) => {
   const { priceId, email } = req.body;
-  const successUrl = process.env.NODE_ENV === 'development'
-    ? 'http://localhost:5173/success'
-    : `${process.env.FRONTEND_URL}success`;
+  const successUrl = `${process.env.FRONTEND_URL}/success`;
+  const cancelUrl = `${process.env.FRONTEND_URL}/cancel`;
 
   try {
     const session = await stripe.checkout.sessions.create({
@@ -44,8 +38,7 @@ router.post("/create-checkout-session", async (req, res) => {
       line_items: [{ price: priceId, quantity: 1 }],
       mode: "subscription",
       success_url: successUrl,
-      cancel_url: `${process.env.FRONTEND_URL}/cancel`,
-      expand: ["line_items.data.price"] // Expand line items to access price ID in the webhook
+      cancel_url: cancelUrl,
     });
 
     res.json({ sessionId: session.id });
@@ -68,24 +61,20 @@ router.post("/webhook", express.raw({ type: "application/json" }), async (req, r
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object;
+    const email = session.customer_email;
 
     try {
-      const email = session.customer_email; // Use customer email to find the user
-      const user = await User.findOne({ email });
+      const priceId = session.display_items[0].price.id;
+      let subscriptionPlan;
 
-      if (user) {
-        // Determine subscription plan based on Stripe price ID
-        const priceId = session.display_items[0].price.id;
-
-        if (priceId === process.env.THREE_MONTH_PRICE_ID) {
-          user.subscriptionPlan = "threeMonths";
-        } else if (priceId === process.env.NINE_MONTH_PRICE_ID) {
-          user.subscriptionPlan = "nineMonths";
-        }
-
-        await user.save();
-        console.log(`Subscription plan updated for ${email}`);
+      if (priceId === process.env.THREE_MONTH_PRICE_ID) {
+        subscriptionPlan = "threeMonths";
+      } else if (priceId === process.env.NINE_MONTH_PRICE_ID) {
+        subscriptionPlan = "nineMonths";
       }
+
+      await updateSubscriptionPlanByEmail(email, subscriptionPlan);
+      console.log(`Subscription plan updated for ${email} to ${subscriptionPlan}`);
       res.json({ received: true });
     } catch (error) {
       console.error("Error updating user subscription:", error.message);
@@ -95,7 +84,5 @@ router.post("/webhook", express.raw({ type: "application/json" }), async (req, r
     res.json({ received: true });
   }
 });
-
-
 
 export default router;
