@@ -89,47 +89,48 @@ const MyAccount = () => {
   const handleSubscriptionPlanChange = async (e) => {
     const newSubscriptionPlan = e.target.value;
     setSubscriptionPlan(newSubscriptionPlan);
-  
+
     if (newSubscriptionPlan === "Free") {
-      try {
-        // Directly update to Free plan without payment
-        await axios.post("/auth/update-subscription-plan", { subscriptionPlan: newSubscriptionPlan });
-        console.log("Subscription plan updated to Free");
-        await getProfile(); // Refresh profile
-      } catch (error) {
-        console.error("Error updating subscription plan:", error.response?.data?.message || error.message);
-      }
+        try {
+            await axios.post("/auth/update-subscription-plan", { 
+                subscriptionPlan: newSubscriptionPlan, 
+                email: profile.email 
+            });
+            console.log("Subscription plan updated to Free");
+            await getProfile(); // Refresh the profile to reflect the change
+        } catch (error) {
+            console.error("Error updating subscription plan:", error.response?.data?.message || error.message);
+        }
     } else {
-      const confirmPayment = window.confirm("Are you sure you want to proceed with payment?");
-      if (confirmPayment) {
-        initiateStripePayment(newSubscriptionPlan);
-      }
+        const confirmPayment = window.confirm("Are you sure you want to proceed with payment?");
+        if (confirmPayment) {
+            initiateStripePayment(newSubscriptionPlan);
+        }
     }
-  };
-  
-  // Separate function to handle Stripe payment initiation
-  const initiateStripePayment = async (subscriptionPlan) => {
-    const stripe = await stripePromise;
-    const priceId = subscriptionPlan === "threeMonths" ? process.env.THREE_MONTH_PRICE_ID : process.env.NINE_MONTH_PRICE_ID;
-  
-    try {
+};
+
+
+const initiateStripePayment = async (subscriptionPlan) => {
+  const stripe = await stripePromise;
+  const priceId = subscriptionPlan === "threeMonths" ? "price_1QFzZvFMQn0VxZqSRQxEIM05" : "price_1QFzf1FMQn0VxZqS6te9I1sU";
+
+  try {
       const response = await axios.post("/stripe/create-checkout-session", {
-        priceId,
-        email: profile.email,
+          priceId,
+          email: profile.email,
       });
-  
+
       const result = await stripe.redirectToCheckout({
-        sessionId: response.data.sessionId,
+          sessionId: response.data.sessionId,
       });
-  
+
       if (result.error) {
-        console.error("Stripe checkout error:", result.error.message);
+          console.error(result.error.message);
       }
-    } catch (error) {
+  } catch (error) {
       console.error("Error creating checkout session:", error);
-    }
-  };
-  
+  }
+};
 
   
 
