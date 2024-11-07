@@ -91,7 +91,6 @@ const MyAccount = () => {
     setSubscriptionPlan(newSubscriptionPlan);
 
     if (newSubscriptionPlan === "Free") {
-        // Directly update to Free plan without payment
         try {
             await axios.post("/auth/update-subscription-plan", { 
                 subscriptionPlan: newSubscriptionPlan, 
@@ -103,7 +102,6 @@ const MyAccount = () => {
             console.error("Error updating subscription plan:", error.response?.data?.message || error.message);
         }
     } else {
-        // Prompt confirmation before initiating Stripe checkout for paid plans
         const confirmPayment = window.confirm("Are you sure you want to proceed with payment?");
         if (confirmPayment) {
             initiateStripePayment(newSubscriptionPlan);
@@ -111,7 +109,7 @@ const MyAccount = () => {
     }
 };
 
-// Separate function to handle Stripe payment initiation
+
 const initiateStripePayment = async (subscriptionPlan) => {
   const stripe = await stripePromise;
   const priceId = subscriptionPlan === "threeMonths" ? "price_1QFzZvFMQn0VxZqSRQxEIM05" : "price_1QFzf1FMQn0VxZqS6te9I1sU";
@@ -133,6 +131,7 @@ const initiateStripePayment = async (subscriptionPlan) => {
       console.error("Error creating checkout session:", error);
   }
 };
+
   
 
   const handleUniversityChange = async (e) => {
