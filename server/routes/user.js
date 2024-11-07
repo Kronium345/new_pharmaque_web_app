@@ -82,6 +82,7 @@ router.post("/update-university", checkAuth, async (req, res) => {
 });
 
 // New Route for Updating Subscription Plan
+// Updating Subscription Plan with Free Plan Handling
 router.post("/update-subscription-plan", checkAuth, async (req, res) => {
   const { userId } = req.user;
   const { subscriptionPlan } = req.body;
@@ -92,20 +93,21 @@ router.post("/update-subscription-plan", checkAuth, async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Allow direct updates only for the Free plan
     if (subscriptionPlan === "Free") {
+      // Directly update subscription to Free
       user.subscriptionPlan = subscriptionPlan;
       await user.save();
       return res.json({ status: true, message: "Subscription plan updated to Free successfully" });
     } else {
-      // For paid plans, instruct the user to go through the Stripe checkout process
-      return res.status(400).json({ message: "Cannot update to paid plans directly. Please use Stripe payment." });
+      // Paid plans should be processed through Stripe
+      return res.status(400).json({ message: "Paid plans require Stripe payment. Please initiate through the payment gateway." });
     }
   } catch (error) {
     console.error("Error updating subscription plan:", error.message);
     return res.status(500).json({ message: "Internal server error" });
   }
 });
+
 
 // New Route for Updating Pharmacist Type
 router.post("/update-pharmacist-type", checkAuth, async (req, res) => {

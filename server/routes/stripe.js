@@ -60,41 +60,40 @@ router.post("/webhook", express.raw({ type: "application/json" }), async (req, r
   let event;
 
   try {
-      event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+    event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
   } catch (err) {
-      console.error("Webhook signature verification failed:", err.message);
-      return res.status(400).send("Webhook Error");
+    console.error("Webhook signature verification failed:", err.message);
+    return res.status(400).send("Webhook Error");
   }
 
   if (event.type === "checkout.session.completed") {
-      const session = event.data.object;
-      
-      if (session.payment_status === "paid") {
-          const priceId = session.line_items?.data[0]?.price?.id;
+    const session = event.data.object;
 
-          let subscriptionPlan;
-          if (priceId === process.env.THREE_MONTH_PRICE_ID) {
-              subscriptionPlan = "threeMonths";
-          } else if (priceId === process.env.NINE_MONTH_PRICE_ID) {
-              subscriptionPlan = "nineMonths";
-          }
+    try {
+      const email = session.customer_email; // Use customer email to find the user
+      const user = await User.findOne({ email });
 
-          if (subscriptionPlan) {
-              try {
-                  const user = await User.findOneAndUpdate(
-                      { email: session.customer_email },
-                      { subscriptionPlan },
-                      { new: true }
-                  );
-                  console.log("Subscription updated successfully for:", user.email);
-              } catch (error) {
-                  console.error("Error updating subscription plan in database:", error);
-              }
-          }
+      if (user) {
+        // Determine subscription plan based on Stripe price ID
+        const priceId = session.display_items[0].price.id;
+
+        if (priceId === process.env.THREE_MONTH_PRICE_ID) {
+          user.subscriptionPlan = "threeMonths";
+        } else if (priceId === process.env.NINE_MONTH_PRICE_ID) {
+          user.subscriptionPlan = "nineMonths";
+        }
+
+        await user.save();
+        console.log(`Subscription plan updated for ${email}`);
       }
+      res.json({ received: true });
+    } catch (error) {
+      console.error("Error updating user subscription:", error.message);
+      return res.status(500).send("Internal Server Error");
+    }
+  } else {
+    res.json({ received: true });
   }
-
-  res.json({ received: true });
 });
 
 
